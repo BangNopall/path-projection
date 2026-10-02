@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep this booth game client-side: camera classification runs in the visitor's browser and persona readings are local content, so participation needs no account or backend.
