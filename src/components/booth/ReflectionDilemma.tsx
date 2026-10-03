@@ -6,6 +6,8 @@ import { TarotCard3D } from "./TarotCard3D";
 import { Button } from "@/components/ui/button";
 import { playAudioTone } from "@/lib/audio";
 
+import { useUnifiedReducedMotion } from "@/lib/motion/use-reduced-motion-unified";
+
 interface ReflectionDilemmaProps {
   soundEnabled: boolean;
   onSelectPersona: (key: PersonaKey) => void;
@@ -19,13 +21,15 @@ export const ReflectionDilemma: React.FC<ReflectionDilemmaProps> = ({
   onOpenScanner,
   onBack,
 }) => {
+  const shouldReduceMotion = useUnifiedReducedMotion();
+
   return (
     <motion.section
       key="dilemma"
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 16 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -16 }}
-      transition={{ duration: 0.4 }}
+      exit={{ opacity: 0, y: shouldReduceMotion ? 0 : -16 }}
+      transition={{ duration: shouldReduceMotion ? 0.05 : 0.4 }}
       className="mx-auto flex w-full max-w-6xl flex-1 flex-col py-6 sm:py-10"
     >
       {/* Top Navigation & Breadcrumbs */}

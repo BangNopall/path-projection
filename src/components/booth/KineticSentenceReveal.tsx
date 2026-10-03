@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { motion, type Variants } from "motion/react";
+import { motion, useReducedMotion, type Variants } from "motion/react";
 import { Shuffle } from "lucide-react";
 
 export interface KineticSentenceRevealProps {
@@ -9,6 +9,7 @@ export interface KineticSentenceRevealProps {
   isRerolling?: boolean;
   className?: string;
   onComplete?: () => void;
+  showReroll?: boolean;
 }
 
 const wordVariants: Variants = {
@@ -64,7 +65,9 @@ export function KineticSentenceReveal({
   isRerolling = false,
   className = "",
   onComplete,
+  showReroll = true,
 }: KineticSentenceRevealProps): React.JSX.Element {
+  const shouldReduceMotion = useReducedMotion();
   const [isCompleted, setIsCompleted] = useState(false);
   const [animationCycle, setAnimationCycle] = useState(0);
 
@@ -91,7 +94,7 @@ export function KineticSentenceReveal({
     }
 
     // Fallback completion timer for environments where spring completion is deferred
-    const durationMs = Math.max(300, words.length * 45 + 350);
+    const durationMs = shouldReduceMotion ? 150 : Math.max(300, words.length * 45 + 350);
     const timer = setTimeout(() => {
       setIsCompleted(true);
       onComplete?.();
@@ -100,7 +103,7 @@ export function KineticSentenceReveal({
     return () => {
       clearTimeout(timer);
     };
-  }, [sentence, isRerolling, words.length, onComplete]);
+  }, [sentence, isRerolling, words.length, onComplete, shouldReduceMotion]);
 
   const handleRerollClick = () => {
     if (!isRerolling && onReroll) {
@@ -133,76 +136,107 @@ export function KineticSentenceReveal({
           }}
           initial={{ x: "-110%", opacity: 0 }}
           animate={{ x: "120%", opacity: [0, 1, 1, 0] }}
-          transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
+          transition={
+            shouldReduceMotion ? { duration: 0.2 } : { duration: 0.85, ease: [0.22, 1, 0.36, 1] }
+          }
         />
       )}
 
       {/* Kinetic Sentence Text */}
       <div className="relative z-0 min-h-[5.5rem]">
-        <motion.p
-          key={`kinetic-sentence-${animationCycle}`}
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          data-testid="kinetic-sentence"
-          aria-live="polite"
-          className="text-base sm:text-lg font-normal leading-relaxed text-white/95"
-        >
-          {words.map((word, index) => {
-            const isLast = index === words.length - 1;
-            return (
-              <span
-                key={`${word}-${index}`}
-                data-testid="kinetic-word-wrapper"
-                className="inline-block mr-[0.28em] last:mr-0"
-              >
-                <motion.span
-                  data-testid="kinetic-word"
-                  variants={wordVariants}
-                  className="inline-block"
-                  {...(isLast ? { onAnimationComplete: handleLastWordComplete } : {})}
-                >
-                  {word}
-                </motion.span>
-                {!isLast && <span className="sr-only"> </span>}
-              </span>
-            );
-          })}
-        </motion.p>
-      </div>
-
-      {/* Action Controls: Tarik Refleksi Baru Button */}
-      <div className="relative z-0 mt-5 flex items-center justify-between border-t border-white/5 pt-4">
-        <motion.button
-          type="button"
-          data-testid="reroll-button"
-          onClick={handleRerollClick}
-          disabled={isRerolling}
-          aria-label="Tarik Refleksi Baru"
-          aria-busy={isRerolling}
-          whileHover={isRerolling ? {} : { scale: 1.03, y: -2 }}
-          whileTap={isRerolling ? {} : { scale: 0.97 }}
-          transition={{ type: "spring", stiffness: 400, damping: 25 }}
-          className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-[#122225] px-4 py-2 text-xs font-semibold uppercase tracking-wider text-white shadow-sm transition-colors hover:border-[#F2B705]/60 hover:text-[#F2B705] focus:outline-none focus:ring-2 focus:ring-[#F2B705]/40 disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          <Shuffle
-            data-testid="shuffle-icon"
-            className={`size-4 text-[#F2B705] transition-transform ${
-              isRerolling ? "animate-spin" : ""
-            }`}
-          />
-          <span>Tarik Refleksi Baru</span>
-        </motion.button>
-
-        {isCompleted && (
-          <span
-            data-testid="completion-badge"
-            className="text-[10px] uppercase font-mono tracking-wider text-[#F2B705]/80"
+        {shouldReduceMotion ? (
+          <p
+            key={`kinetic-sentence-${animationCycle}`}
+            data-testid="kinetic-sentence"
+            aria-live="polite"
+            className="text-base sm:text-lg font-normal leading-relaxed text-white/95"
           >
-            Refleksi Terbuka
-          </span>
+            {words.map((word, index) => {
+              const isLast = index === words.length - 1;
+              return (
+                <span
+                  key={`${word}-${index}`}
+                  data-testid="kinetic-word-wrapper"
+                  className="inline-block mr-[0.28em] last:mr-0"
+                >
+                  <span data-testid="kinetic-word" className="inline-block">
+                    {word}
+                  </span>
+                  {!isLast && <span className="sr-only"> </span>}
+                </span>
+              );
+            })}
+          </p>
+        ) : (
+          <motion.p
+            key={`kinetic-sentence-${animationCycle}`}
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            data-testid="kinetic-sentence"
+            aria-live="polite"
+            className="text-base sm:text-lg font-normal leading-relaxed text-white/95"
+          >
+            {words.map((word, index) => {
+              const isLast = index === words.length - 1;
+              return (
+                <span
+                  key={`${word}-${index}`}
+                  data-testid="kinetic-word-wrapper"
+                  className="inline-block mr-[0.28em] last:mr-0"
+                >
+                  <motion.span
+                    data-testid="kinetic-word"
+                    variants={wordVariants}
+                    className="inline-block"
+                    {...(isLast ? { onAnimationComplete: handleLastWordComplete } : {})}
+                  >
+                    {word}
+                  </motion.span>
+                  {!isLast && <span className="sr-only"> </span>}
+                </span>
+              );
+            })}
+          </motion.p>
         )}
       </div>
+
+      {/* Action Controls: Tarik Refleksi Baru Button / Status */}
+      {(showReroll || isCompleted) && (
+        <div className="relative z-0 mt-5 flex items-center justify-between border-t border-white/5 pt-4">
+          {showReroll && (
+            <motion.button
+              type="button"
+              data-testid="reroll-button"
+              onClick={handleRerollClick}
+              disabled={isRerolling}
+              aria-label="Tarik Refleksi Baru"
+              aria-busy={isRerolling}
+              whileHover={isRerolling ? {} : { scale: 1.03, y: -2 }}
+              whileTap={isRerolling ? {} : { scale: 0.97 }}
+              transition={{ type: "spring", stiffness: 400, damping: 25 }}
+              className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-[#122225] px-4 py-2 text-xs font-semibold uppercase tracking-wider text-white shadow-sm transition-colors hover:border-[#F2B705]/60 hover:text-[#F2B705] focus:outline-none focus:ring-2 focus:ring-[#F2B705]/40 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <Shuffle
+                data-testid="shuffle-icon"
+                className={`size-4 text-[#F2B705] transition-transform ${
+                  isRerolling ? "animate-spin" : ""
+                }`}
+              />
+              <span>Tarik Refleksi Baru</span>
+            </motion.button>
+          )}
+
+          {isCompleted && (
+            <span
+              data-testid="completion-badge"
+              className={`text-[10px] uppercase font-mono tracking-wider text-[#F2B705]/80 ${!showReroll ? "ml-auto" : ""}`}
+            >
+              Refleksi Terbuka
+            </span>
+          )}
+        </div>
+      )}
     </div>
   );
 }

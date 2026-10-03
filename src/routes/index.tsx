@@ -21,12 +21,10 @@ import {
   getRandomQuote,
   getRandomFutureProjection,
 } from "@/data/personas";
-import { RevealCard } from "@/components/booth/RevealCard";
-import { RevealLetterRoll } from "@/components/booth/RevealLetterRoll";
 import { InteractiveDeck } from "@/components/booth/InteractiveDeck";
 import { ReflectionDilemma } from "@/components/booth/ReflectionDilemma";
 import { ScannerHUD } from "@/components/booth/ScannerHUD";
-import { MotionGraphReveal } from "@/components/booth/MotionGraphReveal";
+import { CinematicReveal } from "@/components/booth/reveal/CinematicReveal";
 import { playAudioTone } from "@/lib/audio";
 
 type Screen = "home" | "dilemma" | "scan" | "reveal";
@@ -190,7 +188,7 @@ function Game() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.35 }}
+                transition={shouldReduceMotion ? { duration: 0.05 } : { duration: 0.35 }}
                 className="grid flex-1 items-center gap-8 py-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14 lg:py-12"
               >
                 <div className="relative z-10 max-w-[620px]">
@@ -288,173 +286,14 @@ function Game() {
                 }
                 className="relative mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center py-8 sm:py-12"
               >
-                <MotionGraphReveal persona={persona} isSkipped={isRevealSkipped}>
-                  {/* Skip button for quick animation pass */}
-                  {!shouldReduceMotion && (
-                    <div className="flex justify-end mb-2 sm:mb-0 sm:absolute sm:top-0 sm:right-0 z-20">
-                      <AnimatePresence>
-                        {!isRevealSkipped && (
-                          <motion.button
-                            type="button"
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.9 }}
-                            transition={{ duration: 0.2 }}
-                            onClick={() => setIsRevealSkipped(true)}
-                            className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-[#122225]/90 px-3.5 py-1.5 text-[11px] font-semibold tracking-wider text-white/75 hover:text-white hover:border-[var(--SGEMustardGold)]/50 backdrop-blur-md transition-all cursor-pointer shadow-sm"
-                            aria-label="Lewati animasi"
-                          >
-                            <FastForward className="size-3 text-[var(--SGEMustardGold)]" />
-                            <span>Lewati Animasi</span>
-                          </motion.button>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  )}
-
-                  <div className="mb-6 sm:mb-8 text-center">
-                    <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.25em] text-[var(--SGECoralAqua)]">
-                      Refleksi Persona Takdir
-                    </p>
-                    <h1 className="font-display text-2xl sm:text-4xl lg:text-5xl font-bold text-white">
-                      Kartu Masa Depanmu Terbuka
-                    </h1>
-                  </div>
-
-                  <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-16">
-                    {/* Left: 3D Revealed Tarot Card with Stamp Border, Tilt Physics & Ambient Glow */}
-                    <RevealCard
-                      frontImage={persona.frontImage}
-                      backImage={persona.image}
-                      altText={`Kartu ${persona.short}`}
-                      accentColor={persona.accentColor}
-                      soundEnabled={sound}
-                      interactiveTilt={true}
-                      delay={0.2}
-                      duration={0.7}
-                      isSkipped={isRevealSkipped}
-                    />
-
-                    {/* Right: Editorial Non-AI Grounded Reading */}
-                    <div className="text-center lg:text-left">
-                      <motion.div
-                        initial={isRevealSkipped ? "visible" : "hidden"}
-                        animate="visible"
-                        variants={{
-                          hidden: { opacity: 0, y: -8 },
-                          visible: {
-                            opacity: 1,
-                            y: 0,
-                            transition: isRevealSkipped
-                              ? { duration: 0 }
-                              : { duration: 0.35, delay: 0.4 },
-                          },
-                        }}
-                        className="inline-flex items-center gap-2 rounded-full border border-[var(--SGEMustardGold)]/40 bg-[var(--SGEMustardGold)]/10 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--SGEMustardGold)]"
-                      >
-                        <span>{persona.icon}</span>
-                        <span>
-                          NO. {persona.number} — {persona.label}
-                        </span>
-                      </motion.div>
-
-                      <h2 className="mt-3 font-display text-3xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.08] tracking-tight">
-                        <RevealLetterRoll
-                          text={persona.title}
-                          punctuation="."
-                          delay={0.45}
-                          stagger={0.03}
-                          isSkipped={isRevealSkipped}
-                        />
-                      </h2>
-
-                      {/* Grounded & Impactful Destiny Reflection */}
-                      <motion.div
-                        initial={isRevealSkipped ? "visible" : "hidden"}
-                        animate="visible"
-                        variants={{
-                          hidden: { opacity: 0, y: 12 },
-                          visible: {
-                            opacity: 1,
-                            y: 0,
-                            transition: isRevealSkipped
-                              ? { duration: 0 }
-                              : { duration: 0.5, delay: 0.7, ease: [0.16, 1, 0.3, 1] },
-                          },
-                        }}
-                        className="mt-6 space-y-4"
-                        data-testid="destiny-reflection-narrative"
-                      >
-                        {/* Main Destiny Subtitle Highlight */}
-                        <p
-                          className="text-base sm:text-lg lg:text-xl font-medium leading-relaxed text-white/95 border-l-2 pl-4"
-                          style={{ borderColor: persona.accentColor }}
-                        >
-                          "{currentProjection || persona.subtitle}"
-                        </p>
-
-                        {/* Cohesive Grounded Campus Reflection */}
-                        <p className="text-sm sm:text-base leading-relaxed text-[var(--muted-foreground)]">
-                          {currentReflection ||
-                            (persona.narration ? persona.narration.join(" ") : "")}{" "}
-                          <span className="text-white/90 font-medium">
-                            {persona.closingMessage || ""}
-                          </span>
-                        </p>
-                      </motion.div>
-
-                      {/* Action Buttons: Dual Tactile Buttons */}
-                      <motion.div
-                        initial={isRevealSkipped ? "visible" : "hidden"}
-                        animate="visible"
-                        variants={{
-                          hidden: { opacity: 0, y: 12 },
-                          visible: {
-                            opacity: 1,
-                            y: 0,
-                            transition: isRevealSkipped
-                              ? { duration: 0 }
-                              : { duration: 0.45, delay: 0.9, ease: [0.16, 1, 0.3, 1] },
-                          },
-                        }}
-                        className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5"
-                      >
-                        <motion.div
-                          whileHover={{ scale: 1.02, y: -1 }}
-                          whileTap={{ scale: 0.98 }}
-                          transition={{ type: "spring", stiffness: 400, damping: 22 }}
-                        >
-                          <Button
-                            variant="luminous"
-                            size="lg"
-                            className="h-12 w-full sm:w-auto px-7 font-bold text-xs uppercase tracking-wider cursor-pointer shadow-md"
-                            onClick={() => {
-                              playAudioTone("click", sound);
-                              setScreen("dilemma");
-                            }}
-                          >
-                            <Sparkles className="mr-2 size-4" /> Pilih Kartu Lain
-                          </Button>
-                        </motion.div>
-
-                        <motion.div
-                          whileHover={{ scale: 1.02, y: -1 }}
-                          whileTap={{ scale: 0.98 }}
-                          transition={{ type: "spring", stiffness: 400, damping: 22 }}
-                        >
-                          <Button
-                            variant="outline"
-                            size="lg"
-                            className="h-12 w-full sm:w-auto px-6 text-xs font-semibold uppercase tracking-wider text-[var(--muted-foreground)] hover:text-white border-white/15 hover:border-white/30 hover:bg-[#122225] cursor-pointer"
-                            onClick={handleReset}
-                          >
-                            <RotateCcw className="mr-2 size-4" /> Kembali ke Awal
-                          </Button>
-                        </motion.div>
-                      </motion.div>
-                    </div>
-                  </div>
-                </MotionGraphReveal>
+                <CinematicReveal
+                  persona={persona}
+                  currentProjection={currentProjection}
+                  currentReflection={currentReflection}
+                  soundEnabled={sound}
+                  onSelectOtherCard={() => setScreen("dilemma")}
+                  onResetToHome={handleReset}
+                />
               </motion.section>
             )}
           </AnimatePresence>

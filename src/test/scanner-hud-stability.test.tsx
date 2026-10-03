@@ -30,12 +30,7 @@ describe("ScannerHUD Stability & Zero-Recreation Invariants (T6 & T7)", () => {
     const onBack = vi.fn();
 
     const { rerender } = render(
-      <ScannerHUD
-        modelUrl=""
-        soundEnabled={true}
-        onDetectCard={onDetectCard}
-        onBack={onBack}
-      />,
+      <ScannerHUD modelUrl="" soundEnabled={true} onDetectCard={onDetectCard} onBack={onBack} />,
     );
 
     // Initial mount calls getUserMedia once
@@ -44,12 +39,7 @@ describe("ScannerHUD Stability & Zero-Recreation Invariants (T6 & T7)", () => {
 
     // Rerender with soundEnabled changed from true to false
     rerender(
-      <ScannerHUD
-        modelUrl=""
-        soundEnabled={false}
-        onDetectCard={onDetectCard}
-        onBack={onBack}
-      />,
+      <ScannerHUD modelUrl="" soundEnabled={false} onDetectCard={onDetectCard} onBack={onBack} />,
     );
 
     // Stream must NOT have been stopped, and getUserMedia must NOT have been called again!
@@ -58,12 +48,7 @@ describe("ScannerHUD Stability & Zero-Recreation Invariants (T6 & T7)", () => {
 
     // Rerender with soundEnabled changed back to true
     rerender(
-      <ScannerHUD
-        modelUrl=""
-        soundEnabled={true}
-        onDetectCard={onDetectCard}
-        onBack={onBack}
-      />,
+      <ScannerHUD modelUrl="" soundEnabled={true} onDetectCard={onDetectCard} onBack={onBack} />,
     );
 
     expect(mockStop).not.toHaveBeenCalled();

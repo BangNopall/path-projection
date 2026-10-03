@@ -152,11 +152,16 @@ describe("Milestone M1 Challenger Stress Harness", () => {
       const startTime = performance.now();
       const iterations = 100_000;
 
+      let allValid = true;
       for (let i = 0; i < iterations; i++) {
         const key = personaKeys[i % 3]!;
         const quote = getRandomQuote(key);
-        expect(quote.length).toBeGreaterThan(0);
+        if (!quote || quote.length === 0) {
+          allValid = false;
+          break;
+        }
       }
+      expect(allValid).toBe(true);
 
       const elapsed = performance.now() - startTime;
       expect(elapsed).toBeLessThan(1000); // 1 second threshold for 100k calls

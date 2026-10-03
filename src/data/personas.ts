@@ -205,14 +205,13 @@ export function getRandomQuote(key: PersonaKey, excludeIndex?: number): string {
   if (!p) return "";
   const pool = p.quotes;
   const len = pool.length;
-  if (len === 0) return "";
-  if (len === 1) return pool[0] ?? "";
+  if (len <= 1) return len === 1 ? (pool[0] ?? "") : "";
 
-  let nextIndex = (Math.random() * len) | 0;
-  if (excludeIndex !== undefined && nextIndex === excludeIndex) {
-    nextIndex = (nextIndex + 1) % len;
+  const idx = (Math.random() * len) | 0;
+  if (excludeIndex === undefined || idx !== excludeIndex) {
+    return pool[idx] ?? "";
   }
-  return pool[nextIndex] ?? "";
+  return pool[(idx + 1) % len] ?? "";
 }
 
 export interface RandomProjectionResult {
