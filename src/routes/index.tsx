@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { personas, type PersonaKey, getRandomQuote } from "@/data/personas";
 import { TarotCard3D } from "@/components/booth/TarotCard3D";
 import { RevealCard } from "@/components/booth/RevealCard";
+import { RevealLetterRoll } from "@/components/booth/RevealLetterRoll";
 import { InteractiveDeck } from "@/components/booth/InteractiveDeck";
 import { ReflectionDilemma } from "@/components/booth/ReflectionDilemma";
 import { ScannerHUD } from "@/components/booth/ScannerHUD";
@@ -284,16 +285,25 @@ function Game() {
 
                   {/* Right: Narrative Quote, Kinetic Sentence Reveal & Actions */}
                   <div className="text-center lg:text-left">
-                    <div className="inline-flex items-center gap-2 rounded-full border border-[var(--SGEMustardGold)]/40 bg-[var(--SGEMustardGold)]/10 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--SGEMustardGold)]">
+                    <motion.div
+                      initial={{ opacity: 0, y: -8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.35, delay: 0.8 }}
+                      className="inline-flex items-center gap-2 rounded-full border border-[var(--SGEMustardGold)]/40 bg-[var(--SGEMustardGold)]/10 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--SGEMustardGold)]"
+                    >
                       <span>{persona.icon}</span>
                       <span>
                         NO. {persona.number} — {persona.label}
                       </span>
-                    </div>
+                    </motion.div>
 
                     <h2 className="mt-2 font-display text-3xl sm:text-5xl font-bold text-white leading-tight">
-                      {persona.title}
-                      <span className="text-[var(--SGECoralAqua)]">.</span>
+                      <RevealLetterRoll
+                        text={persona.title}
+                        punctuation="."
+                        delay={0.85}
+                        stagger={0.03}
+                      />
                     </h2>
 
                     {/* Kinetic Sentence Reveal with Word-by-Word Blur-to-Focus, Golden Sweep & Reroll Button */}
