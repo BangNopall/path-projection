@@ -16,19 +16,23 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+    <div className="app-canvas relative flex min-h-screen items-center justify-center p-6 text-foreground selection:bg-[var(--SGECoralAqua)]/30">
+      <div className="ambient-grid pointer-events-none absolute inset-0" aria-hidden="true" />
+      <div className="glass-surface glass-edge relative z-10 w-full max-w-md rounded-2xl p-8 text-center shadow-2xl">
+        <div className="inline-flex items-center gap-2 rounded-full border border-[var(--SGEMustardGold)]/40 bg-[var(--SGEMustardGold)]/10 px-3.5 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--SGEMustardGold)]">
+          SGE FILKOM UB · 2026
+        </div>
+        <h1 className="mt-4 font-display text-7xl font-bold tracking-tight text-white">404</h1>
+        <h2 className="mt-2 font-display text-xl font-bold text-white">Halaman Tidak Ditemukan</h2>
+        <p className="mt-2 text-xs sm:text-sm text-[var(--muted-foreground)] leading-relaxed">
+          Kartu atau rute yang kamu cari berada di luar jangkauan kompas takdir booth.
         </p>
-        <div className="mt-6">
+        <div className="mt-6 flex justify-center">
           <Link
             to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[var(--SGECoralAqua)] to-[var(--SGEPacificOcean)] px-6 text-xs font-bold uppercase tracking-wider text-[#081113] shadow-md transition-all hover:brightness-110"
           >
-            Go home
+            Kembali ke Booth
           </Link>
         </div>
       </div>
@@ -44,29 +48,33 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
   }, [error]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
+    <div className="app-canvas relative flex min-h-screen items-center justify-center p-6 text-foreground selection:bg-[var(--SGECoralAqua)]/30">
+      <div className="ambient-grid pointer-events-none absolute inset-0" aria-hidden="true" />
+      <div className="glass-surface glass-edge relative z-10 w-full max-w-md rounded-2xl p-8 text-center shadow-2xl">
+        <div className="inline-flex items-center gap-2 rounded-full border border-rose-500/40 bg-rose-500/10 px-3.5 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-rose-400">
+          Sistem Terganggu
+        </div>
+        <h1 className="mt-4 font-display text-2xl font-bold tracking-tight text-white">
+          Terjadi Kesalahan Teknis
         </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
+        <p className="mt-2 text-xs sm:text-sm text-[var(--muted-foreground)] leading-relaxed">
+          Terjadi anomali saat memuat antarmuka. Silakan segarkan halaman atau kembali ke beranda.
         </p>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
           <button
             onClick={() => {
               router.invalidate();
               reset();
             }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex h-11 items-center justify-center rounded-xl bg-white/10 px-5 text-xs font-bold uppercase tracking-wider text-white border border-white/20 transition-all hover:bg-white/15 cursor-pointer"
           >
-            Try again
+            Muat Ulang
           </button>
           <a
             href="/"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+            className="inline-flex h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[var(--SGECoralAqua)] to-[var(--SGEPacificOcean)] px-5 text-xs font-bold uppercase tracking-wider text-[#081113] shadow-md transition-all hover:brightness-110 cursor-pointer"
           >
-            Go home
+            Beranda Booth
           </a>
         </div>
       </div>

@@ -5,8 +5,8 @@ import { personas, personaKeys, type PersonaKey } from "@/data/personas";
 import { TarotCard3D } from "./TarotCard3D";
 import { Button } from "@/components/ui/button";
 import { playAudioTone } from "@/lib/audio";
-
 import { useUnifiedReducedMotion } from "@/lib/motion/use-reduced-motion-unified";
+import { useQualityTier } from "@/lib/motion/tiers";
 
 interface ReflectionDilemmaProps {
   soundEnabled: boolean;
@@ -22,6 +22,7 @@ export const ReflectionDilemma: React.FC<ReflectionDilemmaProps> = ({
   onBack,
 }) => {
   const shouldReduceMotion = useUnifiedReducedMotion();
+  const { tier } = useQualityTier();
 
   return (
     <motion.section
@@ -29,45 +30,55 @@ export const ReflectionDilemma: React.FC<ReflectionDilemmaProps> = ({
       initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 16 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: shouldReduceMotion ? 0 : -16 }}
-      transition={{ duration: shouldReduceMotion ? 0.05 : 0.4 }}
+      transition={{ duration: shouldReduceMotion ? 0.05 : 0.4, ease: [0.16, 1, 0.3, 1] }}
       className="mx-auto flex w-full max-w-6xl flex-1 flex-col py-6 sm:py-10"
     >
       {/* Top Navigation & Breadcrumbs */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <div>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="mb-3 -ml-3 text-[var(--SGEPapayaWhip)]/80 hover:text-white"
-            onClick={() => {
-              playAudioTone("click", soundEnabled);
-              onBack();
-            }}
-          >
-            <ArrowLeft className="mr-1 size-4" /> Kembali
-          </Button>
+          <motion.div whileHover={{ x: -3 }} whileTap={{ scale: 0.97 }} className="inline-block">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="mb-3 -ml-3 text-[var(--SGEPapayaWhip)]/80 hover:text-white cursor-pointer"
+              onClick={() => {
+                playAudioTone("click", soundEnabled);
+                onBack();
+              }}
+            >
+              <ArrowLeft className="mr-1 size-4" /> Kembali
+            </Button>
+          </motion.div>
+
           <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--SGECoralAqua)]">
             <Sparkles size={13} />
             <span>Tahap 01 · Dilema Refleksi</span>
           </div>
         </div>
 
-        <Button
-          variant="outline"
-          size="sm"
-          className="border-[var(--SGECoralAqua)]/40 bg-[var(--card)]/60 text-[var(--SGECoralAqua)] hover:bg-[var(--SGECoralAqua)]/15"
-          onClick={() => {
-            playAudioTone("click", soundEnabled);
-            onOpenScanner();
-          }}
-        >
-          <Camera className="mr-2 size-4" />
-          Gunakan Kamera Scanner
-        </Button>
+        <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+          <Button
+            variant="outline"
+            size="sm"
+            className="border-[var(--SGECoralAqua)]/40 bg-[var(--card)]/60 text-[var(--SGECoralAqua)] hover:bg-[var(--SGECoralAqua)]/15 cursor-pointer shadow-sm"
+            onClick={() => {
+              playAudioTone("click", soundEnabled);
+              onOpenScanner();
+            }}
+          >
+            <Camera className="mr-2 size-4" />
+            Gunakan Kamera Scanner
+          </Button>
+        </motion.div>
       </div>
 
       {/* Dilemma Prompt Card / Bento Banner */}
-      <div className="neo-bento-card circuit-pattern-bg relative mb-8 overflow-hidden border border-white/10 p-6 sm:p-8 backdrop-blur-xl">
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+        className="neo-bento-card circuit-pattern-bg relative mb-8 overflow-hidden border border-white/10 p-6 sm:p-8 backdrop-blur-xl shadow-lg"
+      >
         <div className="absolute top-0 right-0 h-full w-1/3 bg-gradient-to-l from-[var(--SGEMustardGold)]/10 to-transparent pointer-events-none" />
         <div className="flex items-start gap-4">
           <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-[var(--SGEMustardGold)]/15 text-[var(--SGEMustardGold)] border border-[var(--SGEMustardGold)]/30 shadow-sm">
@@ -89,11 +100,11 @@ export const ReflectionDilemma: React.FC<ReflectionDilemmaProps> = ({
             </p>
           </div>
         </div>
-      </div>
+      </motion.div>
 
-      {/* 3-Card Bento Table Spread */}
+      {/* 3-Card Bento Table Spread with Staggered Entrance */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 my-auto items-stretch">
-        {personaKeys.map((key) => {
+        {personaKeys.map((key, index) => {
           const item = personas[key];
           const badgeAccent =
             item.key === "career"
@@ -105,13 +116,24 @@ export const ReflectionDilemma: React.FC<ReflectionDilemmaProps> = ({
           return (
             <motion.div
               key={key}
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={
+                shouldReduceMotion
+                  ? { duration: 0.05 }
+                  : {
+                      duration: 0.5,
+                      delay: 0.15 + index * 0.1,
+                      ease: [0.16, 1, 0.3, 1],
+                    }
+              }
               whileHover={{
                 y: -8,
-                scale: 1.015,
+                scale: 1.018,
                 transition: { type: "spring", stiffness: 350, damping: 22 },
               }}
               whileTap={{ scale: 0.99 }}
-              className="neo-bento-card stamp-border flex flex-col p-5 sm:p-6 backdrop-blur-xl"
+              className="neo-bento-card stamp-border flex flex-col p-5 sm:p-6 backdrop-blur-xl shadow-lg transition-shadow hover:shadow-[0_16px_40px_rgba(0,0,0,0.6)]"
             >
               {/* Card Thumbnail 3D Preview */}
               <div className="mx-auto w-full max-w-[210px] mb-5">
@@ -122,7 +144,7 @@ export const ReflectionDilemma: React.FC<ReflectionDilemmaProps> = ({
                   altText={`Kartu ${item.short}`}
                   accentColor={item.accentColor}
                   soundEnabled={soundEnabled}
-                  interactiveTilt={true}
+                  interactiveTilt={!shouldReduceMotion && tier !== "low"}
                   onClick={() => {
                     playAudioTone("click", soundEnabled);
                     onSelectPersona(key);
@@ -151,7 +173,7 @@ export const ReflectionDilemma: React.FC<ReflectionDilemmaProps> = ({
                 </div>
 
                 <div className="mt-5 pt-4 border-t border-white/10">
-                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
+                  <motion.div whileHover={{ scale: 1.02, y: -1 }} whileTap={{ scale: 0.97 }}>
                     <Button
                       variant="luminous"
                       className="w-full h-11 text-xs font-bold tracking-wider uppercase shadow-md cursor-pointer"

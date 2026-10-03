@@ -62,11 +62,21 @@ function Game() {
   const [selected, setSelected] = useState<PersonaKey>("career");
   const [currentProjection, setCurrentProjection] = useState("");
   const [currentReflection, setCurrentReflection] = useState("");
-  const [isRevealSkipped, setIsRevealSkipped] = useState(false);
+  const [settingsError, setSettingsError] = useState<string | null>(null);
   const shouldReduceMotion = useReducedMotion();
 
   const soundRef = useRef(sound);
   soundRef.current = sound;
+
+  // Tutup modal konfigurasi dengan tombol Escape
+  useEffect(() => {
+    if (!settingsOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSettingsOpen(false);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [settingsOpen]);
 
   const lastProjectionIndexRef = useRef<Record<PersonaKey, number | undefined>>({
     career: undefined,
@@ -93,7 +103,6 @@ function Game() {
   // Persona card selected handler with dynamic non-repeating projection & reflection
   const handleSelectPersona = useCallback((key: PersonaKey) => {
     setSelected(key);
-    setIsRevealSkipped(false);
 
     // Draw random 10-year projection with zero immediate repetition
     const lastProjIdx = lastProjectionIndexRef.current[key];
@@ -115,7 +124,6 @@ function Game() {
 
   const handleReset = () => {
     playAudioTone("click", sound);
-    setIsRevealSkipped(false);
     setScreen("home");
   };
 
@@ -128,8 +136,10 @@ function Game() {
       <div className="relative z-10 mx-auto flex min-h-screen max-w-[1440px] flex-col px-5 sm:px-9 lg:px-16">
         {/* Global Navigation Header */}
         <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center border-b border-[var(--border)] py-4 sm:py-5">
-          <div
-            className="flex min-w-0 items-center gap-3 sm:gap-4 cursor-pointer"
+          <motion.div
+            whileHover={{ scale: 1.015 }}
+            whileTap={{ scale: 0.98 }}
+            className="flex min-w-0 items-center gap-3 sm:gap-4 cursor-pointer select-none"
             onClick={handleReset}
           >
             <div className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-[var(--SGECoralAqua)]/30 bg-[var(--SGECoralAqua)]/10 text-[var(--SGECoralAqua)] shadow-sm">
@@ -144,37 +154,42 @@ function Game() {
                 SGE FILKOM UB · 2026
               </div>
             </div>
-          </div>
+          </motion.div>
 
           <div className="flex items-center gap-2 sm:gap-3">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="size-9 rounded-xl text-[var(--muted-foreground)] hover:text-white"
-              aria-label={sound ? "Matikan suara" : "Nyalakan suara"}
-              title={sound ? "Matikan suara" : "Nyalakan suara"}
-              onClick={() => {
-                const next = !sound;
-                setSound(next);
-                playAudioTone("click", next);
-              }}
-            >
-              {sound ? <Volume2 size={18} /> : <VolumeX size={18} />}
-            </Button>
+            <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.92 }}>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="size-9 rounded-xl text-[var(--muted-foreground)] hover:text-white cursor-pointer"
+                aria-label={sound ? "Matikan suara" : "Nyalakan suara"}
+                title={sound ? "Matikan suara" : "Nyalakan suara"}
+                onClick={() => {
+                  const next = !sound;
+                  setSound(next);
+                  playAudioTone("click", next);
+                }}
+              >
+                {sound ? <Volume2 size={18} /> : <VolumeX size={18} />}
+              </Button>
+            </motion.div>
 
-            <Button
-              variant="ghost"
-              size="icon"
-              className="size-9 rounded-xl text-[var(--muted-foreground)] hover:text-white"
-              aria-label="Pengaturan scanner"
-              title="Pengaturan scanner"
-              onClick={() => {
-                playAudioTone("click", sound);
-                setSettingsOpen(true);
-              }}
-            >
-              <Settings2 size={18} />
-            </Button>
+            <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.92 }}>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="size-9 rounded-xl text-[var(--muted-foreground)] hover:text-white cursor-pointer"
+                aria-label="Pengaturan scanner"
+                title="Pengaturan scanner"
+                onClick={() => {
+                  playAudioTone("click", sound);
+                  setSettingsError(null);
+                  setSettingsOpen(true);
+                }}
+              >
+                <Settings2 size={18} />
+              </Button>
+            </motion.div>
           </div>
         </header>
 
@@ -311,93 +326,116 @@ function Game() {
       </div>
 
       {/* Configuration Modal */}
-      {settingsOpen && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md"
-          onMouseDown={(e) => {
-            if (e.target === e.currentTarget) setSettingsOpen(false);
-          }}
-        >
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="settings-title"
-            className="glass-surface glass-edge w-full max-w-lg rounded-2xl p-6 sm:p-8"
+      <AnimatePresence>
+        {settingsOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md"
+            onMouseDown={(e) => {
+              if (e.target === e.currentTarget) setSettingsOpen(false);
+            }}
           >
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--SGECoralAqua)]">
-                  Konfigurasi Booth
-                </p>
-                <h2 id="settings-title" className="mt-1 font-display text-2xl font-bold text-white">
-                  Pengaturan Kamera Scanner
-                </h2>
-              </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="rounded-xl text-[var(--muted-foreground)] hover:text-white"
-                aria-label="Tutup pengaturan"
-                onClick={() => setSettingsOpen(false)}
-              >
-                <X size={18} />
-              </Button>
-            </div>
-
-            <p className="mt-4 text-xs sm:text-sm leading-relaxed text-[var(--muted-foreground)]">
-              Masukkan URL model Google Teachable Machine milik booth SGE FILKOM UB. Model perlu
-              memiliki kelas untuk ikon Karier, Kreativitas, dan Petualangan.
-            </p>
-
-            <label
-              htmlFor="model-url"
-              className="mt-6 mb-2 block text-xs font-bold uppercase tracking-[0.14em] text-[var(--SGECoralAqua)]"
+            <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="settings-title"
+              initial={{ opacity: 0, scale: 0.95, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 16 }}
+              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="glass-surface glass-edge w-full max-w-lg rounded-2xl p-6 sm:p-8 shadow-2xl"
             >
-              URL Model Teachable Machine
-            </label>
-            <Input
-              id="model-url"
-              type="url"
-              value={modelUrl}
-              onChange={(e) => setModelUrl(e.target.value)}
-              placeholder={DEFAULT_MODEL_URL}
-              className="h-12 border-[var(--border)] bg-[#081113]/80 text-white placeholder:text-[var(--muted-foreground)]"
-            />
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--SGECoralAqua)]">
+                    Konfigurasi Booth
+                  </p>
+                  <h2
+                    id="settings-title"
+                    className="mt-1 font-display text-2xl font-bold text-white"
+                  >
+                    Pengaturan Kamera Scanner
+                  </h2>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-xl text-[var(--muted-foreground)] hover:text-white cursor-pointer"
+                  aria-label="Tutup pengaturan"
+                  onClick={() => setSettingsOpen(false)}
+                >
+                  <X size={18} />
+                </Button>
+              </div>
 
-            <p className="mt-2 text-xs text-[var(--muted-foreground)]">
-              Pilihan manual tetap dapat digunakan jika tanpa model. Konfigurasi disimpan di browser
-              ini.
-            </p>
+              <p className="mt-4 text-xs sm:text-sm leading-relaxed text-[var(--muted-foreground)]">
+                Masukkan URL model Google Teachable Machine milik booth SGE FILKOM UB. Model perlu
+                memiliki kelas untuk ikon Karier, Kreativitas, dan Petualangan.
+              </p>
 
-            <div className="mt-6 flex justify-end gap-3">
-              <Button
-                variant="outline"
-                className="border-[var(--border)] text-white"
-                onClick={() => setSettingsOpen(false)}
+              <label
+                htmlFor="model-url"
+                className="mt-6 mb-2 block text-xs font-bold uppercase tracking-[0.14em] text-[var(--SGECoralAqua)]"
               >
-                Batal
-              </Button>
-              <Button
-                variant="luminous"
-                className="font-bold text-xs uppercase tracking-wider"
-                onClick={() => {
-                  const url = modelUrl.trim();
-                  if (url && !/^https:\/\//i.test(url)) {
-                    alert("Gunakan URL model HTTPS yang valid.");
-                    return;
-                  }
-                  window.localStorage.setItem(MODEL_STORAGE_KEY, url);
-                  setModelUrl(url);
-                  setSettingsOpen(false);
-                  playAudioTone("click", sound);
+                URL Model Teachable Machine
+              </label>
+              <Input
+                id="model-url"
+                type="url"
+                value={modelUrl}
+                onChange={(e) => {
+                  setModelUrl(e.target.value);
+                  if (settingsError) setSettingsError(null);
                 }}
-              >
-                <Check className="mr-1.5 size-4" /> Simpan Pengaturan
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
+                placeholder={DEFAULT_MODEL_URL}
+                className="h-12 border-[var(--border)] bg-[#081113]/80 text-white placeholder:text-[var(--muted-foreground)]"
+              />
+
+              {settingsError ? (
+                <p className="mt-2 text-xs font-semibold text-rose-400">{settingsError}</p>
+              ) : (
+                <p className="mt-2 text-xs text-[var(--muted-foreground)]">
+                  Pilihan manual tetap dapat digunakan jika tanpa model. Konfigurasi disimpan di
+                  browser ini.
+                </p>
+              )}
+
+              <div className="mt-6 flex justify-end gap-3">
+                <Button
+                  variant="outline"
+                  className="border-[var(--border)] text-white cursor-pointer"
+                  onClick={() => setSettingsOpen(false)}
+                >
+                  Batal
+                </Button>
+                <Button
+                  variant="luminous"
+                  className="font-bold text-xs uppercase tracking-wider cursor-pointer"
+                  onClick={() => {
+                    const url = modelUrl.trim();
+                    if (url && !/^https:\/\//i.test(url)) {
+                      setSettingsError(
+                        "Gunakan URL model HTTPS yang valid (contoh: https://teachablemachine.withgoogle.com/models/...).",
+                      );
+                      return;
+                    }
+                    setSettingsError(null);
+                    window.localStorage.setItem(MODEL_STORAGE_KEY, url);
+                    setModelUrl(url);
+                    setSettingsOpen(false);
+                    playAudioTone("click", sound);
+                  }}
+                >
+                  <Check className="mr-1.5 size-4" /> Simpan Pengaturan
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
