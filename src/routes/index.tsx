@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { personas, type PersonaKey, getRandomQuote } from "@/data/personas";
 import { TarotCard3D } from "@/components/booth/TarotCard3D";
+import { RevealCard } from "@/components/booth/RevealCard";
 import { InteractiveDeck } from "@/components/booth/InteractiveDeck";
 import { ReflectionDilemma } from "@/components/booth/ReflectionDilemma";
 import { ScannerHUD } from "@/components/booth/ScannerHUD";
@@ -269,20 +270,17 @@ function Game() {
                 </div>
 
                 <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1fr)] lg:gap-16">
-                  {/* Left: 3D Revealed Tarot Card with Stamp Border & Tilt Physics */}
-                  <div className="mx-auto w-full max-w-[320px] sm:max-w-[360px]">
-                    <div className="stamp-border rounded-2xl p-1 bg-[#0F1E21]/80 backdrop-blur-xl">
-                      <TarotCard3D
-                        frontImage={persona.frontImage}
-                        backImage={persona.image}
-                        isFlipped={true}
-                        altText={`Kartu ${persona.short}`}
-                        accentColor={persona.accentColor}
-                        soundEnabled={sound}
-                        interactiveTilt={true}
-                      />
-                    </div>
-                  </div>
+                  {/* Left: 3D Revealed Tarot Card with Stamp Border, Tilt Physics & Ambient Glow */}
+                  <RevealCard
+                    frontImage={persona.frontImage}
+                    backImage={persona.image}
+                    altText={`Kartu ${persona.short}`}
+                    accentColor={persona.accentColor}
+                    soundEnabled={sound}
+                    interactiveTilt={true}
+                    delay={0.2}
+                    duration={0.7}
+                  />
 
                   {/* Right: Narrative Quote, Kinetic Sentence Reveal & Actions */}
                   <div className="text-center lg:text-left">
