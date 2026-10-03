@@ -20,6 +20,7 @@ import { personas, type PersonaKey, getRandomQuote } from "@/data/personas";
 import { TarotCard3D } from "@/components/booth/TarotCard3D";
 import { RevealCard } from "@/components/booth/RevealCard";
 import { RevealLetterRoll } from "@/components/booth/RevealLetterRoll";
+import { RevealNarrative } from "@/components/booth/RevealNarrative";
 import { InteractiveDeck } from "@/components/booth/InteractiveDeck";
 import { ReflectionDilemma } from "@/components/booth/ReflectionDilemma";
 import { ScannerHUD } from "@/components/booth/ScannerHUD";
@@ -305,6 +306,11 @@ function Game() {
                         stagger={0.03}
                       />
                     </h2>
+
+                    {/* Tagline, Narasi, Momen Mahasiswa Baru & Pesan Penutup */}
+                    <div className="mt-6">
+                      <RevealNarrative persona={persona} delay={1.4} />
+                    </div>
 
                     {/* Kinetic Sentence Reveal with Word-by-Word Blur-to-Focus, Golden Sweep & Reroll Button */}
                     <div className="mt-6">
