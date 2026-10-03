@@ -20,7 +20,7 @@ export const PersonaSignatures: React.FC<PersonaSignaturesProps> = ({
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 size-full overflow-hidden select-none -z-10"
+      className="pointer-events-none absolute inset-0 size-full select-none -z-10"
     >
       {/* 1. CAREER: ARCHITECTURAL BLUEPRINT & FOUNDATION PILLARS */}
       {personaKey === "career" && (
