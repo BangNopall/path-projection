@@ -105,7 +105,7 @@ export const MotionGraphReveal: React.FC<MotionGraphRevealProps> = ({
     <div
       ref={containerRef}
       data-testid="motion-graph-3d-container"
-      className={`relative w-full [perspective:1200px] overflow-hidden ${className}`}
+      className={`relative w-full [perspective:1200px] ${className}`}
     >
       {/* 3D Spatial Coordinate Grid Backdrop */}
       <div

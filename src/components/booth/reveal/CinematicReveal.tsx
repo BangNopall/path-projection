@@ -321,7 +321,7 @@ export const CinematicReveal: React.FC<CinematicRevealProps> = ({
     <div
       ref={containerRef}
       data-testid="motion-graph-3d-container"
-      className={`relative w-full [perspective:1400px] overflow-hidden select-none transition-transform duration-100 ${
+      className={`relative w-full [perspective:1400px] select-none transition-transform duration-100 ${
         cameraShakeActive ? "translate-x-1 -translate-y-1" : ""
       } ${rgbSplitActive ? "filter drop-shadow-[2px_0_0_#57D4DD] drop-shadow-[-2px_0_0_#F2B705]" : ""}`}
     >
