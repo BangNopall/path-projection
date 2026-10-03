@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import {
   ArrowRight,
   Camera,
@@ -64,6 +64,7 @@ function Game() {
   const [selected, setSelected] = useState<PersonaKey>("career");
   const [currentQuote, setCurrentQuote] = useState("");
   const [isRevealSkipped, setIsRevealSkipped] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
 
   const soundRef = useRef(sound);
   soundRef.current = sound;
@@ -260,32 +261,38 @@ function Game() {
             {screen === "reveal" && (
               <motion.section
                 key="reveal"
-                initial={{ opacity: 0, y: 16 }}
+                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                transition={
+                  shouldReduceMotion
+                    ? { duration: 0.2 }
+                    : { duration: 0.5, ease: [0.16, 1, 0.3, 1] }
+                }
                 className="relative mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center py-8 sm:py-12"
               >
                 {/* Skip button for quick animation pass */}
-                <div className="flex justify-end mb-2 sm:mb-0 sm:absolute sm:top-2 sm:right-0 z-20">
-                  <AnimatePresence>
-                    {!isRevealSkipped && (
-                      <motion.button
-                        type="button"
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.9 }}
-                        transition={{ duration: 0.2 }}
-                        onClick={() => setIsRevealSkipped(true)}
-                        className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-[#122225]/90 px-3.5 py-1.5 text-[11px] font-semibold tracking-wider text-white/75 hover:text-white hover:border-[var(--SGEMustardGold)]/50 backdrop-blur-md transition-all cursor-pointer shadow-sm"
-                        aria-label="Lewati animasi"
-                      >
-                        <FastForward className="size-3 text-[var(--SGEMustardGold)]" />
-                        <span>Lewati Animasi</span>
-                      </motion.button>
-                    )}
-                  </AnimatePresence>
-                </div>
+                {!shouldReduceMotion && (
+                  <div className="flex justify-end mb-2 sm:mb-0 sm:absolute sm:top-2 sm:right-0 z-20">
+                    <AnimatePresence>
+                      {!isRevealSkipped && (
+                        <motion.button
+                          type="button"
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.9 }}
+                          transition={{ duration: 0.2 }}
+                          onClick={() => setIsRevealSkipped(true)}
+                          className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-[#122225]/90 px-3.5 py-1.5 text-[11px] font-semibold tracking-wider text-white/75 hover:text-white hover:border-[var(--SGEMustardGold)]/50 backdrop-blur-md transition-all cursor-pointer shadow-sm"
+                          aria-label="Lewati animasi"
+                        >
+                          <FastForward className="size-3 text-[var(--SGEMustardGold)]" />
+                          <span>Lewati Animasi</span>
+                        </motion.button>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                )}
 
                 <div className="mb-6 sm:mb-8 text-center">
                   <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.25em] text-[var(--SGECoralAqua)]">

@@ -1,5 +1,5 @@
 import React, { useRef, useState, useCallback } from "react";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { playAudioTone } from "@/lib/audio";
 
 interface TarotCard3DProps {
@@ -27,6 +27,8 @@ export const TarotCard3D: React.FC<TarotCard3DProps> = ({
   onClick,
   interactiveTilt = true,
 }) => {
+  const shouldReduceMotion = useReducedMotion();
+  const effectiveTilt = shouldReduceMotion ? false : interactiveTilt;
   const cardRef = useRef<HTMLDivElement>(null);
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
@@ -57,10 +59,10 @@ export const TarotCard3D: React.FC<TarotCard3DProps> = ({
 
   const handlePointerMove = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
-      if (!interactiveTilt) return;
+      if (!effectiveTilt) return;
       calculateTilt(e.clientX, e.clientY);
     },
-    [interactiveTilt, calculateTilt],
+    [effectiveTilt, calculateTilt],
   );
 
   const handlePointerEnter = () => {
@@ -86,19 +88,19 @@ export const TarotCard3D: React.FC<TarotCard3DProps> = ({
 
   const handleTouchMove = useCallback(
     (e: React.TouchEvent<HTMLDivElement>) => {
-      if (!interactiveTilt || e.touches.length === 0) return;
+      if (!effectiveTilt || e.touches.length === 0) return;
       const touch = e.touches[0];
       if (touch) {
         calculateTilt(touch.clientX, touch.clientY);
       }
     },
-    [interactiveTilt, calculateTilt],
+    [effectiveTilt, calculateTilt],
   );
 
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     setIsHovered(true);
     setIsActive(true);
-    if (interactiveTilt && e.touches.length > 0) {
+    if (effectiveTilt && e.touches.length > 0) {
       const touch = e.touches[0];
       if (touch) {
         calculateTilt(touch.clientX, touch.clientY);
@@ -145,18 +147,24 @@ export const TarotCard3D: React.FC<TarotCard3DProps> = ({
         ref={cardRef}
         className="tarot-card-3d stamp-border relative w-full aspect-[768/1086] rounded-2xl cursor-pointer"
         animate={{
-          rotateX: isHovered ? rotateX : 0,
-          rotateY: (isFlipped ? 180 : 0) + (isHovered ? (isFlipped ? -rotateY : rotateY) : 0),
-          scale: isActive ? 0.98 : isHovered ? 1.025 : 1,
-          y: isHovered ? -5 : 0,
+          rotateX: shouldReduceMotion ? 0 : isHovered ? rotateX : 0,
+          rotateY:
+            (isFlipped ? 180 : 0) +
+            (shouldReduceMotion ? 0 : isHovered ? (isFlipped ? -rotateY : rotateY) : 0),
+          scale: shouldReduceMotion ? 1 : isActive ? 0.98 : isHovered ? 1.025 : 1,
+          y: shouldReduceMotion ? 0 : isHovered ? -5 : 0,
         }}
-        whileTap={{ scale: 0.97 }}
-        transition={{
-          type: "spring",
-          stiffness: 340,
-          damping: 24,
-          mass: 0.8,
-        }}
+        whileTap={shouldReduceMotion ? {} : { scale: 0.97 }}
+        transition={
+          shouldReduceMotion
+            ? { duration: 0.2 }
+            : {
+                type: "spring",
+                stiffness: 340,
+                damping: 24,
+                mass: 0.8,
+              }
+        }
         style={{
           boxShadow: isHovered
             ? "0 20px 50px rgba(0, 0, 0, 0.65), 0 0 24px rgba(87, 212, 221, 0.2)"

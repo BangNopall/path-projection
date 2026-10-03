@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { motion, type Variants } from "motion/react";
+import { motion, useReducedMotion, type Variants } from "motion/react";
 import { TarotCard3D } from "./TarotCard3D";
 
 export interface RevealCardProps {
@@ -27,6 +27,8 @@ export const RevealCard: React.FC<RevealCardProps> = ({
   isSkipped = false,
   className = "",
 }) => {
+  const shouldReduceMotion = useReducedMotion();
+
   // Derive soft glow RGBA from accent color or hex fallback
   const glowStyle = useMemo(() => {
     return {
@@ -37,42 +39,44 @@ export const RevealCard: React.FC<RevealCardProps> = ({
   const cardVariants: Variants = {
     hidden: {
       opacity: 0,
-      scale: 0.88,
-      rotateY: -20,
-      y: 20,
+      scale: shouldReduceMotion ? 1 : 0.88,
+      rotateY: shouldReduceMotion ? 0 : -20,
+      y: shouldReduceMotion ? 0 : 20,
     },
     visible: {
       opacity: 1,
       scale: 1,
       rotateY: 0,
       y: 0,
-      transition: isSkipped
-        ? { duration: 0 }
-        : {
-            type: "spring",
-            stiffness: 260,
-            damping: 22,
-            delay,
-            duration,
-          },
+      transition:
+        isSkipped || shouldReduceMotion
+          ? { duration: shouldReduceMotion ? 0.2 : 0 }
+          : {
+              type: "spring",
+              stiffness: 260,
+              damping: 22,
+              delay,
+              duration,
+            },
     },
   };
 
   const glowVariants: Variants = {
     hidden: {
       opacity: 0,
-      scale: 0.9,
+      scale: shouldReduceMotion ? 1 : 0.9,
     },
     visible: {
       opacity: 0.42,
-      scale: 1.04,
-      transition: isSkipped
-        ? { duration: 0 }
-        : {
-            duration: 0.65,
-            delay: delay + 0.45,
-            ease: "easeOut",
-          },
+      scale: shouldReduceMotion ? 1 : 1.04,
+      transition:
+        isSkipped || shouldReduceMotion
+          ? { duration: shouldReduceMotion ? 0.2 : 0 }
+          : {
+              duration: 0.65,
+              delay: delay + 0.45,
+              ease: "easeOut",
+            },
     },
   };
 
@@ -107,7 +111,7 @@ export const RevealCard: React.FC<RevealCardProps> = ({
             altText={altText}
             accentColor={accentColor}
             soundEnabled={soundEnabled}
-            interactiveTilt={interactiveTilt}
+            interactiveTilt={shouldReduceMotion ? false : interactiveTilt}
           />
         </div>
       </motion.div>

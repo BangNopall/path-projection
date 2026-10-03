@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { motion, type Variants } from "motion/react";
+import { motion, useReducedMotion, type Variants } from "motion/react";
 
 export interface RevealLetterRollProps {
   text: string;
@@ -22,6 +22,8 @@ export const RevealLetterRoll: React.FC<RevealLetterRollProps> = ({
   className = "",
   punctuationClassName = "text-[var(--SGECoralAqua)]",
 }) => {
+  const shouldReduceMotion = useReducedMotion();
+
   // Tokenize into words and characters to prevent word breaks mid-word on line wraps
   const words = useMemo(() => {
     return text.split(" ").map((word) => word.split(""));
@@ -46,6 +48,17 @@ export const RevealLetterRoll: React.FC<RevealLetterRollProps> = ({
           },
     }),
   };
+
+  if (shouldReduceMotion) {
+    return (
+      <span data-testid="reveal-letter-roll" className={`relative inline-block ${className}`}>
+        <span>
+          {text}
+          {punctuation && <span className={punctuationClassName}>{punctuation}</span>}
+        </span>
+      </span>
+    );
+  }
 
   let globalCharIndex = 0;
 

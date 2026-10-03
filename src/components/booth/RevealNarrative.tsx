@@ -1,5 +1,5 @@
 import React from "react";
-import { motion, type Variants } from "motion/react";
+import { motion, useReducedMotion, type Variants } from "motion/react";
 import { Sparkles, Heart } from "lucide-react";
 import type { PersonaInfo } from "@/data/personas";
 
@@ -16,59 +16,64 @@ export const RevealNarrative: React.FC<RevealNarrativeProps> = ({
   isSkipped = false,
   className = "",
 }) => {
+  const shouldReduceMotion = useReducedMotion();
+
   const lineVariants: Variants = {
     hidden: {
-      y: "100%",
+      y: shouldReduceMotion ? "0%" : "100%",
       opacity: 0,
     },
     visible: (customIndex: number) => ({
       y: "0%",
       opacity: 1,
-      transition: isSkipped
-        ? { duration: 0 }
-        : {
-            duration: 0.5,
-            delay: delay + customIndex * 0.08,
-            ease: [0.16, 1, 0.3, 1],
-          },
+      transition:
+        isSkipped || shouldReduceMotion
+          ? { duration: shouldReduceMotion ? 0.2 : 0 }
+          : {
+              duration: 0.5,
+              delay: delay + customIndex * 0.08,
+              ease: [0.16, 1, 0.3, 1],
+            },
     }),
   };
 
   const momentVariants: Variants = {
     hidden: {
-      x: -18,
+      x: shouldReduceMotion ? 0 : -18,
       opacity: 0,
     },
     visible: (customIndex: number) => ({
       x: 0,
       opacity: 1,
-      transition: isSkipped
-        ? { duration: 0 }
-        : {
-            duration: 0.45,
-            delay: delay + 0.55 + customIndex * 0.14,
-            ease: [0.22, 1, 0.36, 1],
-          },
+      transition:
+        isSkipped || shouldReduceMotion
+          ? { duration: shouldReduceMotion ? 0.2 : 0 }
+          : {
+              duration: 0.45,
+              delay: delay + 0.55 + customIndex * 0.14,
+              ease: [0.22, 1, 0.36, 1],
+            },
     }),
   };
 
   const closingVariants: Variants = {
     hidden: {
       opacity: 0,
-      scale: 0.98,
-      y: 10,
+      scale: shouldReduceMotion ? 1 : 0.98,
+      y: shouldReduceMotion ? 0 : 10,
     },
     visible: {
       opacity: 1,
       scale: 1,
       y: 0,
-      transition: isSkipped
-        ? { duration: 0 }
-        : {
-            duration: 0.55,
-            delay: delay + 1.1,
-            ease: "easeOut",
-          },
+      transition:
+        isSkipped || shouldReduceMotion
+          ? { duration: shouldReduceMotion ? 0.2 : 0 }
+          : {
+              duration: 0.55,
+              delay: delay + 1.1,
+              ease: "easeOut",
+            },
     },
   };
 
