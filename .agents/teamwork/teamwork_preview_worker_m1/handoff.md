@@ -2,7 +2,7 @@
 
 **Worker**: Worker M1 (Asset Pipeline Implementer)  
 **Directory**: `/Users/noxval/_PROJECT_/path-projection/.agents/teamwork/teamwork_preview_worker_m1`  
-**Date**: 2026-10-02T18:24:00Z  
+**Date**: 2026-10-02T18:24:00Z
 
 ---
 
@@ -55,6 +55,7 @@
 ### 4. Conclusion
 
 Milestone M1 is complete:
+
 - The authentic physical card asset pipeline is fully functional and client-side self-contained.
 - `src/data/personas.ts` correctly exports ESM card paths and standard SGE 2026 CSS tokens.
 - All M1 tests pass with zero warnings, TypeScript compilation passes with zero errors, and `npm run build` generates a clean production bundle.
@@ -66,9 +67,11 @@ Milestone M1 is complete:
 To independently verify M1 deliverables:
 
 1. **Verify Asset Files & Checksums on Disk**:
+
    ```bash
    shasum -a 256 src/assets/cards/*
    ```
+
    Expected:
    - `card-front.jpg`: `fad849c09e0aeae1a60f4d2fa86c5d0d8ef3a8d52602f65bbdc734641bc59511`
    - `card-career.jpg`: `00b26556e5fecf4157b658d707e17e65705fb28bd922e3127f811e67dc4d5916`
@@ -76,15 +79,19 @@ To independently verify M1 deliverables:
    - `card-creative.jpg`: `dc7eb38e7a2a2f100fb5d1b296e36f315c0245f6bb7f3e05729b3e63d74e6782`
 
 2. **Verify TypeScript Compilation**:
+
    ```bash
    npx tsc --noEmit
    ```
+
    Expected: Exit code 0, 0 errors.
 
 3. **Verify Asset Integrity & Unit Tests**:
+
    ```bash
    npx vitest run src/test/card-assets.test.ts src/test/audio.test.ts
    ```
+
    Expected: 9 passed across 2 test files, 0 warnings.
 
 4. **Verify Clean Production Build**:

@@ -3,7 +3,7 @@
 **Author**: Explorer 2 (Asset Pipeline Explorer)  
 **Date**: 2026-10-02  
 **Working Directory**: `/Users/noxval/_PROJECT_/path-projection/.agents/teamwork/teamwork_preview_explorer_survey_2`  
-**Handoff Type**: Hard (Task complete)  
+**Handoff Type**: Hard (Task complete)
 
 ---
 
@@ -15,7 +15,7 @@
    - `media_1790964332334.jpg` (281,152 bytes, SHA-256: `00b26556...`): Career (Briefcase)
    - `media_1790964332337.jpg` (287,550 bytes, SHA-256: `61bfa7d5...`): Adventure (Globe)
    - `media_1790964332339.jpg` (287,755 bytes, SHA-256: `dc7eb38e...`): Creative (Palette)
-   Python command `os.access(path, os.R_OK)` confirmed all 4 are readable.
+     Python command `os.access(path, os.R_OK)` confirmed all 4 are readable.
 
 2. **Target Directory**:
    `ls -la src/assets src/assets/cards` returned `ls: src/assets/cards: No such file or directory`. `src/assets` currently contains only 4 legacy files:
@@ -28,12 +28,14 @@
    Grep search for `__l5e` found exact URLs inside each `.asset.json` (e.g. `src/assets/depan.webp.asset.json:5`):
    `"url": "/__l5e/assets-v1/c3189018-a444-4e36-8697-04923fe7878c/depan.webp"`.
    In `src/data/personas.ts:1-4`:
+
    ```ts
    import careerArt from "@/assets/belakang1.webp.asset.json";
    import creativeArt from "@/assets/belakang2.webp.asset.json";
    import adventureArt from "@/assets/belakang3.webp.asset.json";
    import frontArt from "@/assets/depan.webp.asset.json";
    ```
+
    And lines 33, 34, 67, 68, 101, 102 use `.url` from these JSON objects.
    Inspection of `node_modules/@lovable.dev/vite-tanstack-config/dist/index.js` showed `ASSET_RE = /^\/__l5e\/assets-v1\//` only forwards requests when running inside Lovable's preview proxy. In standalone production builds (`npm run build`), these assets are omitted from `.output/public`, returning 404.
 
@@ -83,6 +85,7 @@
 ## 4. Conclusion
 
 The asset migration path is completely clear and low-risk:
+
 1. Create `src/assets/cards/` and copy the 4 uploaded JPEGs with normalized filenames.
 2. Update `src/data/personas.ts` to import them directly via Vite ESM, assign them to `image` and `frontImage`, and fix the `noUncheckedIndexedAccess` return statements.
 3. Delete the 4 legacy `.asset.json` files in `src/assets/`.

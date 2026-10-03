@@ -7,15 +7,10 @@ import React from "react";
 import { routeTree } from "@/routeTree.gen";
 import { KineticSentenceReveal } from "@/components/booth/KineticSentenceReveal";
 import { TarotCard3D } from "@/components/booth/TarotCard3D";
-import { KeepsakePhotoCard } from "@/components/booth/KeepsakePhotoCard";
 import { ScannerHUD } from "@/components/booth/ScannerHUD";
 import { InteractiveDeck } from "@/components/booth/InteractiveDeck";
 import { personas, personaKeys } from "@/data/personas";
 import * as audioModule from "@/lib/audio";
-
-vi.mock("html-to-image", () => ({
-  toPng: vi.fn().mockResolvedValue("data:image/png;base64,mockPngBase64"),
-}));
 
 function renderBooth(initialPath = "/") {
   const queryClient = new QueryClient({
@@ -111,12 +106,8 @@ describe("Final Acceptance Empirical Challenge Harness", () => {
         });
         fireEvent.click(careerFallback);
 
-        // Screen 4 (Reveal) -> Screen 5 (Photo)
-        const photoBtn = await screen.findByRole("button", { name: /Buat Kartu Fotomu/i });
-        fireEvent.click(photoBtn);
-
-        // Screen 5 (Photo) -> Screen 1 (Home) via Main Ulang
-        const resetBtn = await screen.findByRole("button", { name: /Main Ulang dari Beranda/i });
+        // Screen 4 (Reveal) -> Screen 1 (Home) via Kembali ke Awal
+        const resetBtn = await screen.findByRole("button", { name: /Kembali ke Awal/i });
         fireEvent.click(resetBtn);
 
         // Verify back at Home
@@ -203,7 +194,7 @@ describe("Final Acceptance Empirical Challenge Harness", () => {
       });
 
       // Reset to Home
-      fireEvent.click(screen.getByRole("button", { name: /Main Lagi/i }));
+      fireEvent.click(screen.getByRole("button", { name: /Kembali ke Awal/i }));
       await screen.findByRole("button", { name: /Mulai Membaca Takdir/i });
 
       // Go back to Dilemma and select Creative (index 1)
@@ -376,21 +367,12 @@ describe("Final Acceptance Empirical Challenge Harness", () => {
       fireEvent.click(selectBtns[0]!);
       await screen.findByText(/The Foundation Builder/i);
 
-      // Reroll Quote
-      const rerollBtn = screen.getByRole("button", { name: /Tarik Refleksi Baru/i });
-      fireEvent.click(rerollBtn);
+      // Revelation Screen mounts
+      expect(screen.getByText(/The Foundation Builder/i)).toBeInTheDocument();
 
-      // Navigate to Photo Studio
-      fireEvent.click(screen.getByRole("button", { name: /Buat Kartu Fotomu/i }));
-      await screen.findByText(/Simpan Momen Masa Depanmu/i);
-
-      // Personalize Name
-      const nameInput = screen.getByLabelText(/Nama Kamu/i);
-      fireEvent.change(nameInput, { target: { value: "Mahasiswa Baru" } });
-
-      // Trigger Download & Share
-      fireEvent.click(screen.getByRole("button", { name: /Unduh Kartu \(PNG\)/i }));
-      fireEvent.click(screen.getByRole("button", { name: /Salin Tautan Booth/i }));
+      // Click Kembali ke Awal
+      fireEvent.click(screen.getByRole("button", { name: /Kembali ke Awal/i }));
+      await screen.findByRole("button", { name: /Mulai Membaca Takdir/i });
 
       // VERIFY: Absolutely zero fetch calls were made!
       expect(fetchSpy).not.toHaveBeenCalled();
@@ -474,29 +456,19 @@ describe("Final Acceptance Empirical Challenge Harness", () => {
       }).not.toThrow();
     });
 
-    it("KeepsakePhotoCard handles normal share action cleanly", async () => {
-      const writeTextMock = vi.fn().mockResolvedValue(undefined);
-      Object.defineProperty(navigator, "clipboard", {
-        writable: true,
-        configurable: true,
-        value: {
-          writeText: writeTextMock,
-        },
-      });
-
-      render(
-        <KeepsakePhotoCard
-          persona={personas.creative}
-          quote="Test quote"
-          soundEnabled={true}
-          onReset={vi.fn()}
-          onBackToReveal={vi.fn()}
+    it("TarotCard3D renders in flipped revelation state without errors", () => {
+      const { container } = render(
+        <TarotCard3D
+          frontImage={personas.creative.frontImage}
+          backImage={personas.creative.image}
+          altText="Test Revealed Card"
+          isFlipped={true}
+          interactiveTilt={false}
         />,
       );
 
-      const shareBtn = screen.getByRole("button", { name: /Salin Tautan Booth/i });
-      fireEvent.click(shareBtn);
-      expect(writeTextMock).toHaveBeenCalled();
+      expect(container.querySelector(".tarot-card-3d")).toBeInTheDocument();
+      expect(screen.getByAltText("Test Revealed Card")).toBeInTheDocument();
     });
   });
 });

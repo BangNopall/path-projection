@@ -22,27 +22,27 @@ The SGE 2026 Booth Game ("Guess Who Are You") is designed as an interactive in-p
 
 The 19 features cataloged in `PROJECT.md` map to the testing tracks and tiers as follows:
 
-| # | Feature Description | Target Scope | Test Track / File | Testing Tier |
-|---|---------------------|--------------|-------------------|--------------|
-| 1 | Local Card Asset Migration | `src/assets/cards/` | `card-assets.test.ts` / `personas-e2e.test.ts` | Tier 1 |
-| 2 | Vite ESM Asset Integration | `src/data/personas.ts` | `personas-e2e.test.ts` | Tier 1 |
-| 3 | Asset Integrity Automation | JPEG format & headers | `card-assets.test.ts` | Tier 1 |
-| 4 | Persona Data Integrity & Typings | `getRandomQuote` & types | `personas-e2e.test.ts` | Tier 1, 2 |
-| 5 | Kinetic Sentence Reveal | Blur & fade text reveal | `e2e-booth-flow.test.tsx` | Tier 1, 3 |
-| 6 | Golden Sweep Visual Effect | Post-reveal shine sweep | `e2e-booth-flow.test.tsx` | Tier 1 |
-| 7 | Reflection Reroll Button | "Tarik Refleksi Baru" | `e2e-booth-flow.test.tsx` | Tier 1, 2, 4 |
-| 8 | Kinetic Reveal Unit Tests | Timing & word stream | `kinetic-reveal.test.tsx` | Tier 1 |
-| 9 | SGE 2026 Brand Design Tokens | Palette & CSS variables | `e2e-booth-flow.test.tsx` | Tier 1 |
-| 10 | Postage-Stamp Perforations | Perforated border styling | `e2e-booth-flow.test.tsx` | Tier 1 |
-| 11 | 3D Card Tilt & Sheen | Tilt physics & gesture | `e2e-booth-flow.test.tsx` | Tier 1, 4 |
-| 12 | ESLint Compliance (0 Errors) | Static analysis | `eslint.config.js` (`npm run lint`) | Tier 1 |
-| 13 | Screen 1: Neo-Editorial Home Deck | Bento & interactive deck | `e2e-booth-flow.test.tsx` | Tier 1, 3, 4 |
-| 14 | Screen 2: Dilemma Reflection | 3-Card spread selection | `e2e-booth-flow.test.tsx` | Tier 1, 3, 4 |
-| 15 | Screen 3: Scanner HUD | Camera & manual fallback | `e2e-booth-flow.test.tsx` | Tier 1, 2, 3 |
-| 16 | Screen 4: Grand Revelation | Revealed 3D card & quote | `e2e-booth-flow.test.tsx` | Tier 1, 3, 4 |
-| 17 | Screen 5: Keepsake Photo Studio | Polaroid, name, download | `e2e-booth-flow.test.tsx` | Tier 1, 2, 3, 4 |
-| 18 | 4-Tier Opaque-Box E2E Suite | Multi-tier coverage | `e2e-booth-flow.test.tsx` | Tier 1-4 |
-| 19 | Production Build & Verification | Vite & Nitro bundle | `npm run build` | Tier 4 |
+| #   | Feature Description               | Target Scope              | Test Track / File                              | Testing Tier    |
+| --- | --------------------------------- | ------------------------- | ---------------------------------------------- | --------------- |
+| 1   | Local Card Asset Migration        | `src/assets/cards/`       | `card-assets.test.ts` / `personas-e2e.test.ts` | Tier 1          |
+| 2   | Vite ESM Asset Integration        | `src/data/personas.ts`    | `personas-e2e.test.ts`                         | Tier 1          |
+| 3   | Asset Integrity Automation        | JPEG format & headers     | `card-assets.test.ts`                          | Tier 1          |
+| 4   | Persona Data Integrity & Typings  | `getRandomQuote` & types  | `personas-e2e.test.ts`                         | Tier 1, 2       |
+| 5   | Kinetic Sentence Reveal           | Blur & fade text reveal   | `e2e-booth-flow.test.tsx`                      | Tier 1, 3       |
+| 6   | Golden Sweep Visual Effect        | Post-reveal shine sweep   | `e2e-booth-flow.test.tsx`                      | Tier 1          |
+| 7   | Reflection Reroll Button          | "Tarik Refleksi Baru"     | `e2e-booth-flow.test.tsx`                      | Tier 1, 2, 4    |
+| 8   | Kinetic Reveal Unit Tests         | Timing & word stream      | `kinetic-reveal.test.tsx`                      | Tier 1          |
+| 9   | SGE 2026 Brand Design Tokens      | Palette & CSS variables   | `e2e-booth-flow.test.tsx`                      | Tier 1          |
+| 10  | Postage-Stamp Perforations        | Perforated border styling | `e2e-booth-flow.test.tsx`                      | Tier 1          |
+| 11  | 3D Card Tilt & Sheen              | Tilt physics & gesture    | `e2e-booth-flow.test.tsx`                      | Tier 1, 4       |
+| 12  | ESLint Compliance (0 Errors)      | Static analysis           | `eslint.config.js` (`npm run lint`)            | Tier 1          |
+| 13  | Screen 1: Neo-Editorial Home Deck | Bento & interactive deck  | `e2e-booth-flow.test.tsx`                      | Tier 1, 3, 4    |
+| 14  | Screen 2: Dilemma Reflection      | 3-Card spread selection   | `e2e-booth-flow.test.tsx`                      | Tier 1, 3, 4    |
+| 15  | Screen 3: Scanner HUD             | Camera & manual fallback  | `e2e-booth-flow.test.tsx`                      | Tier 1, 2, 3    |
+| 16  | Screen 4: Grand Revelation        | Revealed 3D card & quote  | `e2e-booth-flow.test.tsx`                      | Tier 1, 3, 4    |
+| 17  | Screen 5: Keepsake Photo Studio   | Polaroid, name, download  | `e2e-booth-flow.test.tsx`                      | Tier 1, 2, 3, 4 |
+| 18  | 4-Tier Opaque-Box E2E Suite       | Multi-tier coverage       | `e2e-booth-flow.test.tsx`                      | Tier 1-4        |
+| 19  | Production Build & Verification   | Vite & Nitro bundle       | `npm run build`                                | Tier 4          |
 
 ---
 
@@ -63,6 +63,7 @@ The testing architecture organizes verification across four hierarchical tiers:
 ```
 
 ### Tier 1: Core Feature Verification (Sanity & Contracts)
+
 - **Objective**: Ensure all foundational components, data contracts, and primary UI elements exist, render cleanly, and adhere to TypeScript specifications.
 - **Scope**:
   - Persona Data Invariants: Verify keys (`career`, `creative`, `adventure`), distinct titles, numbers (`01`, `02`, `03`), tags, and rich quote pools (>= 15 quotes each).
@@ -71,6 +72,7 @@ The testing architecture organizes verification across four hierarchical tiers:
   - Interactive Deck: Verify initial presence of 3 stacked 3D cards and shuffle trigger button.
 
 ### Tier 2: Boundary Conditions & Edge Handling
+
 - **Objective**: Test system resilience against hostile, missing, or irregular environmental conditions.
 - **Scope**:
   - **Camera Hardware Unavailable**: When `navigator.mediaDevices.getUserMedia` is missing or rejects with an error, Scanner HUD must display an error alert and immediately expose the manual card selection drawer.
@@ -80,6 +82,7 @@ The testing architecture organizes verification across four hierarchical tiers:
   - **Settings Modal Bounds**: Custom model URL configuration handles empty inputs, protocol validation (`https://`), and cancellation gracefully.
 
 ### Tier 3: Cross-Feature Combinations & State Transitions
+
 - **Objective**: Verify seamless multi-step transitions and state continuity across the 5 screens.
 - **Scope**:
   - **Linear Booth Journey**: Home Deck -> Dilemma Reflection -> Scanner HUD (Manual Fallback) -> Grand Revelation -> Keepsake Photo Studio.
@@ -89,6 +92,7 @@ The testing architecture organizes verification across four hierarchical tiers:
   - **Reroll & Sound Synergy**: Invoking "Tarik Refleksi Baru" triggers shuffle audio cue, updates the typewriter sentence, and retains persona archetype.
 
 ### Tier 4: Real-World User Flows & Chaos Resilience
+
 - **Objective**: Simulate rapid, erratic, and complete physical booth interactions from actual university freshmen.
 - **Scope**:
   - **Full Visitor Cycle**: Freshmen approaches booth -> explores Home Deck -> selects dilemma value -> views revelation -> types their name -> downloads PNG keepsake -> copies booth link -> clicks "Main Ulang dari Beranda" to reset state for the next visitor.
@@ -100,13 +104,16 @@ The testing architecture organizes verification across four hierarchical tiers:
 ## 4. Test Architecture & Runner Setup
 
 ### Technology Stack
+
 - **Test Runner**: Vitest 4 (`vitest run`)
 - **DOM Environment**: JSDOM 20
 - **Testing Utilities**: `@testing-library/react` (v16), `@testing-library/jest-dom` (v6)
 - **Router Mocking**: `@tanstack/react-router` with `createMemoryHistory` and `routeTree`
 
 ### Browser API Polyfills & Isolation
+
 Because tests execute inside JSDOM without a physical display, camera, or sound card, the test harness provides opaque-box mocks for external Web APIs:
+
 1. **Web Audio API (`window.AudioContext`)**:
    Mocked to record oscillator and gain node invocations, verifying that sound triggers execute without attempting audio hardware playback.
 2. **Media Devices (`navigator.mediaDevices.getUserMedia`)**:
@@ -118,11 +125,12 @@ Because tests execute inside JSDOM without a physical display, camera, or sound 
 
 ### Execution Commands
 
-| Target Command | Description | Expected Output |
-|----------------|-------------|-----------------|
-| `npm test` | Run complete Vitest suite | 100% test files and test cases passing |
-| `npm run lint` | Run ESLint across codebase | 0 errors, 0 warnings |
+| Target Command  | Description                             | Expected Output                              |
+| --------------- | --------------------------------------- | -------------------------------------------- |
+| `npm test`      | Run complete Vitest suite               | 100% test files and test cases passing       |
+| `npm run lint`  | Run ESLint across codebase              | 0 errors, 0 warnings                         |
 | `npm run build` | Full production bundle via Vite & Nitro | Production artifacts generated in `.output/` |
 
 ---
-*Maintained by PKKMB FILKOM UB SGE 2026 E2E Test Architect Track.*
+
+_Maintained by PKKMB FILKOM UB SGE 2026 E2E Test Architect Track._

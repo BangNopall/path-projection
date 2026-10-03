@@ -79,6 +79,7 @@
 **VERDICT: APPROVE**
 
 Milestone M1 satisfies all requirements of R1 and the M1 architecture:
+
 - 4 authentic high-res cards are integrated via Vite ESM with zero broken links.
 - Broken Lovable preview CDN URLs (`__l5e`) are 100% eliminated from both source and build artifacts.
 - Production build succeeds without errors, outputting bit-exact static card assets.
@@ -92,26 +93,32 @@ Milestone M1 satisfies all requirements of R1 and the M1 architecture:
 To independently reproduce and verify this challenger assessment:
 
 1. **Run the Adversarial Test Harness**:
+
    ```bash
    node scripts/adversarial-m1-harness.mjs
    ```
-   *Expected*: Code 0, 74 PASSES, 0 FAILURES, 1 statistical observation note.
+
+   _Expected_: Code 0, 74 PASSES, 0 FAILURES, 1 statistical observation note.
 
 2. **Verify M1 Vitest Suites**:
+
    ```bash
    npx vitest run src/test/card-assets.test.ts src/test/audio.test.ts
    ```
-   *Expected*: 2 test files passed, 9 tests passed, 0 warnings.
+
+   _Expected_: 2 test files passed, 9 tests passed, 0 warnings.
 
 3. **Verify Production Build & Bundle Content**:
+
    ```bash
    npm run build
    ls -lh .output/public/assets/card-*.jpg
    ```
-   *Expected*: 4 card files present, each between 280KB and 315KB.
+
+   _Expected_: 4 card files present, each between 280KB and 315KB.
 
 4. **Verify No `__l5e` in Source or Output**:
    ```bash
    grep -rn "__l5e" .output/
    ```
-   *Expected*: 0 matches.
+   _Expected_: 0 matches.

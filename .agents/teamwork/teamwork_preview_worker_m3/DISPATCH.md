@@ -1,4 +1,5 @@
 ## 2026-10-02T18:33:55Z
+
 You are Worker M3 (Brand Design System Implementer).
 Your working directory is:
 /Users/noxval/_PROJECT_/path-projection/.agents/teamwork/teamwork_preview_worker_m3
@@ -15,6 +16,7 @@ MANDATORY INTEGRITY WARNING:
 DO NOT CHEAT. All implementations must be genuine. DO NOT hardcode test results, create dummy/facade implementations, or circumvent the intended task. A teamwork_preview_auditor will independently verify your work. Integrity violations WILL be detected and your work WILL be rejected.
 
 Your scope of work (M3):
+
 1. Update `src/styles.css`:
    - Ensure official SGE 2026 palette tokens exist in `:root` and `@theme inline`:
      `--SGESteadyTeal`: `#1F6F78`, `--SGEPacificOcean`: `#3A8C9A`, `--SGECoralAqua`: `#57D4DD`, `--SGEMustardGold`: `#F2B705`, `--SGEBackground`: `#FFFAF0`, `--SGECharcoal`: `#393D3F`, `--SGEPapayaWhip`: `#FFEFD3`, `--SGEPutee`: `#FDFDFF`. Also define lowercase aliases (`--sge-mustard-gold`, etc.) to prevent CSS variable lookup bugs.

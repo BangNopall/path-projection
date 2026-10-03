@@ -1,9 +1,11 @@
 # BRIEFING — 2026-10-02T18:28:15Z
 
 ## Mission
+
 Independently review and adversarial-stress-test M1 (Card Asset Pipeline & Data) implementation.
 
 ## 🔒 My Identity
+
 - Archetype: reviewer_critic
 - Roles: reviewer, critic
 - Working directory: /Users/noxval/_PROJECT_/path-projection/.agents/teamwork/teamwork_preview_reviewer_m1_2
@@ -12,20 +14,24 @@ Independently review and adversarial-stress-test M1 (Card Asset Pipeline & Data)
 - Instance: 2 of 2
 
 ## 🔒 Key Constraints
+
 - Review-only — do NOT modify implementation code
 - Actively check for integrity violations (hardcoded test results, facade implementations, bypasses)
 - Independent verification via tests, file inspection, and adversarial stress-testing
 
 ## Current Parent
+
 - Conversation ID: 2fe0454e-5ca7-4848-bb32-5dc93b7a2d5f
 - Updated: 2026-10-02T18:28:15Z
 
 ## Review Scope
+
 - **Files to review**: `src/assets/cards/*`, `src/data/personas.ts`, `src/test/card-assets.test.ts`, `src/test/audio.test.ts`, Worker M1 handoff
 - **Interface contracts**: `PROJECT.md`, `ORIGINAL_REQUEST.md`
 - **Review criteria**: correctness, asset legitimacy, eradication of proxy CDN URLs, build & test pass, code quality, adversarial edge cases
 
 ## Key Decisions Made
+
 - Confirmed SHA-256 hashes of all 4 card images match user uploads bit-for-bit.
 - Verified magic bytes (`0xFF 0xD8 0xFF`), dimensions (724x1024), and JFIF standard.
 - Verified `npm run build` generates `.output/public/assets/card-*.jpg`.
@@ -35,12 +41,14 @@ Independently review and adversarial-stress-test M1 (Card Asset Pipeline & Data)
 - Verdict: APPROVE.
 
 ## Artifact Index
+
 - DISPATCH.md — Dispatch history
 - BRIEFING.md — Situational awareness
 - progress.md — Liveness heartbeat
 - handoff.md — Review & challenge report
 
 ## Review Checklist
+
 - **Items reviewed**:
   - `src/assets/cards/card-front.jpg`
   - `src/assets/cards/card-career.jpg`
@@ -54,6 +62,7 @@ Independently review and adversarial-stress-test M1 (Card Asset Pipeline & Data)
 - **Unverified claims**: none; all claims verified independently
 
 ## Attack Surface
+
 - **Hypotheses tested**:
   - Potential fake/corrupt images: refuted (SHA256 bit-level match, valid JFIF JPEG).
   - Lingering `__l5e` proxy references: refuted (0 grep occurrences in code).

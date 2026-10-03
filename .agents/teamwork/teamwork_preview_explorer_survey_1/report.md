@@ -3,7 +3,7 @@
 **Project**: PKKMB FILKOM UB — SGE 2026 Booth Game ("Guess Who Are You")  
 **Workspace**: `/Users/noxval/_PROJECT_/path-projection`  
 **Explorer**: Explorer 1 (Codebase Toolchain Explorer)  
-**Date**: 2026-10-02  
+**Date**: 2026-10-02
 
 ---
 
@@ -12,6 +12,7 @@
 The project is a high-performance interactive web application built with **TanStack Start (Full-stack SSR / Nitro)**, **React 19**, **Tailwind CSS v4**, **Motion (Framer Motion v13)**, and **Vitest 4**. It runs 100% client-side for booth visitors without requiring a backend database or user authentication.
 
 All foundational toolchains (Vite, Vitest, Nitro, ESLint, TypeScript) are functioning properly:
+
 - **Build**: `npm run build` executes Vite client bundle, Vite SSR bundle, and Nitro Cloudflare module worker compilation cleanly.
 - **Unit Tests**: `npm test` runs 13 tests across 4 test files via Vitest in jsdom in ~880ms with 100% pass rate.
 - **Linting**: `npm run lint` completes with 0 errors and 6 warnings (originating from React Refresh rules on shadcn UI components).
@@ -22,6 +23,7 @@ All foundational toolchains (Vite, Vitest, Nitro, ESLint, TypeScript) are functi
 ## 2. Configuration & Toolchain Inspection
 
 ### 2.1 Package Manifest (`package.json`)
+
 - **Package Name**: `tanstack_start_ts`
 - **Module System**: Pure ES Modules (`"type": "module"`)
 - **Overrides**: `"rolldown": "1.2.1"`
@@ -42,6 +44,7 @@ All foundational toolchains (Vite, Vitest, Nitro, ESLint, TypeScript) are functi
   - `typescript: ^5.8.3`
 
 ### 2.2 Vite & TanStack Start (`vite.config.ts`)
+
 ```typescript
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
@@ -51,7 +54,9 @@ export default defineConfig({
   },
 });
 ```
+
 The config uses `@lovable.dev/vite-tanstack-config` which bundles:
+
 - TanStack router plugin & devtools
 - React Vite plugin (`@vitejs/plugin-react`)
 - Tailwind CSS v4 compiler (`@tailwindcss/vite`)
@@ -60,6 +65,7 @@ The config uses `@lovable.dev/vite-tanstack-config` which bundles:
 - Duplicate plugins must **not** be added to `vite.config.ts`.
 
 ### 2.3 Styling Architecture (`src/styles.css` & Tailwind v4)
+
 - No `tailwind.config.ts` or `postcss.config.js` exists. This is expected: **Tailwind v4 is CSS-first**.
 - Direct import in `src/styles.css`:
   - `@import "tailwindcss" source(none);`
@@ -70,6 +76,7 @@ The config uses `@lovable.dev/vite-tanstack-config` which bundles:
   - Custom utilities: `font-display`, `font-mono`, `.app-canvas`, `.ambient-grid`, `.glass-surface`, `.tarot-card-3d`, `.hologram-foil`.
 
 ### 2.4 TypeScript Configuration (`tsconfig.json`)
+
 - Target: `ES2022`, Module: `ESNext`, `jsx: "react-jsx"`, `moduleResolution: "Bundler"`.
 - Types included: `["vite/client", "vitest/globals"]`.
   - Notice `vite/client` provides ambient declarations for static asset imports (`*.jpg`, `*.png`, `*.webp`, `*.svg`).
@@ -77,13 +84,14 @@ The config uses `@lovable.dev/vite-tanstack-config` which bundles:
 - Strict checking: `strict: true`, `noUncheckedIndexedAccess: true`, `noImplicitReturns: true`.
 
 ### 2.5 Linter Configuration (`eslint.config.js`)
+
 - ESLint 9 Flat Config using `typescript-eslint`.
 - Ignored paths: `dist`, `.output`, `.vinxi`.
 - Plugins: `react-hooks`, `react-refresh`, `prettier`.
 - Custom rule: prevents accidental import of `server-only`.
 - Current audit status: **0 errors, 6 warnings**.
   - All 6 warnings stem from `react-refresh/only-export-components` in shadcn UI components (`badge.tsx`, `button.tsx`, `form.tsx`, `navigation-menu.tsx`, `sidebar.tsx`, `toggle.tsx`) because they export both variant definitions and React components from the same file.
-  - *Recommendation for R4 zero-warning compliance*: Add an ignore rule for `src/components/ui/**` in `eslint.config.js` or add disable comments.
+  - _Recommendation for R4 zero-warning compliance_: Add an ignore rule for `src/components/ui/**` in `eslint.config.js` or add disable comments.
 
 ---
 
@@ -124,7 +132,9 @@ src/
 ```
 
 ### 3.1 Screen State Machine (`src/routes/index.tsx`)
+
 The booth flow is managed as a client-side state machine:
+
 1. `home`: Landing deck with interactive 3D fanned cards and booth instructions.
 2. `dilemma`: 3-card dilemma picker with reflection themes.
 3. `scan`: Real-time camera scanner with Teachable Machine image classification.
@@ -136,6 +146,7 @@ The booth flow is managed as a client-side state machine:
 ## 4. Test Infrastructure & Coverage Analysis
 
 ### 4.1 Vitest Configuration (`vitest.config.ts`)
+
 ```typescript
 export default defineConfig({
   plugins: [react()],
@@ -152,19 +163,21 @@ export default defineConfig({
 ```
 
 ### 4.2 Existing Test Suite
-| Test File | Tests | Status | Scope |
-|---|---|---|---|
-| `src/test/app-routing.test.tsx` | 2 | Passing | Mounts index route `/` and 404 route with `createMemoryHistory` |
-| `src/test/audio.test.ts` | 2 | Passing | Synthesizer safety when sound disabled or `AudioContext` mocked |
-| `src/test/classifier-model.test.ts` | 4 | Passing | Keyword/emoji normalization for career, creative, adventure, noise |
-| `src/test/persona-content.test.ts` | 5 | Passing | Validates 3 personas, >=15 unique quotes each, no computer jargon, random picker |
-| **Total** | **13** | **100% Pass** | Execution time: ~880ms |
+
+| Test File                           | Tests  | Status        | Scope                                                                            |
+| ----------------------------------- | ------ | ------------- | -------------------------------------------------------------------------------- |
+| `src/test/app-routing.test.tsx`     | 2      | Passing       | Mounts index route `/` and 404 route with `createMemoryHistory`                  |
+| `src/test/audio.test.ts`            | 2      | Passing       | Synthesizer safety when sound disabled or `AudioContext` mocked                  |
+| `src/test/classifier-model.test.ts` | 4      | Passing       | Keyword/emoji normalization for career, creative, adventure, noise               |
+| `src/test/persona-content.test.ts`  | 5      | Passing       | Validates 3 personas, >=15 unique quotes each, no computer jargon, random picker |
+| **Total**                           | **13** | **100% Pass** | Execution time: ~880ms                                                           |
 
 ---
 
 ## 5. Requirements for R4 Automated Testing
 
 Requirement **R4** demands automated tests covering:
+
 1. **Asset resolution**
 2. **Kinetic sentence reveal**
 3. **Persona quotes**
@@ -175,6 +188,7 @@ Requirement **R4** demands automated tests covering:
 ### 5.1 Gap Analysis & Test Plan for R4
 
 #### Gap 1: Asset Resolution Test (Missing — Needs implementation)
+
 - **Current State**: `src/data/personas.ts` uses `.webp.asset.json` pointing to remote URLs.
 - **R1 Requirement**: 4 physical card assets (`card-front.jpg`, `card-career.jpg`, `card-creative.jpg`, `card-adventure.jpg`) stored in `src/assets/cards/` and imported directly via Vite ESM.
 - **New Test Required**: `src/test/card-assets.test.ts`
@@ -184,6 +198,7 @@ Requirement **R4** demands automated tests covering:
   - Verify that each persona has distinct, valid images mapped.
 
 #### Gap 2: Kinetic Sentence Reveal Test (Missing — Needs implementation)
+
 - **Current State**: `src/routes/index.tsx` uses a naive string slice `setInterval` typewriter effect.
 - **R3 Requirement**: Replace with a kinetic word-by-word reveal component (`filter: blur(8px) -> blur(0px)`, `opacity: 0 -> 1`, `translateY: 8px -> 0px`), spring easing, golden sweep on completion, and "Tarik Refleksi Baru" reroll support.
 - **New Test Required**: `src/test/kinetic-reveal.test.tsx`
@@ -194,11 +209,13 @@ Requirement **R4** demands automated tests covering:
   - Reroll handling: updating the sentence resets animation states cleanly.
 
 #### Existing Items Meeting R4:
+
 - **Persona Quotes**: Covered by `src/test/persona-content.test.ts` (verifies quote count >=15, uniqueness, jargon filtering, random selection).
 - **Classifier Accuracy**: Covered by `src/test/classifier-model.test.ts` (verifies multilingual keywords, numbers, emojis, noise filtering).
 - **Router Mounting**: Covered by `src/test/app-routing.test.tsx` (verifies `/` and 404 route mounting).
 
 #### Quality & Toolchain Checklist for R4:
+
 - **Vitest**: All existing + new tests must pass (`npm test`).
 - **ESLint**: 6 warnings in `src/components/ui/` need to be resolved or ignored in `eslint.config.js` to hit 0 warnings (`npm run lint`).
 - **Production Build**: `npm run build` must build client, SSR, and Nitro worker without errors.

@@ -25,24 +25,24 @@
   --color-sge-white: var(--SGEPutee);
 
   /* Direct Color Tokens in @theme inline */
-  --SGESteadyTeal: #1F6F78;
-  --SGEPacificOcean: #3A8C9A;
-  --SGECoralAqua: #57D4DD;
-  --SGEMustardGold: #F2B705;
-  --SGEBackground: #FFFAF0;
-  --SGECharcoal: #393D3F;
-  --SGEPapayaWhip: #FFEFD3;
-  --SGEPutee: #FDFDFF;
+  --SGESteadyTeal: #1f6f78;
+  --SGEPacificOcean: #3a8c9a;
+  --SGECoralAqua: #57d4dd;
+  --SGEMustardGold: #f2b705;
+  --SGEBackground: #fffaf0;
+  --SGECharcoal: #393d3f;
+  --SGEPapayaWhip: #ffefd3;
+  --SGEPutee: #fdfdff;
 
   /* Lowercase aliases for theme consistency */
-  --sge-steady-teal: #1F6F78;
-  --sge-pacific-ocean: #3A8C9A;
-  --sge-coral-aqua: #57D4DD;
-  --sge-mustard-gold: #F2B705;
-  --sge-background: #FFFAF0;
-  --sge-charcoal: #393D3F;
-  --sge-papaya-whip: #FFEFD3;
-  --sge-putee: #FDFDFF;
+  --sge-steady-teal: #1f6f78;
+  --sge-pacific-ocean: #3a8c9a;
+  --sge-coral-aqua: #57d4dd;
+  --sge-mustard-gold: #f2b705;
+  --sge-background: #fffaf0;
+  --sge-charcoal: #393d3f;
+  --sge-papaya-whip: #ffefd3;
+  --sge-putee: #fdfdff;
 
   /* Semantic UI Tokens */
   --color-background: var(--background);
@@ -75,24 +75,24 @@
 
 :root {
   /* Official SGE 2026 Brand Tokens (websge2026/app/globals.css) */
-  --SGESteadyTeal: #1F6F78;
-  --SGEPacificOcean: #3A8C9A;
-  --SGECoralAqua: #57D4DD;
-  --SGEMustardGold: #F2B705;
-  --SGEBackground: #FFFAF0;
-  --SGECharcoal: #393D3F;
-  --SGEPapayaWhip: #FFEFD3;
-  --SGEPutee: #FDFDFF;
+  --SGESteadyTeal: #1f6f78;
+  --SGEPacificOcean: #3a8c9a;
+  --SGECoralAqua: #57d4dd;
+  --SGEMustardGold: #f2b705;
+  --SGEBackground: #fffaf0;
+  --SGECharcoal: #393d3f;
+  --SGEPapayaWhip: #ffefd3;
+  --SGEPutee: #fdfdff;
 
   /* Lowercase aliases to prevent CSS variable lookup bugs (e.g. var(--sge-mustard-gold)) */
-  --sge-steady-teal: #1F6F78;
-  --sge-pacific-ocean: #3A8C9A;
-  --sge-coral-aqua: #57D4DD;
-  --sge-mustard-gold: #F2B705;
-  --sge-background: #FFFAF0;
-  --sge-charcoal: #393D3F;
-  --sge-papaya-whip: #FFEFD3;
-  --sge-putee: #FDFDFF;
+  --sge-steady-teal: #1f6f78;
+  --sge-pacific-ocean: #3a8c9a;
+  --sge-coral-aqua: #57d4dd;
+  --sge-mustard-gold: #f2b705;
+  --sge-background: #fffaf0;
+  --sge-charcoal: #393d3f;
+  --sge-papaya-whip: #ffefd3;
+  --sge-putee: #fdfdff;
 
   /* Refined Neo-Editorial Theme (Optimized for Booth Card Projection & Camera) */
   --radius: 0.75rem;
@@ -186,14 +186,17 @@
 /* ── Refined Neo-Editorial Bento Styling ────────────────────── */
 .neo-bento-card {
   position: relative;
-  background-color: #0F1E21;
+  background-color: #0f1e21; /* #0F1E21 Deep Teal */
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-2xl, 1.25rem);
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   overflow: hidden;
-  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  transition:
+    border-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .neo-bento-card:hover {
@@ -208,7 +211,9 @@
   background-image:
     radial-gradient(ellipse 80% 50% at 50% -10%, rgba(31, 111, 120, 0.25), transparent 75%),
     url("data:image/svg+xml,%3Csvg width='240' height='240' viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%233A8C9A' stroke-width='1.2' stroke-opacity='0.16'%3E%3Cpath d='M20 0v50l30 30h80l20 20v60l-30 30h-70'/%3E%3Cpath d='M220 0v30l-40 40h-40l-20 20v80l20 20h60'/%3E%3Cpath d='M0 120h40l30-30v-40'/%3E%3Cpath d='M180 240v-40l30-30h30'/%3E%3Ccircle cx='50' cy='80' r='3' fill='%2357D4DD' fill-opacity='0.25'/%3E%3Ccircle cx='150' cy='100' r='3' fill='%23F2B705' fill-opacity='0.25'/%3E%3Ccircle cx='120' cy='90' r='2' fill='%233A8C9A' fill-opacity='0.3'/%3E%3Ccircle cx='90' cy='190' r='2.5' fill='%2357D4DD' fill-opacity='0.25'/%3E%3Ccircle cx='180' cy='170' r='3' fill='%231F6F78' fill-opacity='0.3'/%3E%3Ccircle cx='70' cy='50' r='2' fill='%23F2B705' fill-opacity='0.2'/%3E%3C/g%3E%3C/svg%3E");
-  background-size: cover, 240px 240px;
+  background-size:
+    cover,
+    240px 240px;
   background-repeat: no-repeat, repeat;
 }
 
@@ -274,11 +279,13 @@
   aspect-ratio: 768 / 1086;
   border-radius: 16px;
   padding: 5px;
-  background-color: #0F1E21;
+  background-color: #0f1e21;
   border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
   overflow: hidden;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .deck-card:hover {

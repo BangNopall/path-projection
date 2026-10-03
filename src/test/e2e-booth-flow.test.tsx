@@ -6,11 +6,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { routeTree } from "@/routeTree.gen";
 import { personas } from "@/data/personas";
 
-// Mock html-to-image for Keepsake Photo Studio export
-vi.mock("html-to-image", () => ({
-  toPng: vi.fn().mockResolvedValue("data:image/png;base64,mockPngBase64"),
-}));
-
 function renderBoothApp(initialPath = "/") {
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -227,7 +222,7 @@ describe("E2E Booth Flow — 4-Tier Opaque-Box Test Suite", () => {
       });
     });
 
-    it("sanitizes empty participant name in Keepsake Photo Studio to fallback text", async () => {
+    it("renders dual action buttons on Revelation screen and omits photo studio button", async () => {
       renderBoothApp();
 
       // Navigate to dilemma -> select career
@@ -237,17 +232,15 @@ describe("E2E Booth Flow — 4-Tier Opaque-Box Test Suite", () => {
       const selectButtons = screen.getAllByRole("button", { name: /Pilih Nilai Ini/i });
       fireEvent.click(selectButtons[0]!); // Career
 
-      // Go to photo studio
-      const photoBtn = await screen.findByRole("button", { name: /Buat Kartu Fotomu/i });
-      fireEvent.click(photoBtn);
+      // Revelation screen mounts
+      await screen.findByText(/The Foundation Builder/i);
 
-      // Keepsake screen mounts
-      await screen.findByText(/Tahap 03 · Kartu Dokumentasi Booth/i);
+      // Verify photo card button is completely absent
+      expect(screen.queryByRole("button", { name: /Buat Kartu Fotomu/i })).not.toBeInTheDocument();
 
-      // Name input should be empty, preview displays default fallback
-      const nameInput = screen.getByLabelText(/Nama Kamu/i);
-      expect(nameInput).toHaveValue("");
-      expect(screen.getByText(/Your Future Self/i)).toBeInTheDocument();
+      // Dual action buttons are present
+      expect(screen.getByRole("button", { name: /Pilih Kartu Lain/i })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Kembali ke Awal/i })).toBeInTheDocument();
     });
   });
 
@@ -255,7 +248,7 @@ describe("E2E Booth Flow — 4-Tier Opaque-Box Test Suite", () => {
   // TIER 3: CROSS-FEATURE & STATE TRANSITIONS
   // ==========================================
   describe("Tier 3: Cross-Feature Combinations & State Transitions", () => {
-    it("completes full sequential loop: Home -> Dilemma -> Scanner -> Revelation -> Photo -> Home", async () => {
+    it("completes full sequential loop: Home -> Dilemma -> Scanner -> Revelation -> Dilemma -> Home", async () => {
       renderBoothApp();
 
       // 1. Home -> Dilemma
@@ -281,15 +274,14 @@ describe("E2E Booth Flow — 4-Tier Opaque-Box Test Suite", () => {
         expect(screen.getByText(/The Boundary Breaker/i)).toBeInTheDocument();
       });
 
-      // 5. Revelation -> Photo Studio
-      fireEvent.click(screen.getByRole("button", { name: /Buat Kartu Fotomu/i }));
+      // 5. Revelation -> Pilih Kartu Lain (Back to Dilemma)
+      fireEvent.click(screen.getByRole("button", { name: /Pilih Kartu Lain/i }));
       await waitFor(() => {
-        expect(screen.getByText(/Tahap 03 · Kartu Dokumentasi Booth/i)).toBeInTheDocument();
-        expect(screen.getByText(/CARD NO. 03/i)).toBeInTheDocument();
+        expect(screen.getByText(/Tahap 01 · Dilema Refleksi/i)).toBeInTheDocument();
       });
 
-      // 6. Photo Studio -> Reset to Home
-      fireEvent.click(screen.getByRole("button", { name: /Main Ulang dari Beranda/i }));
+      // 6. Dilemma -> Kembali to Home
+      fireEvent.click(screen.getByRole("button", { name: /Kembali/i }));
       await waitFor(() => {
         expect(screen.getByRole("button", { name: /Mulai Membaca Takdir/i })).toBeInTheDocument();
       });
@@ -309,20 +301,19 @@ describe("E2E Booth Flow — 4-Tier Opaque-Box Test Suite", () => {
       });
     });
 
-    it("rerolls quote on Grand Revelation screen without losing persona archetype", async () => {
+    it("displays grounded fortune narrative on Grand Revelation screen without losing persona archetype", async () => {
       renderBoothApp();
 
       // Navigate to Career persona
       fireEvent.click(await screen.findByTitle(/Kartu Karier & Kepemimpinan/i));
       await screen.findByText(/The Foundation Builder/i);
 
-      // Reroll quote
-      const rerollBtn = screen.getByRole("button", { name: /Tarik Refleksi Baru/i });
-      fireEvent.click(rerollBtn);
-
-      // Archetype remains stable
+      // Verify persona archetype and content are stable
       expect(screen.getByText(/NO. 01 — CAREER & FOUNDATION/i)).toBeInTheDocument();
       expect(screen.getByText(/The Foundation Builder/i)).toBeInTheDocument();
+      expect(
+        screen.queryByRole("button", { name: /Tarik Refleksi Baru/i }),
+      ).not.toBeInTheDocument();
     });
 
     it("persists muted sound state through all transitions", async () => {
@@ -354,48 +345,39 @@ describe("E2E Booth Flow — 4-Tier Opaque-Box Test Suite", () => {
   // TIER 4: REAL-WORLD FLOWS & CHAOS STRESS
   // ==========================================
   describe("Tier 4: Real-World User Flows & Chaos Resilience", () => {
-    it("completes full personalized photo studio keepsake export flow", async () => {
+    it("renders editorial 2-column layout and navigates cleanly between Dilemma and Home", async () => {
       renderBoothApp();
 
       // Jump to Revelation via Interactive Deck
       fireEvent.click(await screen.findByTitle(/Kartu Karier & Kepemimpinan/i));
       await screen.findByText(/The Foundation Builder/i);
 
-      // Open Photo Studio
-      fireEvent.click(screen.getByRole("button", { name: /Buat Kartu Fotomu/i }));
-      await screen.findByText(/Tahap 03 · Kartu Dokumentasi Booth/i);
+      // Verify 2-column editorial structure
+      expect(screen.getByText(/NO. 01 — CAREER & FOUNDATION/i)).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Pilih Kartu Lain/i })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Kembali ke Awal/i })).toBeInTheDocument();
 
-      // Personalize with visitor's name
-      const nameInput = screen.getByLabelText(/Nama Kamu/i);
-      fireEvent.change(nameInput, { target: { value: "Muhammad Budi Santoso" } });
-
-      // Verify name reflects immediately on the Polaroid keepsake card
+      // Navigate to Dilemma to select another card
+      fireEvent.click(screen.getByRole("button", { name: /Pilih Kartu Lain/i }));
       await waitFor(() => {
-        expect(screen.getByText("Muhammad Budi Santoso")).toBeInTheDocument();
+        expect(screen.getByText(/Tahap 01 · Dilema Refleksi/i)).toBeInTheDocument();
       });
 
-      // Trigger download
-      const downloadBtn = screen.getByRole("button", { name: /Unduh Kartu \(PNG\)/i });
-      fireEvent.click(downloadBtn);
-
-      // Trigger share button
-      const shareBtn = screen.getByRole("button", { name: /Salin Tautan Booth/i });
-      fireEvent.click(shareBtn);
-
-      // Feedback for share
+      // Select Creative persona
+      const selectButtons = screen.getAllByRole("button", { name: /Pilih Nilai Ini/i });
+      fireEvent.click(selectButtons[1]!);
       await waitFor(() => {
-        expect(screen.getByText(/Tautan Disalin!/i)).toBeInTheDocument();
+        expect(screen.getByText(/The Soul Crafter/i)).toBeInTheDocument();
       });
 
-      // Can navigate back to Revelation to change mind
-      const backBtn = screen.getByRole("button", { name: /Kembali ke Hasil/i });
-      fireEvent.click(backBtn);
+      // Navigate back to Home via Kembali ke Awal
+      fireEvent.click(screen.getByRole("button", { name: /Kembali ke Awal/i }));
       await waitFor(() => {
-        expect(screen.getByText(/The Foundation Builder/i)).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: /Mulai Membaca Takdir/i })).toBeInTheDocument();
       });
     });
 
-    it("resists rapid button clicking and rapid card rerolls without throwing exceptions", async () => {
+    it("resists rapid button clicking on Home Deck and Revelation screen without throwing exceptions", async () => {
       renderBoothApp();
 
       // Rapidly click shuffle button 10 times on Home Deck
@@ -408,15 +390,10 @@ describe("E2E Booth Flow — 4-Tier Opaque-Box Test Suite", () => {
       fireEvent.click(screen.getByTitle(/Kartu Karier & Kepemimpinan/i));
       await screen.findByText(/The Foundation Builder/i);
 
-      // Rapidly click reroll quote 10 times
-      const rerollBtn = screen.getByRole("button", { name: /Tarik Refleksi Baru/i });
-      for (let i = 0; i < 10; i++) {
-        fireEvent.click(rerollBtn);
-      }
-
       // Verify page is still responsive and healthy
       expect(screen.getByText(/The Foundation Builder/i)).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: /Buat Kartu Fotomu/i })).toBeEnabled();
+      expect(screen.getByRole("button", { name: /Pilih Kartu Lain/i })).toBeEnabled();
+      expect(screen.getByRole("button", { name: /Kembali ke Awal/i })).toBeEnabled();
     });
 
     it("handles rapid back-and-forth navigation between screens without state corruption", async () => {

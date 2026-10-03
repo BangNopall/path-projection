@@ -3,6 +3,7 @@
 Last visited: 2026-10-02T18:24:00Z
 
 ## Status
+
 - [x] Read ORIGINAL_REQUEST.md, PROJECT.md, and explorer reports
 - [x] Create `src/assets/cards/` and copy 4 card images
 - [x] Verify image sizes, format, and hashes

@@ -78,6 +78,7 @@
 **Verdict: APPROVE**
 
 Worker M1's implementation of the Card Asset Pipeline & Data satisfies all requirements:
+
 - The 4 authentic physical card assets are bundled locally with identical SHA256 checksums to the user uploads.
 - The broken Lovable proxy CDN (`/__l5e/`) has been completely eradicated.
 - The application builds cleanly for production with all card assets packaged in `.output/public/assets/`.
@@ -90,22 +91,27 @@ Worker M1's implementation of the Card Asset Pipeline & Data satisfies all requi
 To independently reproduce the empirical findings:
 
 1. **Verify Asset Presence & Checksums**:
+
    ```bash
    shasum -a 256 src/assets/cards/*
    ```
 
 2. **Verify M1 Unit & Challenger Stress Tests**:
+
    ```bash
    npx vitest run src/test/card-assets.test.ts src/test/m1-challenger-stress.test.ts src/test/persona-content.test.ts src/test/personas-e2e.test.ts src/test/audio.test.ts
    ```
+
    Expected: 32 tests passed across 5 test files, 0 warnings.
 
 3. **Verify Production Build Assets & Offline Self-Containment**:
+
    ```bash
    npm run build
    ls -la .output/public/assets/card-*.jpg
    grep -rn "__l5e" .output/
    ```
+
    Expected: 4 card JPGs present in output, grep returns exit code 1 (0 matches).
 
 4. **Verify ESLint Compliance**:

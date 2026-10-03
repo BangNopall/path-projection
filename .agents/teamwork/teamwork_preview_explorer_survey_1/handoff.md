@@ -71,6 +71,7 @@
 
 The build and test toolchain is fully healthy and ready for TDD implementation.
 To fulfill R4:
+
 1. Implement `src/test/card-assets.test.ts` to assert that all 4 local card JPG assets exist, resolve via ESM without `/__l5e/`, and are assigned to personas.
 2. Implement `src/test/kinetic-reveal.test.tsx` to assert word tokenization, stagger delay logic, golden sweep completion trigger, and quote reroll handling.
 3. Update `eslint.config.js` to silence the 6 fast-refresh warnings in shadcn UI primitives, achieving 0 errors and 0 warnings.
@@ -81,14 +82,15 @@ To fulfill R4:
 ## 5. Verification Method
 
 To verify these findings independently:
+
 1. **Run tests**:
    `npm test`
-   *Expected*: Exits with code 0; 4 test files, 13 tests passing.
+   _Expected_: Exits with code 0; 4 test files, 13 tests passing.
 2. **Run lint**:
    `npm run lint`
-   *Expected*: Exits with code 0; 0 errors, 6 warnings.
+   _Expected_: Exits with code 0; 0 errors, 6 warnings.
 3. **Run build**:
    `npm run build`
-   *Expected*: Exits with code 0; successfully builds client bundle to `.output/public` and Nitro worker to `.output/server`.
+   _Expected_: Exits with code 0; successfully builds client bundle to `.output/public` and Nitro worker to `.output/server`.
 4. **Inspect report**:
    View `/Users/noxval/_PROJECT_/path-projection/.agents/teamwork/teamwork_preview_explorer_survey_1/report.md`.

@@ -70,6 +70,7 @@ The PKKMB FILKOM UB - SGE 2026 Booth Game ("Guess Who Are You") refactor is **10
 ## 5. Verification Method
 
 To verify the completed project:
+
 ```bash
 # 1. Run all 119 unit and E2E tests
 npm test
@@ -83,4 +84,5 @@ npx tsc --noEmit
 # 4. Run full production build
 npm run build
 ```
+
 All commands exit with code 0.

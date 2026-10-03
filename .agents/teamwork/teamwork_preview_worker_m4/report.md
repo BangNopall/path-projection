@@ -3,7 +3,7 @@
 **Worker**: Worker M4 (5-Screen Layout Overhaul Implementer)  
 **Milestone**: M4  
 **Date**: 2026-10-02  
-**Status**: Completed  
+**Status**: Completed
 
 ---
 
@@ -12,6 +12,7 @@
 Milestone M4 delivers a complete overhaul of all 5 interactive screens in the SGE 2026 Booth Game ("Guess Who Are You"), transforming the experience from generic AI-generated cyberpunk glows into an authentic, refined Neo-Editorial Bento experience aligned with the official Student Government Executive (SGE 2026) FILKOM UB brand identity.
 
 All 5 screens were overhauled:
+
 1. **Screen 1 (Home Deck)**: Generic blur glow blobs (`blur-[75px]`) and spinning dashed rings replaced with refined Neo-Editorial Bento circuit pattern backdrops (`.circuit-pattern-bg`), subtle 1px `border-white/10`, editorial registration marks, SGE 2026 palette accents, and organic spring hover micro-interactions.
 2. **Screen 2 (Dilemma Reflection)**: Refined 3-card table spread into a Neo-Editorial Bento grid with postage-stamp perforated card borders (`.stamp-border`), SGE 2026 brand color badges, `Courier Prime` edition serial labels (`EDITION 2026 // SGE-0X`), and spring physics on cards and buttons.
 3. **Screen 3 (Scanner HUD)**: Transformed sci-fi combat HUD into a modern editorial optical frame with subtle circuit texture borders, clean precision reticle with alignment crosshairs and telemetry badges (`OPTICAL // 01`, `768×1086`), while preserving 100% accessible, responsive client-side offline manual fallback.
@@ -23,6 +24,7 @@ All 5 screens were overhauled:
 ## 2. Screen-by-Screen Implementation Details
 
 ### Screen 1: Home Deck (`InteractiveDeck.tsx` & `src/routes/index.tsx`)
+
 - **Visual Aesthetic**:
   - Eliminated `.blur-[75px]` ambient blob and spinning dashed ring animations.
   - Introduced `.circuit-pattern-bg` ambient concentric circular backdrop with 1px `border-white/10`.
@@ -35,6 +37,7 @@ All 5 screens were overhauled:
   - Replaced generic helper box with Neo-Editorial Bento instruction card: `// BOOTH.PKKMB.FILKOM · SGE.2026`.
 
 ### Screen 2: Dilemma Reflection (`ReflectionDilemma.tsx`)
+
 - **Bento Layout & Edging**:
   - Dilemma prompt converted to a `.neo-bento-card` banner with soft circuit texture (`.circuit-pattern-bg`) and SGE Gold badge.
   - 3 path cards wrapped in `.neo-bento-card` + `.stamp-border` postage-stamp perforated edging.
@@ -45,6 +48,7 @@ All 5 screens were overhauled:
   - `whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}` on "Pilih Nilai Ini" buttons.
 
 ### Screen 3: Scanner HUD (`ScannerHUD.tsx`)
+
 - **Precision Optical Frame**:
   - Viewfinder enclosed in `.neo-bento-card` with `.circuit-pattern-bg` backdrop border.
   - Replaced heavy cyan neon box shadow with a crisp, clean optical reticle with L-bracket corner precision alignment markers (`border-[var(--SGECoralAqua)]`).
@@ -55,6 +59,7 @@ All 5 screens were overhauled:
   - Manual fallback drawer retained with 100% accessible offline behavior; card selector buttons polished with spring hover (`whileHover={{ scale: 1.015, x: 3 }}`).
 
 ### Screen 4: Grand Revelation (`src/routes/index.tsx`)
+
 - **Kinetic Text Reveal**:
   - Imported and mounted `KineticSentenceReveal` from `@/components/booth/KineticSentenceReveal`.
   - Completely removed the legacy imperative `setInterval` character slicing and blinking cursor (`▍`).
@@ -69,6 +74,7 @@ All 5 screens were overhauled:
   - Persona tags enhanced with spring micro-interactions (`whileHover={{ scale: 1.05, y: -1 }}`).
 
 ### Screen 5: Keepsake Photo Studio (`KeepsakePhotoCard.tsx`)
+
 - **Polaroid Editorial Styling**:
   - Authentic SGE 2026 `#1F6F78` Steady Teal header banner across the exportable keepsake frame.
   - Soft circuit pattern backdrop (`.circuit-pattern-bg`) with deep teal base (`#0A1719`).

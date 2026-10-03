@@ -3,7 +3,7 @@
 **Worker**: Worker M4 (5-Screen Layout Overhaul Implementer)  
 **Milestone**: M4  
 **Date**: 2026-10-02  
-**Handoff Type**: Hard (Task Complete)  
+**Handoff Type**: Hard (Task Complete)
 
 ---
 
@@ -105,18 +105,23 @@ Milestone M4 is complete. All 5 application screens have been overhauled with au
 To independently verify this milestone from the project root `/Users/noxval/_PROJECT_/path-projection`:
 
 1. **TypeScript Typecheck**:
+
    ```bash
    npx tsc --noEmit
    ```
-   *Expected outcome*: Exit code 0, 0 errors.
+
+   _Expected outcome_: Exit code 0, 0 errors.
 
 2. **Linting Check**:
+
    ```bash
    npm run lint
    ```
-   *Expected outcome*: Exit code 0, 0 errors, 0 warnings.
+
+   _Expected outcome_: Exit code 0, 0 errors, 0 warnings.
 
 3. **Run Unit & Integration Test Suites**:
+
    ```bash
    # Run M4 screen layout overhaul test suite
    npx vitest run src/test/screens-layout-overhaul.test.tsx
@@ -124,13 +129,16 @@ To independently verify this milestone from the project root `/Users/noxval/_PRO
    # Run full test suite across all 11 test files
    npm test
    ```
-   *Expected outcome*: 11/11 test files pass, 92/92 tests pass.
+
+   _Expected outcome_: 11/11 test files pass, 92/92 tests pass.
 
 4. **Production Build**:
+
    ```bash
    npm run build
    ```
-   *Expected outcome*: Exit code 0, generating production bundles in `.output/public` and `.output/server`.
+
+   _Expected outcome_: Exit code 0, generating production bundles in `.output/public` and `.output/server`.
 
 5. **Files to Inspect**:
    - `src/components/booth/InteractiveDeck.tsx` (Screen 1 Home Deck)

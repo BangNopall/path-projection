@@ -4,7 +4,7 @@
 **Scope**: Full System Acceptance Review & Adversarial Stress Testing  
 **Date**: 2026-10-02  
 **Handoff Type**: Hard (Task Complete)  
-**Verdict**: **APPROVE**  
+**Verdict**: **APPROVE**
 
 ---
 
@@ -139,10 +139,10 @@ Direct observations obtained through independent verification commands and code 
 1. **Statistical Modulo Bias on Quote Reroll (Minor Adversarial Observation)**:
    - In `src/data/personas.ts:136-140`, when `nextIndex === excludeIndex`, the algorithm shifts `nextIndex = (nextIndex + 1) % pool.length`.
    - Under statistical testing across 50,000 draws, index `(excludeIndex + 1) % N` is selected with ~11.35% frequency compared to ~5.54% for other indices.
-   - *Impact*: Low. Non-repetition is strictly guaranteed, and across 18 quotes per persona, booth participants will experience diverse quotes. A future enhancement could sample uniformly from `pool.filter((_, i) => i !== excludeIndex)`.
+   - _Impact_: Low. Non-repetition is strictly guaranteed, and across 18 quotes per persona, booth participants will experience diverse quotes. A future enhancement could sample uniformly from `pool.filter((_, i) => i !== excludeIndex)`.
 2. **React 19 `act(...)` Warning in Scanner HUD Mock Tests (Minor Test Hygiene)**:
    - During `npm test`, React outputs a warning: `An update to ScannerHUD inside a test was not wrapped in act(...)` when `getUserMedia` rejection triggers `setCameraError`.
-   - *Impact*: Negligible. Does not fail any tests and does not affect production behavior.
+   - _Impact_: Negligible. Does not fail any tests and does not affect production behavior.
 3. **No other caveats**: All components are responsive, accessible, client-side only, and validated.
 
 ---
@@ -160,34 +160,44 @@ The PKKMB FILKOM UB - SGE 2026 Booth Game ("Guess Who Are You") refactor is **ac
 To independently verify the system acceptance from project root `/Users/noxval/_PROJECT_/path-projection`:
 
 1. **Typecheck Verification**:
+
    ```bash
    npx tsc --noEmit
    ```
-   *Expected outcome*: Exit code 0, 0 diagnostics.
+
+   _Expected outcome_: Exit code 0, 0 diagnostics.
 
 2. **Linting Verification**:
+
    ```bash
    npm run lint
    ```
-   *Expected outcome*: Exit code 0, 0 errors, 0 warnings.
+
+   _Expected outcome_: Exit code 0, 0 errors, 0 warnings.
 
 3. **Automated Test Suite Verification**:
+
    ```bash
    npm test
    ```
-   *Expected outcome*: 11 test files pass, 92 tests pass.
+
+   _Expected outcome_: 11 test files pass, 92 tests pass.
 
 4. **Production Build Verification**:
+
    ```bash
    npm run build
    ```
-   *Expected outcome*: Exit code 0, Nitro prebuilt bundle generated in `.output/`.
+
+   _Expected outcome_: Exit code 0, Nitro prebuilt bundle generated in `.output/`.
 
 5. **Adversarial M1 Stress Harness**:
+
    ```bash
    node scripts/adversarial-m1-harness.mjs
    ```
-   *Expected outcome*: 74/74 passes, 0 failures.
+
+   _Expected outcome_: 74/74 passes, 0 failures.
 
 6. **Key Implementation Files to Inspect**:
    - `src/assets/cards/*` (4 authentic JPEG card files)

@@ -72,6 +72,7 @@
 ## 4. Conclusion
 
 The E2E Testing Track is fully operational, complete, and verified:
+
 - `TEST_INFRA.md` and `TEST_READY.md` are published at project root.
 - Comprehensive opaque-box test suites in `src/test/e2e-booth-flow.test.tsx` and `src/test/personas-e2e.test.ts` pass with 100% success rate (41/41 passing tests across the repo).
 - Downstream milestone workers can safely develop and refactor with automated regression protection.
@@ -83,25 +84,31 @@ The E2E Testing Track is fully operational, complete, and verified:
 To independently verify all claims:
 
 1. **Run Complete Vitest Suite**:
+
    ```bash
    npm test
    ```
-   *Expected output: 7 passed test files, 41 passed tests, exit code 0.*
+
+   _Expected output: 7 passed test files, 41 passed tests, exit code 0._
 
 2. **Run E2E Booth Flow Suite Only**:
+
    ```bash
    npx vitest run src/test/e2e-booth-flow.test.tsx
    ```
-   *Expected output: 14 passed tests in ~6 seconds, exit code 0.*
+
+   _Expected output: 14 passed tests in ~6 seconds, exit code 0._
 
 3. **Run Persona Invariants Suite Only**:
+
    ```bash
    npx vitest run src/test/personas-e2e.test.ts
    ```
-   *Expected output: 7 passed tests in ~10ms, exit code 0.*
+
+   _Expected output: 7 passed tests in ~10ms, exit code 0._
 
 4. **Run Linter on Test Track Files**:
    ```bash
    npx eslint src/test/
    ```
-   *Expected output: Exit code 0, 0 errors, 0 warnings.*
+   _Expected output: Exit code 0, 0 errors, 0 warnings._

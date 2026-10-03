@@ -13,6 +13,7 @@
 Direct observations and raw evidence collected during forensic investigation:
 
 ### 1.1 Asset Authenticity & Local Storage (R1)
+
 - **Source Upload vs Target Binary Verification**:
   - `card-front.jpg`:
     - Target: `src/assets/cards/card-front.jpg` (314,262 bytes)
@@ -50,12 +51,14 @@ Direct observations and raw evidence collected during forensic investigation:
   ```
 
 ### 1.2 Elimination of Lovable Proxy URLs
+
 - `grep -r "__l5e" src/` returned 0 matches in runtime source code.
 - `grep -r "assets-v1" src/` returned matches only in negative test assertions (`card-assets.test.ts:68,72`).
 - Search for `*.asset.json` returned 0 files on disk.
 - Production build scan (`grep -r "__l5e" .output`, `grep -r "assets-v1" .output`, `grep -r "\.asset\.json" .output`) returned 0 references.
 
 ### 1.3 100% Client-Side Operation & Privacy
+
 - Zero backend APIs or database endpoints in `src/server.ts` (Nitro handler is purely TanStack Start SSR entry).
 - Zero user authentication, login flows, or credential storage.
 - Audio generation operates procedurally via native browser `window.AudioContext` oscillators (`src/lib/audio.ts`) without external audio file fetching.
@@ -63,6 +66,7 @@ Direct observations and raw evidence collected during forensic investigation:
 - Scanner HUD handles webcam via `navigator.mediaDevices.getUserMedia` and runs inference client-side with a 100% offline manual fallback drawer (`src/components/booth/ScannerHUD.tsx:321-377`).
 
 ### 1.4 Genuine Implementation across 5 Screens (Zero Facades / Stubs)
+
 - **Screen 1 (`src/components/booth/InteractiveDeck.tsx`)**:
   - Genuine 3D card fan rotation, float physics, and spring hover interactions (`motion/react`).
   - Shuffle state counter cycling card z-indices and rotation angles with procedural Web Audio cues.
@@ -82,6 +86,7 @@ Direct observations and raw evidence collected during forensic investigation:
   - SGE 2026 Steady Teal header `#1F6F78`, local card art thumbnail, QR code svg, personalized name field, client-side PNG export, and clipboard share action.
 
 ### 1.5 Automated Quality Gates & Verification Commands
+
 - `npm test`:
   ```
   Test Files  12 passed (12)

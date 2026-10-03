@@ -1,4 +1,5 @@
 ## 2026-10-02T18:25:42Z
+
 You are Challenger 1 for Milestone M1 (Card Asset Pipeline & Data).
 Your working directory is:
 /Users/noxval/_PROJECT_/path-projection/.agents/teamwork/teamwork_preview_challenger_m1_1
@@ -11,6 +12,7 @@ And read Worker M1's handoff report:
 /Users/noxval/_PROJECT_/path-projection/.agents/teamwork/teamwork_preview_worker_m1/handoff.md
 
 Your mission:
+
 1. Adversarially stress-test and empirically challenge the card asset pipeline and persona data:
    - Write and execute an adversarial test harness (e.g. checking byte headers, image dimensions, file corruption handling, non-empty image exports in Vite bundle output).
    - Test that no hidden or indirect references to `__l5e` remain in `src/` or the build output.

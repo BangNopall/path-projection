@@ -3,6 +3,7 @@
 Last visited: 2026-10-02T18:32:00Z
 
 ## Status
+
 - [x] Initialized DISPATCH.md, BRIEFING.md, and progress.md
 - [x] Read ORIGINAL_REQUEST.md, PROJECT.md, and Worker M1 handoff.md
 - [x] Inspect `src/data/personas.ts` and card assets

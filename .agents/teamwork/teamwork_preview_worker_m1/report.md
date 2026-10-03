@@ -3,7 +3,7 @@
 **Milestone**: M1 — Authentic Physical Card Asset Pipeline & Data  
 **Worker**: Worker M1 (`teamwork_preview_worker_m1`)  
 **Workspace**: `/Users/noxval/_PROJECT_/path-projection`  
-**Execution Timestamp**: 2026-10-02T18:24:00Z  
+**Execution Timestamp**: 2026-10-02T18:24:00Z
 
 ---
 
@@ -29,12 +29,12 @@ Milestone M1 has been successfully executed with zero compromises, full complian
 
 The 4 physical card assets were copied to `src/assets/cards/` and validated for integrity:
 
-| Target File | Source Upload Path | Size | Dimensions | Header Bytes | SHA-256 Checksum |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| `src/assets/cards/card-front.jpg` | `.../.user_uploaded/media_1790964332329.jpg` | 314,262 B (306.9 KB) | 724 × 1024 px | `FF D8 FF E0` | `fad849c09e0aeae1a60f4d2fa86c5d0d8ef3a8d52602f65bbdc734641bc59511` |
-| `src/assets/cards/card-career.jpg` | `.../.user_uploaded/media_1790964332334.jpg` | 281,152 B (274.6 KB) | 724 × 1024 px | `FF D8 FF E0` | `00b26556e5fecf4157b658d707e17e65705fb28bd922e3127f811e67dc4d5916` |
+| Target File                           | Source Upload Path                           | Size                 | Dimensions    | Header Bytes  | SHA-256 Checksum                                                   |
+| :------------------------------------ | :------------------------------------------- | :------------------- | :------------ | :------------ | :----------------------------------------------------------------- |
+| `src/assets/cards/card-front.jpg`     | `.../.user_uploaded/media_1790964332329.jpg` | 314,262 B (306.9 KB) | 724 × 1024 px | `FF D8 FF E0` | `fad849c09e0aeae1a60f4d2fa86c5d0d8ef3a8d52602f65bbdc734641bc59511` |
+| `src/assets/cards/card-career.jpg`    | `.../.user_uploaded/media_1790964332334.jpg` | 281,152 B (274.6 KB) | 724 × 1024 px | `FF D8 FF E0` | `00b26556e5fecf4157b658d707e17e65705fb28bd922e3127f811e67dc4d5916` |
 | `src/assets/cards/card-adventure.jpg` | `.../.user_uploaded/media_1790964332337.jpg` | 287,550 B (280.8 KB) | 724 × 1024 px | `FF D8 FF E0` | `61bfa7d59aaeb3dc4ee0d1e6d33d65d77f336cc58c4fa9e60264a9f6534acc5e` |
-| `src/assets/cards/card-creative.jpg` | `.../.user_uploaded/media_1790964332339.jpg` | 287,755 B (281.0 KB) | 724 × 1024 px | `FF D8 FF E0` | `dc7eb38e7a2a2f100fb5d1b296e36f315c0245f6bb7f3e05729b3e63d74e6782` |
+| `src/assets/cards/card-creative.jpg`  | `.../.user_uploaded/media_1790964332339.jpg` | 287,755 B (281.0 KB) | 724 × 1024 px | `FF D8 FF E0` | `dc7eb38e7a2a2f100fb5d1b296e36f315c0245f6bb7f3e05729b3e63d74e6782` |
 
 - **Aspect Ratio**: 724 / 1024 = 0.70703, matching standard DIN/ISO ratio and the container's `aspect-[768/1086]` (0.70718).
 - **Bundle Placement**: In production builds, Vite outputs these to `.output/public/assets/card-*.jpg`, eliminating any external network or proxy dependency.
@@ -44,14 +44,18 @@ The 4 physical card assets were copied to `src/assets/cards/` and validated for 
 ## 3. Data Changes in `src/data/personas.ts`
 
 ### 3.1 Direct ESM Imports
+
 Replaced:
+
 ```typescript
 import careerArt from "@/assets/belakang1.webp.asset.json";
 import creativeArt from "@/assets/belakang2.webp.asset.json";
 import adventureArt from "@/assets/belakang3.webp.asset.json";
 import frontArt from "@/assets/depan.webp.asset.json";
 ```
+
 With:
+
 ```typescript
 import cardFrontImg from "@/assets/cards/card-front.jpg";
 import cardCareerImg from "@/assets/cards/card-career.jpg";
@@ -60,6 +64,7 @@ import cardAdventureImg from "@/assets/cards/card-adventure.jpg";
 ```
 
 ### 3.2 Persona Property Mappings
+
 - **`career`**:
   - `image: cardCareerImg`
   - `frontImage: cardFrontImg`
@@ -74,7 +79,9 @@ import cardAdventureImg from "@/assets/cards/card-adventure.jpg";
   - `accentColor: "var(--SGEPacificOcean)"`
 
 ### 3.3 TypeScript `TS2322` Fix in `getRandomQuote`
+
 Applied nullish coalescing to avoid returning `undefined` under `noUncheckedIndexedAccess`:
+
 ```typescript
 export function getRandomQuote(key: PersonaKey, excludeIndex?: number): string {
   const pool = personas[key]?.quotes || [];
@@ -94,6 +101,7 @@ export function getRandomQuote(key: PersonaKey, excludeIndex?: number): string {
 ## 4. Deletion of Obsolete Asset JSON Files
 
 The 4 proxy files referencing `/__l5e/assets-v1/...` were safely deleted:
+
 - `src/assets/belakang1.webp.asset.json`
 - `src/assets/belakang2.webp.asset.json`
 - `src/assets/belakang3.webp.asset.json`
@@ -106,6 +114,7 @@ Verification confirms `src/assets/` now cleanly contains only the `cards/` subdi
 ## 5. Automated Asset Test (`src/test/card-assets.test.ts`)
 
 Created 7 automated test specifications:
+
 1. `ensures all 4 physical card files exist on disk with valid sizes (>200KB)`
 2. `verifies card files start with JPEG magic bytes (FF D8 FF)`
 3. `resolves all card assets via Vite ESM to valid non-empty string URLs`
@@ -123,6 +132,7 @@ Result: **7 passed (100%) in 3ms**.
 Fixed the Vitest warning:
 `[vitest] The vi.fn() mock did not use 'function' or 'class' in its implementation...`
 By replacing arrow function in `mockAudioContext`:
+
 ```typescript
 const mockAudioContext = vi.fn().mockImplementation(function () {
   return {
@@ -134,6 +144,7 @@ const mockAudioContext = vi.fn().mockImplementation(function () {
   };
 });
 ```
+
 Result: `src/test/audio.test.ts` runs cleanly with 0 warnings.
 
 ---

@@ -3,14 +3,16 @@
 **Worker**: Worker M2 (Kinetic Reveal Implementer)  
 **Milestone**: M2  
 **Date**: 2026-10-02  
-**Handoff Type**: Hard (Task Complete)  
+**Handoff Type**: Hard (Task Complete)
 
 ---
 
 ## 1. Observation
 
 1. **Assigned Scope in DISPATCH.md**:
+
    > "1. Create `src/components/booth/KineticSentenceReveal.tsx`:
+   >
    > - Props interface:
    >   ```tsx
    >   export interface KineticSentenceRevealProps {
@@ -28,6 +30,7 @@
    > - Upon sentence completion, trigger a warm golden light sweep effect across the completed text (`linear-gradient(105deg, transparent 20%, rgba(242, 183, 5, 0.45) 50%, transparent 80%)`).
    > - Include an interactive "Tarik Refleksi Baru" reroll button with a Shuffle icon from `lucide-react`, spring hover micro-interaction, and connected to `onReroll`.
    > - Ensure clean animation reset when `sentence` prop changes or `isRerolling` is triggered.
+   >
    > 2. Create automated unit test `src/test/kinetic-reveal.test.tsx`"
 
 2. **File Creation**:
@@ -135,34 +138,44 @@ Milestone M2 is fully complete. `KineticSentenceReveal.tsx` fulfills all functio
 To independently verify this milestone:
 
 1. **Run Unit Tests for Kinetic Sentence Reveal**:
+
    ```bash
    npx vitest run src/test/kinetic-reveal.test.tsx
    ```
-   *Expected outcome*: 16/16 tests pass in < 500ms.
+
+   _Expected outcome_: 16/16 tests pass in < 500ms.
 
 2. **Run Full Test Suite**:
+
    ```bash
    npm test
    ```
-   *Expected outcome*: 68/68 tests pass across 9 test files.
+
+   _Expected outcome_: 68/68 tests pass across 9 test files.
 
 3. **Run TypeScript Check**:
+
    ```bash
    npx tsc --noEmit
    ```
-   *Expected outcome*: Exit code 0 with 0 diagnostics.
+
+   _Expected outcome_: Exit code 0 with 0 diagnostics.
 
 4. **Run Linter**:
+
    ```bash
    npm run lint
    ```
-   *Expected outcome*: Exit code 0, 0 errors, 0 warnings.
+
+   _Expected outcome_: Exit code 0, 0 errors, 0 warnings.
 
 5. **Run Production Build**:
+
    ```bash
    npm run build
    ```
-   *Expected outcome*: Exit code 0, successful client and SSR Nitro builds.
+
+   _Expected outcome_: Exit code 0, successful client and SSR Nitro builds.
 
 6. **Invalidation Conditions**:
    - If `src/test/kinetic-reveal.test.tsx` fails any of the 16 tests.

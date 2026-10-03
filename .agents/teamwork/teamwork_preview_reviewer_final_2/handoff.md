@@ -4,7 +4,7 @@
 **Milestone**: Full System Acceptance Review & Adversarial Stress Testing  
 **Date**: 2026-10-02  
 **Handoff Type**: Hard (Task Complete)  
-**Verdict**: **APPROVE**  
+**Verdict**: **APPROVE**
 
 ---
 
@@ -143,19 +143,19 @@ Direct observations obtained through independent verification commands and code 
 ## 3. Caveats & Adversarial Findings
 
 1. **Minor Finding — Clipboard API Error Handling in Keepsake Photo Studio**:
-   - *Location*: `src/components/booth/KeepsakePhotoCard.tsx:59-66`
-   - *Observation*: `handleShare` directly awaits `navigator.clipboard.writeText(window.location.href)` without an enclosing `try ... catch` block.
-   - *Risk*: If browser security policies or iframe permissions reject clipboard writes, an unhandled promise rejection is triggered.
-   - *Recommendation*: Wrap the call in `try { ... } catch { ... }` (similar to `handleDownload`) for graceful fallback. Does not block core booth functionality.
+   - _Location_: `src/components/booth/KeepsakePhotoCard.tsx:59-66`
+   - _Observation_: `handleShare` directly awaits `navigator.clipboard.writeText(window.location.href)` without an enclosing `try ... catch` block.
+   - _Risk_: If browser security policies or iframe permissions reject clipboard writes, an unhandled promise rejection is triggered.
+   - _Recommendation_: Wrap the call in `try { ... } catch { ... }` (similar to `handleDownload`) for graceful fallback. Does not block core booth functionality.
 2. **Minor Finding — Modulo Redistribution Bias in getRandomQuote Collision**:
-   - *Location*: `src/data/personas.ts:136-140`
-   - *Observation*: When `nextIndex === excludeIndex`, the algorithm advances `nextIndex = (nextIndex + 1) % pool.length`.
-   - *Risk*: Across 50,000 draws, index `(excludeIndex + 1) % N` occurs with ~11.02% frequency compared to ~5.56% for other indices.
-   - *Impact*: Low. Non-repetition is 100% guaranteed, and with 18 quotes per persona, participants will experience varied reflections. Can be enhanced in the future by uniformly sampling over the remaining N-1 indices.
+   - _Location_: `src/data/personas.ts:136-140`
+   - _Observation_: When `nextIndex === excludeIndex`, the algorithm advances `nextIndex = (nextIndex + 1) % pool.length`.
+   - _Risk_: Across 50,000 draws, index `(excludeIndex + 1) % N` occurs with ~11.02% frequency compared to ~5.56% for other indices.
+   - _Impact_: Low. Non-repetition is 100% guaranteed, and with 18 quotes per persona, participants will experience varied reflections. Can be enhanced in the future by uniformly sampling over the remaining N-1 indices.
 3. **Minor Finding — Flaky Wall-Clock Assertion in Challenger Harness**:
-   - *Location*: `src/test/m1-challenger-stress.test.ts:162`
-   - *Observation*: `expect(elapsed).toBeLessThan(1000)` inside a 100,000-iteration loop can intermittently exceed 1000ms under extreme host CPU load during parallel Vitest execution.
-   - *Impact*: Low. The logic executes in <10ms outside test assertion overhead.
+   - _Location_: `src/test/m1-challenger-stress.test.ts:162`
+   - _Observation_: `expect(elapsed).toBeLessThan(1000)` inside a 100,000-iteration loop can intermittently exceed 1000ms under extreme host CPU load during parallel Vitest execution.
+   - _Impact_: Low. The logic executes in <10ms outside test assertion overhead.
 
 ---
 
@@ -172,34 +172,44 @@ The refactored PKKMB FILKOM UB - SGE 2026 Booth Game ("Guess Who Are You") fully
 To independently reproduce this verification from the repository root `/Users/noxval/_PROJECT_/path-projection`:
 
 1. **TypeScript Compilation Check**:
+
    ```bash
    npx tsc --noEmit
    ```
-   *Expected outcome*: Exit code 0, 0 diagnostics.
+
+   _Expected outcome_: Exit code 0, 0 diagnostics.
 
 2. **ESLint Static Analysis**:
+
    ```bash
    npm run lint
    ```
-   *Expected outcome*: Exit code 0, 0 errors, 0 warnings.
+
+   _Expected outcome_: Exit code 0, 0 errors, 0 warnings.
 
 3. **Full Automated Test Suite Execution**:
+
    ```bash
    npm test
    ```
-   *Expected outcome*: 12/12 test files pass, 106/106 tests pass.
+
+   _Expected outcome_: 12/12 test files pass, 106/106 tests pass.
 
 4. **Production Build Verification**:
+
    ```bash
    npm run build
    ```
-   *Expected outcome*: Exit code 0, client assets generated in `.output/public` and Nitro SSR server bundle in `.output/server`.
+
+   _Expected outcome_: Exit code 0, client assets generated in `.output/public` and Nitro SSR server bundle in `.output/server`.
 
 5. **Adversarial Stress Test Script**:
+
    ```bash
    node scripts/adversarial-m1-harness.mjs
    ```
-   *Expected outcome*: 74/74 passes, 0 failures.
+
+   _Expected outcome_: 74/74 passes, 0 failures.
 
 6. **Key Files for Visual & Code Inspection**:
    - `src/assets/cards/*` (4 authentic high-res JPEG card assets)

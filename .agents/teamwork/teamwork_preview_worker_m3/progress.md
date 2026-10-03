@@ -4,6 +4,7 @@
 **Status**: COMPLETED
 
 ## Steps
+
 - [x] Initialized DISPATCH.md, BRIEFING.md, and local modern-web-guidance skill.
 - [x] Reviewed ORIGINAL_REQUEST.md, PROJECT.md, Explorer 3 Survey Report, and websge2026 brand identity.
 - [x] Inspected existing `src/styles.css`, `src/components/booth/TarotCard3D.tsx`, `eslint.config.js`, `src/test/e2e-booth-flow.test.tsx`.

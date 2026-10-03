@@ -1,4 +1,5 @@
 ## 2026-10-02T18:19:55Z
+
 You are Worker M1 (Asset Pipeline Implementer).
 Your working directory is:
 /Users/noxval/_PROJECT_/path-projection/.agents/teamwork/teamwork_preview_worker_m1
@@ -8,6 +9,7 @@ MANDATORY FIRST STEP: Read the original user requirements in:
 Also read the project architecture in:
 /Users/noxval/_PROJECT_/path-projection/PROJECT.md
 And review the explorer findings:
+
 - /Users/noxval/_PROJECT_/path-projection/.agents/teamwork/teamwork_preview_explorer_survey_1/report.md
 - /Users/noxval/_PROJECT_/path-projection/.agents/teamwork/teamwork_preview_explorer_survey_2/report.md
 
@@ -15,6 +17,7 @@ MANDATORY INTEGRITY WARNING:
 DO NOT CHEAT. All implementations must be genuine. DO NOT hardcode test results, create dummy/facade implementations, or circumvent the intended task. A teamwork_preview_auditor will independently verify your work. Integrity violations WILL be detected and your work WILL be rejected.
 
 Your scope of work (M1):
+
 1. Create directory `src/assets/cards/`.
 2. Copy the 4 user-uploaded high-res card JPEG files to `src/assets/cards/`:
    - Mascot Front: `/Users/noxval/.gemini/antigravity/brain/4920c1c7-b59e-464c-b81e-0f4e333bf35e/.user_uploaded/media_1790964332329.jpg` -> `src/assets/cards/card-front.jpg`

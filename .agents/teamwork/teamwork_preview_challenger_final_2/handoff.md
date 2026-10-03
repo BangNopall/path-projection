@@ -9,6 +9,7 @@
 ## 1. Observation
 
 ### Obs 1. Keepsake Photo Studio Canvas Export (`html-to-image`)
+
 - **Direct Browser Execution**: In a live headless Chrome session navigated to `http://localhost:8080/` (Screen 5: Keepsake Photo Studio), evaluating `toPng(card, { pixelRatio: 2.5, cacheBust: true, style: { borderRadius: "0" } })` directly against the rendered `.photo-card` element returned a valid PNG base64 string:
   - Header: `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA2wA...`
   - Encoded length: 1,779,154 characters
@@ -19,6 +20,7 @@
 - **Automated Test Verification**: `src/test/final-challenger-2-stress.test.tsx` (Tests 1-4) verified that `toPng` is called with `{ pixelRatio: 2.5, cacheBust: true, style: { borderRadius: "0" } }`, input sanitization formats participant name into download filename (e.g., `SGE2026-career-budi-santoso---sge-2026-.png`), whitespace-only name falls back to `SGE2026-creative-persona.png`, export errors trigger the localized screenshot fallback alert, and URL copy to clipboard functions correctly.
 
 ### Obs 2. Local ESM Asset Resolution & Elimination of Lovable Proxy CDN
+
 - **Asset Presence & Magic Bytes**: On disk in `src/assets/cards/`, all 4 authentic images exist with sizes > 280KB:
   - `card-front.jpg`: 321,792 bytes, starts with magic bytes `FF D8 FF`
   - `card-career.jpg`: 287,882 bytes, starts with magic bytes `FF D8 FF`
@@ -37,6 +39,7 @@
 - **Zero Proxy References**: `grep -rn "__l5e" .output/public/assets/` returned 0 matches (`NO __l5e FOUND`). All imports in `src/data/personas.ts` (lines 1-4) resolve via Vite ESM.
 
 ### Obs 3. Camera Denial Fallback (Graceful Degradation)
+
 - **Live Browser Emulation**: Injected mock `navigator.mediaDevices.getUserMedia = () => Promise.reject(new DOMException("Izin kamera ditolak oleh pengguna (Permission denied)", "NotAllowedError"))`.
 - **Viewfinder Response**: Scanner HUD caught the rejection without uncaught promise errors and rendered:
   - Text: `"Izin kamera ditolak oleh pengguna (Permission denied)"`
@@ -47,9 +50,10 @@
   - `💼 Karier & Kepemimpinan`
   - `🎨 Kreativitas & Jiwa`
   - `🌎 Petualangan & Batas Baru`
-  Selecting any card immediately triggered `playAudioTone("click")` and transitioned cleanly to Grand Revelation (`setScreen("reveal")`).
+    Selecting any card immediately triggered `playAudioTone("click")` and transitioned cleanly to Grand Revelation (`setScreen("reveal")`).
 
 ### Obs 4. Quote Non-Repetition Invariant Oracle
+
 - **Code Inspection**: `src/routes/index.tsx` lines 86-92:
   ```ts
   const handleRerollQuote = () => {
@@ -72,6 +76,7 @@
 - **Adversarial Oracle Test**: `src/test/final-challenger-2-stress.test.tsx` executed 1,000 consecutive rerolls on each persona (`career`, `creative`, `adventure`). Result: **1,000 / 1,000 draws yielded `nextQuote !== previousQuote` (0 adjacent repetitions)**.
 
 ### Obs 5. Build, Lint, and Test Execution
+
 - `npm run lint`: **0 errors, 0 warnings** across all files.
 - `npm run build`: **Success**. Output generated in `.output/public` and `.output/server`.
 - `npx vitest run src/test/final-challenger-2-stress.test.tsx`: **13 passed (13)** in 294ms.
@@ -117,6 +122,7 @@
 ## 4. Conclusion
 
 The application satisfies all requirements outlined in `ORIGINAL_REQUEST.md`, `PROJECT.md`, and `TEST_READY.md`:
+
 - Keepsake Photo Studio canvas export (`html-to-image`) is empirically verified.
 - Local ESM card asset pipeline is 100% self-contained with zero external CDN dependencies.
 - Camera denial fallback handles hardware failures gracefully.
@@ -133,22 +139,28 @@ The application satisfies all requirements outlined in `ORIGINAL_REQUEST.md`, `P
 To independently reproduce and verify this assessment:
 
 1. **Run the Challenger 2 Stress Test Suite**:
+
    ```bash
    npx vitest run src/test/final-challenger-2-stress.test.tsx
    ```
-   *Expected*: 13 tests passed (100%).
+
+   _Expected_: 13 tests passed (100%).
 
 2. **Run the Full Test Suite**:
+
    ```bash
    npx vitest run --no-file-parallelism
    ```
-   *Expected*: 13 test files passed, 119 tests passed (100%).
+
+   _Expected_: 13 test files passed, 119 tests passed (100%).
 
 3. **Verify Linter Cleanliness**:
+
    ```bash
    npm run lint
    ```
-   *Expected*: 0 errors, 0 warnings.
+
+   _Expected_: 0 errors, 0 warnings.
 
 4. **Verify Production Bundle**:
    ```bash
@@ -156,4 +168,4 @@ To independently reproduce and verify this assessment:
    ls -la .output/public/assets/*.jpg
    grep -rn "__l5e" .output/public/assets/ || echo "CLEAN"
    ```
-   *Expected*: 4 `.jpg` files present, "CLEAN" printed.
+   _Expected_: 4 `.jpg` files present, "CLEAN" printed.

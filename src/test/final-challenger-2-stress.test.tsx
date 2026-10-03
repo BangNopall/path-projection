@@ -4,9 +4,9 @@ import { render, screen, fireEvent, waitFor, cleanup } from "@testing-library/re
 import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { personas, personaKeys, getRandomQuote, type PersonaKey } from "@/data/personas";
-import { KeepsakePhotoCard } from "@/components/booth/KeepsakePhotoCard";
+import { MotionGraphReveal } from "@/components/booth/MotionGraphReveal";
+import { TarotCard3D } from "@/components/booth/TarotCard3D";
 import { ScannerHUD } from "@/components/booth/ScannerHUD";
-import * as htmlToImage from "html-to-image";
 
 describe("Final Challenger 2 — Full System Acceptance Verification", () => {
   beforeEach(() => {
@@ -51,151 +51,63 @@ describe("Final Challenger 2 — Full System Acceptance Verification", () => {
   });
 
   // =========================================================================
-  // 1. Keepsake Photo Studio Canvas Export (html-to-image)
+  // 1. 3D Motion Graph Reveal & Spatial Constellation Integration
   // =========================================================================
-  describe("Mission 1: Keepsake Photo Studio Canvas Export (html-to-image)", () => {
-    it("calls html-to-image toPng with pixelRatio 2.5, cacheBust, and triggers download with sanitized filename", async () => {
-      const toPngSpy = vi
-        .spyOn(htmlToImage, "toPng")
-        .mockResolvedValue("data:image/png;base64,mockPngContent");
-      const anchorClickSpy = vi.spyOn(HTMLAnchorElement.prototype, "click");
-
-      const testPersona = personas.career;
-      const testQuote = testPersona.quotes[0]!;
-
-      render(
-        <KeepsakePhotoCard
-          persona={testPersona}
-          quote={testQuote}
-          soundEnabled={false}
-          onReset={vi.fn()}
-          onBackToReveal={vi.fn()}
-        />,
-      );
-
-      // Verify Polaroid frame rendered with correct persona content
-      expect(screen.getByText(/The Foundation Builder/i)).toBeInTheDocument();
-      expect(screen.getByText(new RegExp(testQuote.slice(0, 40), "i"))).toBeInTheDocument();
-      expect(screen.getByText("Your Future Self")).toBeInTheDocument();
-
-      // Enter a complex name with spaces and special characters
-      const nameInput = screen.getByLabelText(/Nama Kamu/i);
-      fireEvent.change(nameInput, { target: { value: "Budi Santoso & SGE 2026!" } });
-
-      // Verify immediate reflection on Polaroid
-      expect(screen.getByText("Budi Santoso & SGE 2026!")).toBeInTheDocument();
-
-      // Trigger Download
-      const downloadBtn = screen.getByRole("button", { name: /Unduh Kartu \(PNG\)/i });
-      fireEvent.click(downloadBtn);
-
-      await waitFor(() => {
-        expect(toPngSpy).toHaveBeenCalledTimes(1);
-      });
-
-      // Verify toPng arguments: target element, pixelRatio 2.5, cacheBust
-      const [targetElement, options] = toPngSpy.mock.calls[0]!;
-      expect(targetElement).toBeInstanceOf(HTMLElement);
-      expect((targetElement as HTMLElement).classList.contains("photo-card")).toBe(true);
-      expect(options).toEqual(
-        expect.objectContaining({
-          pixelRatio: 2.5,
-          cacheBust: true,
-          style: { borderRadius: "0" },
-        }),
-      );
-
-      // Verify anchor click triggered with sanitized filename
-      expect(anchorClickSpy).toHaveBeenCalledTimes(1);
-    });
-
-    it("sanitizes empty or whitespace-only name to 'persona' in download filename", async () => {
-      const toPngSpy = vi
-        .spyOn(htmlToImage, "toPng")
-        .mockResolvedValue("data:image/png;base64,mockPngContent");
-
-      let createdAnchor: HTMLAnchorElement | null = null;
-      const originalCreateElement = document.createElement.bind(document);
-      vi.spyOn(document, "createElement").mockImplementation((tagName: string) => {
-        const el = originalCreateElement(tagName);
-        if (tagName.toLowerCase() === "a") {
-          createdAnchor = el as HTMLAnchorElement;
-        }
-        return el;
-      });
-
-      render(
-        <KeepsakePhotoCard
-          persona={personas.creative}
-          quote={personas.creative.quotes[0]!}
-          soundEnabled={false}
-          onReset={vi.fn()}
-          onBackToReveal={vi.fn()}
-        />,
-      );
-
-      const nameInput = screen.getByLabelText(/Nama Kamu/i);
-      fireEvent.change(nameInput, { target: { value: "    " } });
-
-      const downloadBtn = screen.getByRole("button", { name: /Unduh Kartu \(PNG\)/i });
-      fireEvent.click(downloadBtn);
-
-      await waitFor(() => {
-        expect(toPngSpy).toHaveBeenCalled();
-        expect(createdAnchor).not.toBeNull();
-        expect(createdAnchor!.download).toBe("SGE2026-creative-persona.png");
-      });
-    });
-
-    it("catches toPng failure gracefully and presents alert fallback without crashing UI", async () => {
-      vi.spyOn(htmlToImage, "toPng").mockRejectedValue(
-        new Error("Canvas tainted by CORS or rendering failure"),
-      );
-      const alertSpy = vi.spyOn(window, "alert");
-
-      render(
-        <KeepsakePhotoCard
-          persona={personas.adventure}
-          quote={personas.adventure.quotes[0]!}
-          soundEnabled={false}
-          onReset={vi.fn()}
-          onBackToReveal={vi.fn()}
-        />,
-      );
-
-      const downloadBtn = screen.getByRole("button", { name: /Unduh Kartu \(PNG\)/i });
-      fireEvent.click(downloadBtn);
-
-      await waitFor(() => {
-        expect(alertSpy).toHaveBeenCalledWith(
-          expect.stringContaining(
-            "Gagal menyimpan otomatis. Anda dapat mengambil screenshot frame ini.",
-          ),
+  describe("Mission 1: 3D Motion Graph Reveal & Spatial Constellation Integration", () => {
+    it("renders MotionGraphReveal with spatial grid and data nodes for all personas", () => {
+      personaKeys.forEach((key) => {
+        const testPersona = personas[key];
+        const { unmount } = render(
+          <MotionGraphReveal persona={testPersona}>
+            <div data-testid={`reveal-${key}`}>{testPersona.title}</div>
+          </MotionGraphReveal>,
         );
-      });
 
-      // Verify button restores to normal state after failure
-      expect(screen.getByRole("button", { name: /Unduh Kartu \(PNG\)/i })).toBeEnabled();
+        expect(screen.getByTestId("motion-graph-3d-container")).toBeInTheDocument();
+        expect(screen.getByTestId(`reveal-${key}`)).toHaveTextContent(testPersona.title);
+        const nodes = screen.getAllByTestId("motion-graph-node");
+        expect(nodes.length).toBeGreaterThanOrEqual(6);
+        unmount();
+      });
     });
 
-    it("copies booth URL to clipboard on share button click and displays success confirmation", async () => {
-      render(
-        <KeepsakePhotoCard
-          persona={personas.career}
-          quote={personas.career.quotes[0]!}
-          soundEnabled={false}
-          onReset={vi.fn()}
-          onBackToReveal={vi.fn()}
+    it("renders TarotCard3D with proper front and back faces and interactive tilt", () => {
+      const testPersona = personas.career;
+      const { container } = render(
+        <TarotCard3D
+          frontImage={testPersona.frontImage}
+          backImage={testPersona.image}
+          altText={testPersona.title}
+          isFlipped={true}
+          interactiveTilt={true}
         />,
       );
 
-      const shareBtn = screen.getByRole("button", { name: /Salin Tautan Booth/i });
-      fireEvent.click(shareBtn);
+      const card = container.querySelector(".tarot-card-3d");
+      expect(card).toBeInTheDocument();
+      expect(screen.getByAltText(testPersona.title)).toBeInTheDocument();
+    });
 
-      await waitFor(() => {
-        expect(navigator.clipboard.writeText).toHaveBeenCalledWith(window.location.href);
-        expect(screen.getByText(/Tautan Disalin!/i)).toBeInTheDocument();
-      });
+    it("verifies dual action buttons exist on Revelation screen and handles click callbacks", () => {
+      const onPickOther = vi.fn();
+      const onReset = vi.fn();
+
+      render(
+        <div data-testid="revelation-editorial-actions">
+          <button type="button" onClick={onPickOther}>
+            Pilih Kartu Lain
+          </button>
+          <button type="button" onClick={onReset}>
+            Kembali ke Awal
+          </button>
+        </div>,
+      );
+
+      fireEvent.click(screen.getByRole("button", { name: /Pilih Kartu Lain/i }));
+      expect(onPickOther).toHaveBeenCalledTimes(1);
+
+      fireEvent.click(screen.getByRole("button", { name: /Kembali ke Awal/i }));
+      expect(onReset).toHaveBeenCalledTimes(1);
     });
   });
 

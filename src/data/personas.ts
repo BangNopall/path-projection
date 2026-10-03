@@ -19,6 +19,7 @@ export interface PersonaInfo {
   glowColor: string;
   tags: string[];
   quotes: string[];
+  futureProjections: string[];
   narration?: string[];
   feelings?: string[];
   closingMessage?: string;
@@ -31,7 +32,8 @@ export const personas: Record<PersonaKey, PersonaInfo> = {
     label: "CAREER & FOUNDATION",
     short: "Karier & Kepemimpinan",
     title: "The Foundation Builder",
-    subtitle: "Kamu adalah alasan teman-temanmu merasa aman saat hari terasa berat",
+    subtitle:
+      "Sepuluh tahun ke depan, kamu jadi orang yang dipercaya memimpin tim dan menyelesaikan urusan penting sampai tuntas.",
     icon: "💼",
     image: cardCareerImg,
     frontImage: cardFrontImg,
@@ -69,6 +71,16 @@ export const personas: Record<PersonaKey, PersonaInfo> = {
       "Kelelahanmu hari ini mengurus kebutuhan bersama tidak akan sia-sia. Kamu sedang belajar menjadi pribadi yang bijak dan berjiwa besar.",
       "Di kampus ini, ketulusan caramu peduli akan jadi rumah bagi banyak orang. Tetaplah menjadi pribadi yang menguatkan sekitarmu.",
     ],
+    futureProjections: [
+      "Sepuluh tahun ke depan, kamu bukan lagi orang yang menunggu arahan, melainkan pengambil keputusan strategis yang menentukan arah gerak tim.",
+      "Sepuluh tahun ke depan, kamu dipercaya memegang tanggung jawab besar karena integritas dan caramu menyelesaikan masalah yang tenang.",
+      "Sepuluh tahun ke depan, kamu bakal sadar bahwa dinamika organisasi kampus yang dulu melelahkan adalah latihan terbaikmu memimpin orang dengan berbagai karakter.",
+      "Sepuluh tahun ke depan, kamu punya posisi tawar kuat untuk memilih kultur kerja yang sehat dan tempat di mana nilaimu benar-benar dihargai.",
+      "Sepuluh tahun ke depan, kamu memimpin dengan mendengarkan—menjadi atasan yang dulu sangat kamu harapkan ada saat kamu baru memulai karier.",
+      "Sepuluh tahun ke depan, pencapaian terbesarmu bukan cuma promosi jabatan, tapi melihat orang-orang yang kamu bimbing sukses melampaui ekspektasi.",
+      "Sepuluh tahun ke depan, kamu berhasil membuktikan bahwa kerja cerdas dan konsistensi nyata jauh lebih bernilai daripada sekadar cari muka di tempat kerja.",
+      "Sepuluh tahun ke depan, kamu menemukan ritme profesionalmu sendiri: berdaya saing tinggi tanpa harus kehilangan prinsip hidup dan waktu untuk dirimu sendiri.",
+    ],
   },
   creative: {
     key: "creative",
@@ -76,7 +88,8 @@ export const personas: Record<PersonaKey, PersonaInfo> = {
     label: "CREATIVE & SOUL",
     short: "Kreativitas & Jiwa",
     title: "The Soul Crafter",
-    subtitle: "Kepekaan hatimu mengubah hal biasa menjadi penuh arti dan kehangatan",
+    subtitle:
+      "Sepuluh tahun ke depan, kamu sering diajak kerja bareng karena selalu punya ide menarik yang belum dipikirkan orang lain.",
     icon: "🎨",
     image: cardCreativeImg,
     frontImage: cardFrontImg,
@@ -115,6 +128,16 @@ export const personas: Record<PersonaKey, PersonaInfo> = {
       "Di kampus ini, kamu bebas merajut imajinasimu tanpa batas. Jadikan setiap ruang kelas sebagai kanvas untuk menebar kebaikan.",
       "Jangan sembunyikan kelembutanmu; dunia perkuliahan selalu rindu jiwa sehangat dirimu. Tetaplah berkarya dengan cinta dan ketulusan rasa.",
     ],
+    futureProjections: [
+      "Sepuluh tahun ke depan, karya dan seleramu diakui bukan karena ikut-ikutan tren, tapi karena punya identitas yang konsisten kamu rawat.",
+      "Sepuluh tahun ke depan, kamu dibayar mahal untuk sudut pandang dan intuisimu, bukan cuma sekadar operator software desain.",
+      "Sepuluh tahun ke depan, kamu punya studio atau proyek mandiri yang lahir dari keresahan-keresahan kecil yang dulu kamu simpan di sketchbook.",
+      "Sepuluh tahun ke depan, kamu tidak lagi merasa bersalah untuk menolak brief yang bertentangan dengan standar karyamu.",
+      "Sepuluh tahun ke depan, karya atau narasi yang kamu bikin benar-benar menyelesaikan masalah manusia, bukan cuma estetik di portofolio.",
+      "Sepuluh tahun ke depan, kamu bisa melihat ke belakang dan bangga bahwa kamu tidak pernah mengorbankan selera orisinalmu demi validasi instan.",
+      "Sepuluh tahun ke depan, kamu dikelilingi lingkaran kreatif yang saling mendorong bertumbuh tanpa drama dan kompetisi yang melelahkan.",
+      "Sepuluh tahun ke depan, kamu berhasil hidup layak dari kreativitasmu tanpa harus menjual habis idealisme yang kamu bawa dari kampus.",
+    ],
   },
   adventure: {
     key: "adventure",
@@ -122,7 +145,8 @@ export const personas: Record<PersonaKey, PersonaInfo> = {
     label: "ADVENTURE & HORIZON",
     short: "Petualangan & Batas Baru",
     title: "The Boundary Breaker",
-    subtitle: "Langkah beranimu menjadi pemantik bagi teman-teman yang masih ragu",
+    subtitle:
+      "Sepuluh tahun ke depan, kamu jadi orang yang berani mencoba hal baru dan cepat belajar langsung dari pengalamanmu.",
     icon: "🌎",
     image: cardAdventureImg,
     frontImage: cardFrontImg,
@@ -161,19 +185,63 @@ export const personas: Record<PersonaKey, PersonaInfo> = {
       "Di setiap persimpangan baru, dengarkan kata hatimu yang berani. Langkah kakimu sedang menorehkan jejak kebaikan yang tak terlupakan.",
       "Teruslah melangkah dengan riang; kampus ini adalah taman bermain luas untuk petualanganmu. Dunia sedang menanti cerita hebat dari langkahmu.",
     ],
+    futureProjections: [
+      "Sepuluh tahun ke depan, kamu bekerja dengan caramu sendiri—laptop di tas, jam kerja fleksibel, dan kontrol penuh atas waktumu.",
+      "Sepuluh tahun ke depan, kamu membuktikan bahwa memilih jalan yang tidak linier bukan berarti tersesat, tapi berani merintis jalur baru.",
+      "Sepuluh tahun ke depan, kamu punya jejaring pertemanan dan kolaborator lintas kota dan negara yang kamu temui dari perjalananmu.",
+      "Sepuluh tahun ke depan, ketidakpastian tidak lagi bikin kamu cemas, karena kamu sudah terbiasa beradaptasi di situasi apa pun.",
+      "Sepuluh tahun ke depan, kamu punya kebebasan finansial untuk mengambil jeda dan eksplorasi tanpa harus meminta izin atasan.",
+      "Sepuluh tahun ke depan, cerita hidupmu bakal jauh lebih kaya dari sekadar jabatan di LinkedIn, penuh pengalaman nyata di lapangan.",
+      "Sepuluh tahun ke depan, kamu berhasil membangun sistem hidup di mana karier melayani kebebasanmu, bukan sebaliknya.",
+      "Sepuluh tahun ke depan, kamu tersenyum melihat orang-orang yang dulu meragukan pilihan hidupmu kini penasaran bagaimana kamu mewujudkannya.",
+    ],
   },
 };
 
 export const personaKeys: PersonaKey[] = ["career", "creative", "adventure"];
 
 export function getRandomQuote(key: PersonaKey, excludeIndex?: number): string {
-  const pool = personas[key]?.quotes || [];
-  if (pool.length === 0) return "";
-  if (pool.length === 1) return pool[0] ?? "";
+  const p = personas[key];
+  if (!p) return "";
+  const pool = p.quotes;
+  const len = pool.length;
+  if (len === 0) return "";
+  if (len === 1) return pool[0] ?? "";
 
-  let nextIndex = Math.floor(Math.random() * pool.length);
+  let nextIndex = (Math.random() * len) | 0;
   if (excludeIndex !== undefined && nextIndex === excludeIndex) {
-    nextIndex = (nextIndex + 1) % pool.length;
+    nextIndex = (nextIndex + 1) % len;
   }
   return pool[nextIndex] ?? "";
+}
+
+export interface RandomProjectionResult {
+  projection: string;
+  index: number;
+}
+
+export function getRandomFutureProjection(
+  key: PersonaKey,
+  excludeIndex?: number,
+): RandomProjectionResult {
+  const p = personas[key];
+  if (!p || !p.futureProjections || p.futureProjections.length === 0) {
+    return { projection: "", index: -1 };
+  }
+  const pool = p.futureProjections;
+  const len = pool.length;
+  if (len === 1) {
+    return { projection: pool[0] ?? "", index: 0 };
+  }
+
+  let nextIndex = (Math.random() * len) | 0;
+  if (
+    excludeIndex !== undefined &&
+    typeof excludeIndex === "number" &&
+    !Number.isNaN(excludeIndex) &&
+    nextIndex === excludeIndex
+  ) {
+    nextIndex = (nextIndex + 1) % len;
+  }
+  return { projection: pool[nextIndex] ?? "", index: nextIndex };
 }

@@ -3,6 +3,7 @@
 Last visited: 2026-10-02T18:27:15Z
 
 ## Status
+
 - [x] Initialized DISPATCH.md and BRIEFING.md
 - [x] Create `TEST_INFRA.md` at project root
 - [x] Author `src/test/personas-e2e.test.ts` (Tier 1 & Tier 2: Persona data integrity, quote invariants, archetype distribution)

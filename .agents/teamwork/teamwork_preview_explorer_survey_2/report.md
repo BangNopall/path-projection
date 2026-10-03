@@ -3,7 +3,7 @@
 **Explorer**: Explorer 2 (Asset Pipeline Explorer)  
 **Date**: 2026-10-02  
 **Target Application**: PKKMB FILKOM UB — SGE 2026 Booth Game ("Guess Who Are You")  
-**Project Path**: `/Users/noxval/_PROJECT_/path-projection`  
+**Project Path**: `/Users/noxval/_PROJECT_/path-projection`
 
 ---
 
@@ -21,14 +21,15 @@ Currently, the target directory `src/assets/cards/` does not exist, and `src/dat
 
 The 4 source image files uploaded by the user were inspected using system utilities (`file`, `ls -lh`, `sips`, `python3`, `shasum -a 256`):
 
-| Card Role | Source File Path | Size (Bytes / KB) | Dimensions | Format | SHA-256 Checksum | Target Destination in Repo |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Front Mascot** | `/Users/noxval/.gemini/antigravity/brain/4920c1c7-b59e-464c-b81e-0f4e333bf35e/.user_uploaded/media_1790964332329.jpg` | 314,262 bytes (306.9 KB) | 724 × 1024 px | JPEG (JFIF 1.01, 8-bit RGB) | `fad849c09e0aeae1a60f4d2fa86c5d0d8ef3a8d52602f65bbdc734641bc59511` | `src/assets/cards/card-front.jpg` |
-| **Career (Briefcase 💼)** | `/Users/noxval/.gemini/antigravity/brain/4920c1c7-b59e-464c-b81e-0f4e333bf35e/.user_uploaded/media_1790964332334.jpg` | 281,152 bytes (274.6 KB) | 724 × 1024 px | JPEG (JFIF 1.01, 8-bit RGB) | `00b26556e5fecf4157b658d707e17e65705fb28bd922e3127f811e67dc4d5916` | `src/assets/cards/card-career.jpg` |
-| **Adventure (Globe 🌎)** | `/Users/noxval/.gemini/antigravity/brain/4920c1c7-b59e-464c-b81e-0f4e333bf35e/.user_uploaded/media_1790964332337.jpg` | 287,550 bytes (280.8 KB) | 724 × 1024 px | JPEG (JFIF 1.01, 8-bit RGB) | `61bfa7d59aaeb3dc4ee0d1e6d33d65d77f336cc58c4fa9e60264a9f6534acc5e` | `src/assets/cards/card-adventure.jpg` |
-| **Creative (Palette 🎨)** | `/Users/noxval/.gemini/antigravity/brain/4920c1c7-b59e-464c-b81e-0f4e333bf35e/.user_uploaded/media_1790964332339.jpg` | 287,755 bytes (281.0 KB) | 724 × 1024 px | JPEG (JFIF 1.01, 8-bit RGB) | `dc7eb38e7a2a2f100fb5d1b296e36f315c0245f6bb7f3e05729b3e63d74e6782` | `src/assets/cards/card-creative.jpg` |
+| Card Role                 | Source File Path                                                                                                      | Size (Bytes / KB)        | Dimensions    | Format                      | SHA-256 Checksum                                                   | Target Destination in Repo            |
+| :------------------------ | :-------------------------------------------------------------------------------------------------------------------- | :----------------------- | :------------ | :-------------------------- | :----------------------------------------------------------------- | :------------------------------------ |
+| **Front Mascot**          | `/Users/noxval/.gemini/antigravity/brain/4920c1c7-b59e-464c-b81e-0f4e333bf35e/.user_uploaded/media_1790964332329.jpg` | 314,262 bytes (306.9 KB) | 724 × 1024 px | JPEG (JFIF 1.01, 8-bit RGB) | `fad849c09e0aeae1a60f4d2fa86c5d0d8ef3a8d52602f65bbdc734641bc59511` | `src/assets/cards/card-front.jpg`     |
+| **Career (Briefcase 💼)** | `/Users/noxval/.gemini/antigravity/brain/4920c1c7-b59e-464c-b81e-0f4e333bf35e/.user_uploaded/media_1790964332334.jpg` | 281,152 bytes (274.6 KB) | 724 × 1024 px | JPEG (JFIF 1.01, 8-bit RGB) | `00b26556e5fecf4157b658d707e17e65705fb28bd922e3127f811e67dc4d5916` | `src/assets/cards/card-career.jpg`    |
+| **Adventure (Globe 🌎)**  | `/Users/noxval/.gemini/antigravity/brain/4920c1c7-b59e-464c-b81e-0f4e333bf35e/.user_uploaded/media_1790964332337.jpg` | 287,550 bytes (280.8 KB) | 724 × 1024 px | JPEG (JFIF 1.01, 8-bit RGB) | `61bfa7d59aaeb3dc4ee0d1e6d33d65d77f336cc58c4fa9e60264a9f6534acc5e` | `src/assets/cards/card-adventure.jpg` |
+| **Creative (Palette 🎨)** | `/Users/noxval/.gemini/antigravity/brain/4920c1c7-b59e-464c-b81e-0f4e333bf35e/.user_uploaded/media_1790964332339.jpg` | 287,755 bytes (281.0 KB) | 724 × 1024 px | JPEG (JFIF 1.01, 8-bit RGB) | `dc7eb38e7a2a2f100fb5d1b296e36f315c0245f6bb7f3e05729b3e63d74e6782` | `src/assets/cards/card-creative.jpg`  |
 
 ### Key Findings on Source Assets
+
 1. **Aspect Ratio Consistency**: All 4 images share an identical aspect ratio of $724 / 1024 \approx 0.70703$. This directly matches the ISO A-series paper ratio ($1/\sqrt{2} \approx 0.70711$) and aligns with the UI CSS class `aspect-[768/1086]` ($768/1086 \approx 0.70718$). No clipping or distortion will occur when rendered inside the existing `TarotCard3D` containers.
 2. **File Permissions & Readability**: All 4 files are directly readable (`readable=True`) on the local filesystem.
 3. **High Resolution**: At 724×1024, the cards provide clean visual fidelity for high-DPI smartphone screens and photo card downloads without excessive bundle bloat (total size for all 4 cards is ~1.14 MB).
@@ -38,19 +39,24 @@ The 4 source image files uploaded by the user were inspected using system utilit
 ## 2. Target Directory & Current Asset State
 
 ### Examination of `src/assets/`
+
 The target directory `src/assets/cards/` **does not yet exist**:
+
 ```bash
 ls: src/assets/cards: No such file or directory
 ```
 
 Currently, `src/assets/` contains only 4 legacy Lovable `.asset.json` files:
+
 1. `src/assets/depan.webp.asset.json`
 2. `src/assets/belakang1.webp.asset.json`
 3. `src/assets/belakang2.webp.asset.json`
 4. `src/assets/belakang3.webp.asset.json`
 
 ### Content of the Legacy Asset Metadata Files
+
 Each file has the following JSON structure (e.g. `depan.webp.asset.json`):
+
 ```json
 {
   "version": 1,
@@ -66,15 +72,19 @@ Each file has the following JSON structure (e.g. `depan.webp.asset.json`):
 ```
 
 ### Analysis of the Broken Lovable Proxy CDN
+
 Inspection of `@lovable.dev/vite-tanstack-config` (`dist/index.js`) revealed the mechanism:
+
 ```javascript
 //#region src/assetsProxyPlugin.ts
 const ASSET_RE = /^\/__l5e\/assets-v1\//;
 // Forwards '/__l5e/assets-v1/*' requests from the Vite dev server to the
 // Lovable preview proxy so assets resolve when the page is loaded directly
-name: "lovable:assets-proxy"
+name: "lovable:assets-proxy";
 ```
+
 **Why this breaks in the current project**:
+
 - In production (`npm run build` with Nitro), the `__l5e` assets are **not bundled** into `.output/public`. The client tries to request `/__l5e/assets-v1/...` from Nitro, which returns a 404 Not Found.
 - In Vitest or standalone offline operation at the event booth, the proxy server is unreachable.
 - In `KeepsakePhotoCard`, attempting to snapshot the card with `html-to-image` fails with CORS or broken image errors.
@@ -84,7 +94,9 @@ name: "lovable:assets-proxy"
 ## 3. Persona Data Architecture (`src/data/personas.ts`)
 
 ### Current Imports and Data Structures
+
 In `src/data/personas.ts`:
+
 ```typescript
 import careerArt from "@/assets/belakang1.webp.asset.json";
 import creativeArt from "@/assets/belakang2.webp.asset.json";
@@ -111,6 +123,7 @@ export interface PersonaInfo {
 ```
 
 ### Persona Mapping & Metadata
+
 1. **Career (`personas.career`)**:
    - `number`: `"01"`
    - `label`: `"CAREER & FOUNDATION"`
@@ -143,13 +156,16 @@ export interface PersonaInfo {
    - `quotes`: 18 unique quotes
 
 ### Existing TypeScript Bug Uncovered
+
 Running `npx tsc --noEmit` identified 2 type errors in `src/data/personas.ts`:
+
 ```
 src/data/personas.ts:134:26 - error TS2322: Type 'string | undefined' is not assignable to type 'string'.
 134   if (pool.length === 1) return pool[0];
 src/data/personas.ts:140:3 - error TS2322: Type 'string | undefined' is not assignable to type 'string'.
 140   return pool[nextIndex];
 ```
+
 **Cause**: `tsconfig.json` enables `"noUncheckedIndexedAccess": true`. Array indexing produces `string | undefined`, which fails the `string` return type of `getRandomQuote`.  
 **Remedy**: Change lines 134 and 140 to return `pool[0] ?? ""` and `pool[nextIndex] ?? ""`.
 
@@ -186,6 +202,7 @@ We systematically traced every file in `src/` that accesses `image` and `frontIm
 ```
 
 ### Component Details
+
 1. **`src/components/booth/TarotCard3D.tsx`**:
    - Props: `frontImage: string; backImage: string; isFlipped?: boolean; altText: string; accentColor?: string;`
    - Line 118: `<img src={frontImage} alt="Mascot Guess Who Are You" className="w-full h-full object-cover rounded-xl" loading="eager" />`
@@ -224,7 +241,9 @@ We systematically traced every file in `src/` that accesses `image` and `frontIm
 ## 5. Migration & Vite ESM Import Strategy
 
 ### Step 1: Create Directory and Copy Assets
+
 Copy the 4 uploaded assets to the target location:
+
 ```bash
 mkdir -p src/assets/cards
 cp /Users/noxval/.gemini/antigravity/brain/4920c1c7-b59e-464c-b81e-0f4e333bf35e/.user_uploaded/media_1790964332329.jpg src/assets/cards/card-front.jpg
@@ -234,7 +253,9 @@ cp /Users/noxval/.gemini/antigravity/brain/4920c1c7-b59e-464c-b81e-0f4e333bf35e/
 ```
 
 ### Step 2: Update `src/data/personas.ts`
+
 Replace the `.asset.json` imports with direct ESM image imports:
+
 ```typescript
 import cardCareer from "@/assets/cards/card-career.jpg";
 import cardCreative from "@/assets/cards/card-creative.jpg";
@@ -264,7 +285,9 @@ export const personas: Record<PersonaKey, PersonaInfo> = {
 ```
 
 ### Step 3: Deprecate Legacy Metadata Files
+
 Remove the 4 obsolete JSON files from `src/assets/`:
+
 - `src/assets/depan.webp.asset.json`
 - `src/assets/belakang1.webp.asset.json`
 - `src/assets/belakang2.webp.asset.json`
@@ -277,6 +300,7 @@ Remove the 4 obsolete JSON files from `src/assets/`:
 Create a dedicated test file `src/test/card-assets.test.ts` to guarantee zero broken links, verify filesystem presence, and validate ESM bundle resolution.
 
 ### Proposed Test Implementation (`src/test/card-assets.test.ts`)
+
 ```typescript
 import { describe, expect, it } from "vitest";
 import fs from "node:fs";

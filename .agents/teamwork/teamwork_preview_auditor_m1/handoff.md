@@ -86,6 +86,7 @@
 **Verdict: CLEAN**
 
 Milestone M1 satisfies all requirements of `ORIGINAL_REQUEST.md` §R1 and integrity criteria without violations:
+
 - Physical card assets are authentic, bit-for-bit identical to source uploads.
 - Tests in `src/test/card-assets.test.ts` are authentic, non-mocked, and comprehensive.
 - Lovable proxy CDN URLs have been completely purged from the codebase.
@@ -99,9 +100,11 @@ Milestone M1 satisfies all requirements of `ORIGINAL_REQUEST.md` §R1 and integr
 To independently reproduce this audit:
 
 1. **Verify Binary Checksums**:
+
    ```bash
    shasum -a 256 src/assets/cards/*
    ```
+
    Must yield:
    - `card-front.jpg`: `fad849c09e0aeae1a60f4d2fa86c5d0d8ef3a8d52602f65bbdc734641bc59511`
    - `card-career.jpg`: `00b26556e5fecf4157b658d707e17e65705fb28bd922e3127f811e67dc4d5916`
@@ -109,15 +112,19 @@ To independently reproduce this audit:
    - `card-creative.jpg`: `dc7eb38e7a2a2f100fb5d1b296e36f315c0245f6bb7f3e05729b3e63d74e6782`
 
 2. **Verify Elimination of Proxy URLs**:
+
    ```bash
    git grep "__l5e" src/
    ```
+
    Must return only negative assertions in `src/test/card-assets.test.ts`.
 
 3. **Execute Independent Unit Tests**:
+
    ```bash
    npx vitest run src/test/card-assets.test.ts src/test/audio.test.ts
    ```
+
    Must report 9 passed tests across 2 files, 0 failures.
 
 4. **Execute Independent Production Build**:

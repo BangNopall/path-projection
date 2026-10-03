@@ -1,9 +1,11 @@
 # BRIEFING — 2026-10-02T18:17:00Z
 
 ## Mission
+
 Map the physical card asset pipeline and persona data for the path-projection app.
 
 ## 🔒 My Identity
+
 - Archetype: explorer
 - Roles: investigator, asset pipeline analyst
 - Working directory: /Users/noxval/_PROJECT_/path-projection/.agents/teamwork/teamwork_preview_explorer_survey_2
@@ -11,15 +13,18 @@ Map the physical card asset pipeline and persona data for the path-projection ap
 - Milestone: preview_explorer_survey
 
 ## 🔒 Key Constraints
+
 - Read-only investigation — do NOT implement
 - Write only inside .agents/teamwork/teamwork_preview_explorer_survey_2/
 - Keep booth game client-side
 
 ## Current Parent
+
 - Conversation ID: 2fe0454e-5ca7-4848-bb32-5dc93b7a2d5f
 - Updated: 2026-10-02T18:17:00Z
 
 ## Investigation State
+
 - **Explored paths**:
   - User uploaded images in `.user_uploaded/`
   - `src/assets/` and `src/assets/cards/`
@@ -38,10 +43,12 @@ Map the physical card asset pipeline and persona data for the path-projection ap
 - **Unexplored areas**: None for Asset Pipeline Explorer.
 
 ## Key Decisions Made
+
 - Fully documented 4-asset mapping, filesystem specs, checksums, and dimensions.
 - Specified Vite ESM import syntax and test suite in `report.md` and `handoff.md`.
 
 ## Artifact Index
+
 - DISPATCH.md — Dispatch instructions
 - BRIEFING.md — Situational awareness
 - progress.md — Liveness heartbeat

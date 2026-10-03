@@ -3,6 +3,7 @@
 ## 1. Observation
 
 ### 1.1 Test Suite & Static Analysis Results
+
 - **Vitest Full Test Execution**:
   - Command: `npm test` (`npx vitest run`)
   - Result: 12 test files passed (12/12), 106 unit and integration test cases passed (106/106), 0 failures.
@@ -33,6 +34,7 @@
   - Result: Exited with code 0 without errors.
 
 ### 1.2 Adversarial Challenge Observations
+
 - **Screen Transitions Under Rapid User Events (`src/test/final-challenger-stress.test.tsx:85-236`)**:
   - Continuous cycling through all 5 screens (Home -> Dilemma -> Scanner -> Revelation -> Photo -> Home) completed 3 rapid cycles without state leaks or memory crashes.
   - Rapid toggling between Dilemma and Home via "Mulai Membaca Takdir" and "Kembali" buttons maintained router and modal stability.
@@ -85,25 +87,31 @@ The PKKMB FILKOM UB - SGE 2026 Booth Game ("Guess Who Are You") refactor is empi
 To independently reproduce the empirical findings:
 
 1. **Run full automated test suite (including challenger stress tests)**:
+
    ```bash
    npm test
    ```
-   *Expected: 12 test files passed, 106 test cases passed, 0 failures.*
+
+   _Expected: 12 test files passed, 106 test cases passed, 0 failures._
 
 2. **Run final challenger stress harness specifically**:
+
    ```bash
    npx vitest run src/test/final-challenger-stress.test.tsx
    ```
-   *Expected: 14 test cases passed in ~11s.*
+
+   _Expected: 14 test cases passed in ~11s._
 
 3. **Verify ESLint zero-error compliance**:
+
    ```bash
    npm run lint
    ```
-   *Expected: Exits with code 0 and 0 errors / 0 warnings.*
+
+   _Expected: Exits with code 0 and 0 errors / 0 warnings._
 
 4. **Verify production bundle build**:
    ```bash
    npm run build
    ```
-   *Expected: Vite and Nitro SSR build successfully with 0 errors.*
+   _Expected: Vite and Nitro SSR build successfully with 0 errors._

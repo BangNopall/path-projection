@@ -66,27 +66,27 @@ The test suite covers the full requirement specification across the 4 rigorous t
 
 Every feature from `PROJECT.md` is mapped to its active test coverage:
 
-| Feature ID | Feature Name | Test File | Test Cases | Tier | Status |
-|------------|--------------|-----------|------------|------|--------|
-| **F1** | Local Card Asset Migration | `card-assets.test.ts` | 4 tests | Tier 1 | PASS |
-| **F2** | Vite ESM Asset Integration | `card-assets.test.ts`, `personas-e2e.test.ts` | 3 tests | Tier 1 | PASS |
-| **F3** | Asset Integrity Automation | `card-assets.test.ts` | 2 tests | Tier 1 | PASS |
-| **F4** | Persona Data Integrity & Typings | `personas-e2e.test.ts`, `persona-content.test.ts` | 12 tests | Tier 1, 2 | PASS |
-| **F5** | Kinetic Sentence Reveal | `e2e-booth-flow.test.tsx` | 2 tests | Tier 1, 3 | PASS |
-| **F6** | Golden Sweep Visual Effect | `e2e-booth-flow.test.tsx` | 1 test | Tier 1 | PASS |
-| **F7** | Reflection Reroll Button | `e2e-booth-flow.test.tsx` | 3 tests | Tier 1, 3, 4 | PASS |
-| **F8** | Kinetic Reveal Unit Tests | `kinetic-reveal.test.tsx` *(planned M2)* | N/A | Tier 1 | PLANNED |
-| **F9** | SGE 2026 Brand Tokens | `e2e-booth-flow.test.tsx` | 3 tests | Tier 1 | PASS |
-| **F10** | Postage-Stamp Perforations | `e2e-booth-flow.test.tsx` | 1 test | Tier 1 | PASS |
-| **F11** | 3D Card Tilt & Micro-Interactions | `e2e-booth-flow.test.tsx` | 2 tests | Tier 1, 4 | PASS |
-| **F12** | ESLint Compliance (0 Errors) | Static analysis | `npm run lint` | Tier 1 | PASS (`src/test`) |
-| **F13** | Screen 1: Home Deck | `e2e-booth-flow.test.tsx` | 4 tests | Tier 1, 3, 4 | PASS |
-| **F14** | Screen 2: Dilemma Reflection | `e2e-booth-flow.test.tsx` | 3 tests | Tier 1, 3, 4 | PASS |
-| **F15** | Screen 3: Scanner HUD & Fallback | `e2e-booth-flow.test.tsx` | 3 tests | Tier 1, 2, 3 | PASS |
-| **F16** | Screen 4: Grand Revelation | `e2e-booth-flow.test.tsx` | 4 tests | Tier 1, 3, 4 | PASS |
-| **F17** | Screen 5: Keepsake Photo Studio | `e2e-booth-flow.test.tsx` | 4 tests | Tier 1, 2, 3, 4 | PASS |
-| **F18** | 4-Tier Opaque-Box E2E Suite | `e2e-booth-flow.test.tsx` | 14 tests | Tier 1-4 | PASS |
-| **F19** | Production Build & Verification | `npm run build` | Full bundle | Tier 4 | VERIFIED |
+| Feature ID | Feature Name                      | Test File                                         | Test Cases     | Tier            | Status            |
+| ---------- | --------------------------------- | ------------------------------------------------- | -------------- | --------------- | ----------------- |
+| **F1**     | Local Card Asset Migration        | `card-assets.test.ts`                             | 4 tests        | Tier 1          | PASS              |
+| **F2**     | Vite ESM Asset Integration        | `card-assets.test.ts`, `personas-e2e.test.ts`     | 3 tests        | Tier 1          | PASS              |
+| **F3**     | Asset Integrity Automation        | `card-assets.test.ts`                             | 2 tests        | Tier 1          | PASS              |
+| **F4**     | Persona Data Integrity & Typings  | `personas-e2e.test.ts`, `persona-content.test.ts` | 12 tests       | Tier 1, 2       | PASS              |
+| **F5**     | Kinetic Sentence Reveal           | `e2e-booth-flow.test.tsx`                         | 2 tests        | Tier 1, 3       | PASS              |
+| **F6**     | Golden Sweep Visual Effect        | `e2e-booth-flow.test.tsx`                         | 1 test         | Tier 1          | PASS              |
+| **F7**     | Reflection Reroll Button          | `e2e-booth-flow.test.tsx`                         | 3 tests        | Tier 1, 3, 4    | PASS              |
+| **F8**     | Kinetic Reveal Unit Tests         | `kinetic-reveal.test.tsx` _(planned M2)_          | N/A            | Tier 1          | PLANNED           |
+| **F9**     | SGE 2026 Brand Tokens             | `e2e-booth-flow.test.tsx`                         | 3 tests        | Tier 1          | PASS              |
+| **F10**    | Postage-Stamp Perforations        | `e2e-booth-flow.test.tsx`                         | 1 test         | Tier 1          | PASS              |
+| **F11**    | 3D Card Tilt & Micro-Interactions | `e2e-booth-flow.test.tsx`                         | 2 tests        | Tier 1, 4       | PASS              |
+| **F12**    | ESLint Compliance (0 Errors)      | Static analysis                                   | `npm run lint` | Tier 1          | PASS (`src/test`) |
+| **F13**    | Screen 1: Home Deck               | `e2e-booth-flow.test.tsx`                         | 4 tests        | Tier 1, 3, 4    | PASS              |
+| **F14**    | Screen 2: Dilemma Reflection      | `e2e-booth-flow.test.tsx`                         | 3 tests        | Tier 1, 3, 4    | PASS              |
+| **F15**    | Screen 3: Scanner HUD & Fallback  | `e2e-booth-flow.test.tsx`                         | 3 tests        | Tier 1, 2, 3    | PASS              |
+| **F16**    | Screen 4: Grand Revelation        | `e2e-booth-flow.test.tsx`                         | 4 tests        | Tier 1, 3, 4    | PASS              |
+| **F17**    | Screen 5: Keepsake Photo Studio   | `e2e-booth-flow.test.tsx`                         | 4 tests        | Tier 1, 2, 3, 4 | PASS              |
+| **F18**    | 4-Tier Opaque-Box E2E Suite       | `e2e-booth-flow.test.tsx`                         | 14 tests       | Tier 1-4        | PASS              |
+| **F19**    | Production Build & Verification   | `npm run build`                                   | Full bundle    | Tier 4          | VERIFIED          |
 
 ---
 
@@ -109,21 +109,25 @@ src/test/
 ## 4. How to Run the Test Suites
 
 To execute all tests:
+
 ```bash
 npm test
 ```
 
 To run only the E2E booth flow suite:
+
 ```bash
 npx vitest run src/test/e2e-booth-flow.test.tsx
 ```
 
 To run only the persona data integrity suite:
+
 ```bash
 npx vitest run src/test/personas-e2e.test.ts
 ```
 
 To run linter across test files:
+
 ```bash
 npx eslint src/test/
 ```
@@ -133,6 +137,7 @@ npx eslint src/test/
 ## 5. Certification Sign-Off
 
 The E2E Test Track confirms that:
+
 1. All client-side interactive screens and navigation paths are rigorously exercised.
 2. Graceful fallback for unavailable camera hardware functions predictably without throwing unhandled exceptions.
 3. Rapid user click stress and quote rerolls execute deterministically.

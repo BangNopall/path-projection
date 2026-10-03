@@ -8,13 +8,8 @@ import { routeTree } from "@/routeTree.gen";
 import { InteractiveDeck } from "@/components/booth/InteractiveDeck";
 import { ReflectionDilemma } from "@/components/booth/ReflectionDilemma";
 import { ScannerHUD } from "@/components/booth/ScannerHUD";
-import { KeepsakePhotoCard } from "@/components/booth/KeepsakePhotoCard";
 import { personas } from "@/data/personas";
 import * as audioModule from "@/lib/audio";
-
-vi.mock("html-to-image", () => ({
-  toPng: vi.fn().mockResolvedValue("data:image/png;base64,mockPngBase64"),
-}));
 
 function renderBooth(initialPath = "/") {
   const queryClient = new QueryClient({
@@ -224,8 +219,8 @@ describe("Milestone M4: 5-Screen Layout Overhaul", () => {
   // -------------------------------------------------------------
   // Screen 4: Grand Revelation & KineticSentenceReveal
   // -------------------------------------------------------------
-  describe("Screen 4 (Grand Revelation): KineticSentenceReveal Integration", () => {
-    it("mounts KineticSentenceReveal and completely eliminates monospace setInterval typewriter", async () => {
+  describe("Screen 4 (Grand Revelation): Editorial Narrative & 3D Motion Integration", () => {
+    it("mounts overhauled editorial destiny narrative and completely eliminates monospace setInterval typewriter", async () => {
       const { container } = renderBooth();
 
       // Go to revelation for Career
@@ -235,9 +230,9 @@ describe("Milestone M4: 5-Screen Layout Overhaul", () => {
         expect(screen.getByText(/The Foundation Builder/i)).toBeInTheDocument();
       });
 
-      // KineticSentenceReveal should be mounted with testid
-      const kineticCard = screen.getByTestId("kinetic-reveal-card");
-      expect(kineticCard).toBeInTheDocument();
+      // Overhauled editorial destiny reflection should be mounted with testid
+      const reflectionNarrative = screen.getByTestId("destiny-reflection-narrative");
+      expect(reflectionNarrative).toBeInTheDocument();
 
       // Monospace blinking block cursor (▍) must NOT exist
       expect(container.textContent).not.toContain("▍");
@@ -247,85 +242,55 @@ describe("Milestone M4: 5-Screen Layout Overhaul", () => {
       expect(stampContainers.length).toBeGreaterThanOrEqual(1);
     });
 
-    it("connects 'Tarik Refleksi Baru' to quote shuffling with sound cue and non-repetition", async () => {
-      const playSpy = vi.spyOn(audioModule, "playAudioTone");
+    it("renders clean 2-column editorial layout with dual action buttons", async () => {
       renderBooth();
 
       fireEvent.click(await screen.findByTitle("Kartu Karier & Kepemimpinan"));
       await screen.findByText(/The Foundation Builder/i);
 
-      const initialSentence = screen.getByTestId("kinetic-sentence").textContent?.trim();
+      // Editorial 2-column elements
+      expect(screen.getByText(/NO. 01 — CAREER & FOUNDATION/i)).toBeInTheDocument();
+      expect(screen.getByText(/The Foundation Builder/i)).toBeInTheDocument();
 
-      // Click reroll
-      const rerollBtn = screen.getByRole("button", { name: /Tarik Refleksi Baru/i });
-      fireEvent.click(rerollBtn);
+      // Dual action buttons are present and interactive
+      const pickOtherBtn = screen.getByRole("button", { name: /Pilih Kartu Lain/i });
+      const resetBtn = screen.getByRole("button", { name: /Kembali ke Awal/i });
+      expect(pickOtherBtn).toBeInTheDocument();
+      expect(resetBtn).toBeInTheDocument();
 
-      expect(playSpy).toHaveBeenCalledWith("shuffle", true);
-
-      // Verify new sentence was loaded
-      await waitFor(() => {
-        const nextSentence = screen.getByTestId("kinetic-sentence").textContent?.trim();
-        expect(nextSentence).toBeDefined();
-        expect(nextSentence?.length).toBeGreaterThan(0);
-      });
+      // "Buat Kartu Fotomu" is completely absent
+      expect(screen.queryByRole("button", { name: /Buat Kartu Fotomu/i })).not.toBeInTheDocument();
     });
   });
 
   // -------------------------------------------------------------
-  // Screen 5: Keepsake Photo Studio
+  // Navigation & Photo Studio Excision Verification
   // -------------------------------------------------------------
-  describe("Screen 5 (Keepsake Photo Studio): Polaroid SGE 2026 Branding & Export", () => {
-    it("renders Polaroid keepsake frame with #1F6F78 Steady Teal header banner and circuit backdrop", () => {
-      const { container } = render(
-        <KeepsakePhotoCard
-          persona={personas.creative}
-          quote="Kreativitasmu adalah doa yang diwujudkan."
-          soundEnabled={true}
-          onReset={vi.fn()}
-          onBackToReveal={vi.fn()}
-        />,
-      );
+  describe("Navigation & Photo Studio Excision Verification", () => {
+    it("navigates back to Dilemma on 'Pilih Kartu Lain' and to Home on 'Kembali ke Awal'", async () => {
+      renderBooth();
 
-      // Steady Teal header bar
-      const tealBanner = container.querySelector(".bg-\\[\\#1F6F78\\]");
-      expect(tealBanner).toBeInTheDocument();
-      expect(tealBanner).toHaveTextContent(/GUESS WHO ARE YOU\./i);
-      expect(tealBanner).toHaveTextContent(/PKKMB FILKOM UB · SGE 2026/i);
+      // Jump to revelation
+      fireEvent.click(await screen.findByTitle("Kartu Karier & Kepemimpinan"));
+      await screen.findByText(/The Foundation Builder/i);
 
-      // Circuit pattern backdrop
-      const circuitCard = container.querySelector(".circuit-pattern-bg");
-      expect(circuitCard).toBeInTheDocument();
-
-      // Corner registration marks
-      expect(screen.getByText("⌜")).toBeInTheDocument();
-      expect(screen.getByText("⌝")).toBeInTheDocument();
-      expect(screen.getByText("⌞")).toBeInTheDocument();
-      expect(screen.getByText("⌟")).toBeInTheDocument();
-    });
-
-    it("personalizes participant name and handles download and share actions", async () => {
-      render(
-        <KeepsakePhotoCard
-          persona={personas.adventure}
-          quote="Bumi ini terlampau luas untuk disesali di sudut sempit."
-          soundEnabled={true}
-          onReset={vi.fn()}
-          onBackToReveal={vi.fn()}
-        />,
-      );
-
-      const nameInput = screen.getByLabelText(/Nama Kamu/i);
-      fireEvent.change(nameInput, { target: { value: "Siti Rahma" } });
-      expect(screen.getByText("Siti Rahma")).toBeInTheDocument();
-
-      const downloadBtn = screen.getByRole("button", { name: /Unduh Kartu \(PNG\)/i });
-      fireEvent.click(downloadBtn);
-
-      const shareBtn = screen.getByRole("button", { name: /Salin Tautan Booth/i });
-      fireEvent.click(shareBtn);
-
+      // Click "Pilih Kartu Lain" -> Dilemma
+      fireEvent.click(screen.getByRole("button", { name: /Pilih Kartu Lain/i }));
       await waitFor(() => {
-        expect(screen.getByText(/Tautan Disalin!/i)).toBeInTheDocument();
+        expect(screen.getByText(/Tahap 01 · Dilema Refleksi/i)).toBeInTheDocument();
+      });
+
+      // Select Adventure
+      const selectButtons = screen.getAllByRole("button", { name: /Pilih Nilai Ini/i });
+      fireEvent.click(selectButtons[2]!);
+      await waitFor(() => {
+        expect(screen.getByText(/The Boundary Breaker/i)).toBeInTheDocument();
+      });
+
+      // Click "Kembali ke Awal" -> Home
+      fireEvent.click(screen.getByRole("button", { name: /Kembali ke Awal/i }));
+      await waitFor(() => {
+        expect(screen.getByRole("button", { name: /Mulai Membaca Takdir/i })).toBeInTheDocument();
       });
     });
   });

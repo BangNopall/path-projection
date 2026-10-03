@@ -18,6 +18,7 @@ All 41 tests across 7 test files pass in Vitest v4.1.11 with zero failures.
 ## 2. Deliverables Created & Owned
 
 ### 1. Test Infrastructure Documentation (`TEST_INFRA.md`)
+
 - **Location**: `/Users/noxval/_PROJECT_/path-projection/TEST_INFRA.md`
 - **Contents**:
   - Detailed architectural philosophy: Opaque-box, requirement-driven, client-side only, progressive testability.
@@ -26,6 +27,7 @@ All 41 tests across 7 test files pass in Vitest v4.1.11 with zero failures.
   - Test runner architecture, browser API isolation (AudioContext, MediaDevices, Canvas toPng, Clipboard), and commands.
 
 ### 2. Comprehensive 4-Tier E2E Test Suite (`src/test/e2e-booth-flow.test.tsx`)
+
 - **Location**: `/Users/noxval/_PROJECT_/path-projection/src/test/e2e-booth-flow.test.tsx`
 - **Total Tests**: 14 test cases covering:
   - **Tier 1 (Feature Coverage)**:
@@ -48,6 +50,7 @@ All 41 tests across 7 test files pass in Vitest v4.1.11 with zero failures.
     - Rapid back-and-forth navigation stress between Home, Dilemma, and Scanner HUD screens.
 
 ### 3. Persona Data Integrity & Archetype Invariants Test Suite (`src/test/personas-e2e.test.ts`)
+
 - **Location**: `/Users/noxval/_PROJECT_/path-projection/src/test/personas-e2e.test.ts`
 - **Total Tests**: 7 test cases covering:
   - Exact three canonical persona keys (`career`, `creative`, `adventure`).
@@ -57,6 +60,7 @@ All 41 tests across 7 test files pass in Vitest v4.1.11 with zero failures.
   - `getRandomQuote` logic, boundary handling, and `excludeIndex` non-repetition.
 
 ### 4. Test Readiness Sign-Off (`TEST_READY.md`)
+
 - **Location**: `/Users/noxval/_PROJECT_/path-projection/TEST_READY.md`
 - **Contents**: High-level certification summary, tier breakdown, test execution commands, and readiness confirmation for downstream milestone agents.
 
@@ -64,18 +68,19 @@ All 41 tests across 7 test files pass in Vitest v4.1.11 with zero failures.
 
 ## 3. Test Verification Metrics
 
-| Test File | Tests | Duration | Result |
-|-----------|-------|----------|--------|
-| `src/test/audio.test.ts` | 2 | 3ms | PASS |
-| `src/test/classifier-model.test.ts` | 4 | 4ms | PASS |
-| `src/test/card-assets.test.ts` | 7 | 5ms | PASS |
-| `src/test/persona-content.test.ts` | 5 | 7ms | PASS |
-| `src/test/personas-e2e.test.ts` | 7 | 7ms | PASS |
-| `src/test/app-routing.test.tsx` | 2 | 37ms | PASS |
-| `src/test/e2e-booth-flow.test.tsx` | 14 | ~5890ms | PASS |
-| **Total** | **41** | **~6.5s** | **100% PASS** |
+| Test File                           | Tests  | Duration  | Result        |
+| ----------------------------------- | ------ | --------- | ------------- |
+| `src/test/audio.test.ts`            | 2      | 3ms       | PASS          |
+| `src/test/classifier-model.test.ts` | 4      | 4ms       | PASS          |
+| `src/test/card-assets.test.ts`      | 7      | 5ms       | PASS          |
+| `src/test/persona-content.test.ts`  | 5      | 7ms       | PASS          |
+| `src/test/personas-e2e.test.ts`     | 7      | 7ms       | PASS          |
+| `src/test/app-routing.test.tsx`     | 2      | 37ms      | PASS          |
+| `src/test/e2e-booth-flow.test.tsx`  | 14     | ~5890ms   | PASS          |
+| **Total**                           | **41** | **~6.5s** | **100% PASS** |
 
 Linter status on test code:
+
 - `npx eslint src/test/` -> 0 errors, 0 warnings.
 
 ---

@@ -37,7 +37,9 @@ Pemain menentukan 1 pilihan utama. Pemain akan scan kartu tersebut di website la
 Build a sleek, high-engagement, responsive Web App for "PKKMB FILKOM UB 2026 - SGE Booth Game: Persona Tarot Future Character Reading".
 
 ### 1. CORE CONCEPT & GAME MECHANIC
+
 This is an interactive Tarot-style Persona game for new students entering FILKOM UB.
+
 - Player picks 1 card among 3 physical cards (Aspects: 💼 Career/Tech, 🎨 Creative/Design, 🌎 Adventure/Impact). Front side features the mascot "Guess Who Are You", backside features the persona icon.
 - Player scans their chosen card using their device camera on this web app.
 - The web app runs Computer Vision powered by Google Teachable Machine to classify the card icon.
@@ -45,13 +47,16 @@ This is an interactive Tarot-style Persona game for new students entering FILKOM
 - Documentation Mode: Display an aesthetic digital card frame featuring the persona result, the mascot, and customized FILKOM UB 2026 branding, ready for on-booth photo/screenshot.
 
 ### 2. DESIGN SYSTEM & VISUAL IDENTITY (SGE FILKOM UB 2026 ALIGNED)
+
 DO NOT make it look like a generic corporate AI template. Make it look like a bespoke creative tech exhibition piece.
+
 - Background & Theme: Deep dark tech palette (#070B19, #0D1730) with soft floating ambient mesh gradients (electric cyan #38BDF8, soft violet #818CF8, and warm cream gold #FBF6E9).
 - Accents & Typography: Warm ivory/cream (#F8F4EB) for primary headings and badges, subtle borders (border-white/10), and crisp modern sans typography (Inter / Plus Jakarta Sans / Space Grotesk).
 - Card Style: Glassmorphism with holographic edge highlights, smooth hover tilt effects, and glowing neon scan lines.
 - Mascot Integration: Seamlessly embed a placeholder for the mascot "Guess Who Are You" in the header and card frame.
 
 ### 3. TECHNICAL SPECIFICATIONS & ARCHITECTURE
+
 - Frontend: Next.js / Vite React + Tailwind CSS + Lucide Icons + Framer Motion (for smooth tarot flip and pulse animations).
 - Computer Vision (Teachable Machine):
   - Integrate `@tensorflow/tfjs` and `@teachablemachine/image` via standard ESM/CDN or npm packages.
@@ -64,7 +69,9 @@ DO NOT make it look like a generic corporate AI template. Make it look like a be
   - Subtle audio cues (synthesizer mystic chime when a card is recognized, click sounds). Toggleable sound button.
 
 ### 4. DATA POOL - RANDOMIZED DESTINY MESSAGES (BAHASA INDONESIA)
+
 Provide at least 5 randomized affirmations per category:
+
 1. "Career & Tech Innovator" (💼):
    - "Di antara jutaan baris kode masa depan, logika dan ambisimu akan meretas batasan baru. Jadilah inovator, bukan sekadar penonton."
    - "Arsitektur masa depan FILKOM dibangun oleh tangan dinginmu. Fokus pada proses, dampak besarmu menanti di semester depan."
@@ -79,6 +86,7 @@ Provide at least 5 randomized affirmations per category:
    - "Dunia luar menanti pemikiran revolusionermu. Berangkatlah dengan integritas, kembali dengan segudang pembuktian."
 
 ### 5. USER FLOW & SCREENS
+
 1. Home / Standby Screen:
    - Floating Tarot deck visual with mascot badge "Guess Who Are You".
    - Subtitle: "Booth BEM FILKOM UB - Student Government Expo 2026".

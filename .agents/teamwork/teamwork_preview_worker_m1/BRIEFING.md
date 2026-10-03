@@ -1,9 +1,11 @@
 # BRIEFING — 2026-10-02T18:24:00Z
 
 ## Mission
+
 Implement high-resolution card asset pipeline (M1), update persona data bindings, clean obsolete metadata, resolve TypeScript and Vitest warnings, and establish comprehensive asset verification tests.
 
 ## 🔒 My Identity
+
 - Archetype: worker
 - Roles: implementer, qa, specialist
 - Working directory: /Users/noxval/_PROJECT_/path-projection/.agents/teamwork/teamwork_preview_worker_m1
@@ -11,6 +13,7 @@ Implement high-resolution card asset pipeline (M1), update persona data bindings
 - Milestone: M1 (Asset Pipeline Implementer)
 
 ## 🔒 Key Constraints
+
 - Never cheat or fabricate test results.
 - Keep booth game client-side.
 - Clean production build (npm run build) and all tests pass (npm test).
@@ -18,10 +21,12 @@ Implement high-resolution card asset pipeline (M1), update persona data bindings
 - Working directory metadata only in .agents/teamwork/teamwork_preview_worker_m1.
 
 ## Current Parent
+
 - Conversation ID: 2fe0454e-5ca7-4848-bb32-5dc93b7a2d5f
 - Updated: 2026-10-02T18:24:00Z
 
 ## Task Summary
+
 - **What to build**:
   1. Create `src/assets/cards/` and copy 4 high-res JPEG card images.
   2. Update `src/data/personas.ts` with direct ESM imports, standard CSS vars, nullish coalescing fix in `getRandomQuote`.
@@ -39,6 +44,7 @@ Implement high-resolution card asset pipeline (M1), update persona data bindings
 - **Code layout**: /Users/noxval/_PROJECT_/path-projection/PROJECT.md
 
 ## Change Tracker
+
 - **Files modified**:
   - `src/assets/cards/*`: 4 copied high-res JPEG assets (`card-front.jpg`, `card-career.jpg`, `card-adventure.jpg`, `card-creative.jpg`)
   - `src/data/personas.ts`: Replaced `.asset.json` imports with ESM card image imports, updated `image`/`frontImage` bindings, updated `accentColor` tokens, resolved TS2322 in `getRandomQuote` with nullish coalescing
@@ -49,19 +55,23 @@ Implement high-resolution card asset pipeline (M1), update persona data bindings
 - **Pending issues**: None
 
 ## Quality Status
+
 - **Build/test result**: Pass (M1 tests 100% passing, build clean)
 - **Lint status**: 0 errors (6 pre-existing shadcn UI warnings deferred to M3)
 - **Tests added/modified**: `src/test/card-assets.test.ts` (7 tests added), `src/test/audio.test.ts` (1 test updated to eliminate warning)
 
 ## Loaded Skills
+
 - None required
 
 ## Key Decisions Made
+
 - Used direct Vite ESM imports `import cardFrontImg from "@/assets/cards/card-front.jpg"` ensuring static hashing and offline availability in SSR and Nitro builds.
 - Used nullish coalescing `pool[0] ?? ""` and `pool[nextIndex] ?? ""` in `getRandomQuote` to strictly adhere to TypeScript `noUncheckedIndexedAccess`.
 - Converted `AudioContext` mock in `audio.test.ts` to `function ()` so that Vitest recognizes it as a constructible constructor.
 
 ## Artifact Index
+
 - /Users/noxval/_PROJECT_/path-projection/.agents/teamwork/teamwork_preview_worker_m1/DISPATCH.md — Dispatch instructions
 - /Users/noxval/_PROJECT_/path-projection/.agents/teamwork/teamwork_preview_worker_m1/progress.md — Liveness and progress tracking
 - /Users/noxval/_PROJECT_/path-projection/.agents/teamwork/teamwork_preview_worker_m1/report.md — Detailed task report

@@ -5,5 +5,6 @@ description: |
 ---
 
 # Modern Web Guidance (Local Copy)
+
 Search tool for modern web development best practices.
 Referenced from /Users/noxval/.gemini/config/plugins/modern-web-guidance-plugin/skills/modern-web-guidance/SKILL.md

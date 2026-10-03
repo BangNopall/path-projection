@@ -10,6 +10,7 @@ Also read the project architecture and feature inventory in:
 /Users/noxval/_PROJECT_/path-projection/PROJECT.md
 
 Your mission is to establish the E2E Testing Track:
+
 1. Create `TEST_INFRA.md` at project root `/Users/noxval/_PROJECT_/path-projection/TEST_INFRA.md` documenting:
    - Test philosophy: Opaque-box, requirement-driven, client-side only.
    - Feature inventory mapped from PROJECT.md.

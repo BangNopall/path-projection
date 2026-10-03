@@ -70,6 +70,7 @@
 **Verdict: APPROVE**
 
 Milestone M1 has fully satisfied all requirements from `ORIGINAL_REQUEST.md` (§R1, §R4) and architectural contracts in `PROJECT.md`:
+
 - Authentic 724x1024 physical cards are present locally in `src/assets/cards/`.
 - All `/__l5e/` references have been eliminated.
 - Assets are seamlessly bundled and exported in production.
