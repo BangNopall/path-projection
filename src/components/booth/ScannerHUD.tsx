@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
-import { ArrowLeft, CameraOff, ChevronRight, HelpCircle, ScanLine, Sparkles } from "lucide-react";
+import { ArrowLeft, CameraOff, ChevronRight, ScanLine, Sparkles, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { personas, personaKeys, type PersonaKey } from "@/data/personas";
 import { classifyLabel } from "@/lib/classifier";
@@ -26,11 +26,22 @@ export const ScannerHUD: React.FC<ScannerHUDProps> = ({
     confidence: 0,
   });
   const [manualOpen, setManualOpen] = useState(false);
-  const [holdProgress, setHoldProgress] = useState(0);
+  const [isHolding, setIsHolding] = useState(false);
+  const [isLocked, setIsLocked] = useState(false);
+
+  // Audio ref untuk mencegah kamera unmount/restart saat tombol suara ditekan (T6 fix)
+  const soundRef = useRef(soundEnabled);
+  soundRef.current = soundEnabled;
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const lockedRef = useRef(false);
+
+  // DOM Refs untuk pembaruan visual kontinu 60fps tanpa memicu re-render React (T7 fix)
+  const confidenceBarRef = useRef<HTMLDivElement>(null);
+  const confidenceTextRef = useRef<HTMLSpanElement>(null);
+  const holdProgressBarRef = useRef<HTMLDivElement>(null);
+  const holdProgressTextRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     let disposed = false;
@@ -38,7 +49,10 @@ export const ScannerHUD: React.FC<ScannerHUDProps> = ({
     let busy = false;
     let holdKey: PersonaKey | null = null;
     let holdSince = 0;
+    let lastStateUpdate = 0;
+    let lastLabel = "Menunggu kartu";
     lockedRef.current = false;
+    setIsLocked(false);
 
     const start = async () => {
       try {
@@ -94,32 +108,74 @@ export const ScannerHUD: React.FC<ScannerHUDProps> = ({
             const best = [...results].sort((a, b) => b.probability - a.probability)[0];
             if (best) {
               const key = classifyLabel(best.className);
-              setPrediction({
-                label: key ? personas[key].short : best.className,
-                confidence: best.probability,
-              });
+              const label = key ? personas[key].short : best.className;
+              const prob = best.probability;
+              const probPct = Math.round(prob * 100);
 
-              if (key && best.probability > 0.82) {
+              // 1. Pembaruan DOM langsung untuk bar keyakinan (zero-overhead 60fps)
+              if (confidenceBarRef.current) {
+                confidenceBarRef.current.style.width = `${probPct}%`;
+              }
+              if (confidenceTextRef.current) {
+                confidenceTextRef.current.textContent = `${probPct}%`;
+              }
+
+              // 2. Pembatasan setState ke <= 10 Hz untuk teks judul & label
+              const now = performance.now();
+              if (label !== lastLabel || now - lastStateUpdate >= 100) {
+                lastStateUpdate = now;
+                lastLabel = label;
+                setPrediction({ label, confidence: prob });
+              }
+
+              // 3. Ambang deteksi > 85% dan hold timer 1.5 detik (T8 fix)
+              if (key && prob >= 0.85) {
                 if (holdKey !== key) {
                   holdKey = key;
                   holdSince = performance.now();
+                  setIsHolding(true);
+                  setScanStatus(`Mengenali ${personas[key].short}... Tahan kartu stabil`);
                 }
 
                 const elapsed = performance.now() - holdSince;
-                const progressPct = Math.min(100, Math.round((elapsed / 1400) * 100));
-                setHoldProgress(progressPct);
-                setScanStatus(`Mengenali ${personas[key].short}... Tahan kartu stabil`);
+                const progressPct = Math.min(100, Math.round((elapsed / 1500) * 100));
 
-                if (elapsed >= 1400) {
+                // Pembaruan bar progress penguncian via ref
+                if (holdProgressBarRef.current) {
+                  holdProgressBarRef.current.style.width = `${progressPct}%`;
+                }
+                if (holdProgressTextRef.current) {
+                  holdProgressTextRef.current.textContent = `${progressPct}%`;
+                }
+
+                // 4. Momen lock-on terkonfirmasi (1500 ms)
+                if (elapsed >= 1500) {
                   lockedRef.current = true;
-                  playAudioTone("reveal", soundEnabled);
-                  onDetectCard(key);
+                  setIsLocked(true);
+                  // Nada lockon (T5 fix: bukan nada reveal, mencegah chime ganda)
+                  playAudioTone("lockon", soundRef.current);
+                  setScanStatus(`KARTU TERKUNCI! Menyiapkan Takdir ${personas[key].short}...`);
+
+                  // Beat lock-on 380ms sebelum perpindahan layar
+                  window.setTimeout(() => {
+                    if (!disposed) {
+                      onDetectCard(key);
+                    }
+                  }, 380);
                   return;
                 }
               } else {
-                holdKey = null;
-                setHoldProgress(0);
-                setScanStatus("Arahkan ikon kartu fisik ke dalam kotak frame...");
+                if (holdKey !== null) {
+                  holdKey = null;
+                  setIsHolding(false);
+                  if (holdProgressBarRef.current) {
+                    holdProgressBarRef.current.style.width = "0%";
+                  }
+                  if (holdProgressTextRef.current) {
+                    holdProgressTextRef.current.textContent = "0%";
+                  }
+                  setScanStatus("Arahkan ikon kartu fisik ke dalam kotak frame...");
+                }
               }
             }
           } catch {
@@ -156,7 +212,7 @@ export const ScannerHUD: React.FC<ScannerHUDProps> = ({
         currentVideo.srcObject = null;
       }
     };
-  }, [modelUrl, soundEnabled, onDetectCard]);
+  }, [modelUrl, onDetectCard]); // soundEnabled sengaja dihilangkan dari dependency array (T6 fix)
 
   return (
     <motion.section
@@ -175,7 +231,7 @@ export const ScannerHUD: React.FC<ScannerHUDProps> = ({
             size="sm"
             className="mb-2 -ml-3 text-[var(--SGEPapayaWhip)]/80 hover:text-white"
             onClick={() => {
-              playAudioTone("click", soundEnabled);
+              playAudioTone("click", soundRef.current);
               onBack();
             }}
           >
@@ -204,7 +260,9 @@ export const ScannerHUD: React.FC<ScannerHUDProps> = ({
             muted
             playsInline
             autoPlay
-            className="absolute inset-0 size-full object-cover"
+            className={`absolute inset-0 size-full object-cover transition-all duration-300 ${
+              isLocked ? "brightness-95 contrast-110 saturate-50" : ""
+            }`}
             aria-label="Kamera pemindai kartu"
           />
 
@@ -228,8 +286,14 @@ export const ScannerHUD: React.FC<ScannerHUDProps> = ({
           {/* Vignette Overlay */}
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#081113]/40 via-transparent to-[#081113]/85" />
 
-          {/* Clean Editorial Target Reticle */}
-          <div className="pointer-events-none absolute left-1/2 top-1/2 aspect-[768/1086] h-[74%] -translate-x-1/2 -translate-y-1/2 border border-[var(--SGECoralAqua)]/30 rounded-lg">
+          {/* Clean Editorial Target Reticle dengan penjepitan bracket saat lock-on */}
+          <div
+            className={`pointer-events-none absolute left-1/2 top-1/2 aspect-[768/1086] h-[74%] -translate-x-1/2 -translate-y-1/2 rounded-lg transition-all duration-300 ${
+              isLocked
+                ? "border-2 border-[var(--SGEMustardGold)] scale-[0.98] shadow-[0_0_30px_rgba(242,183,5,0.4)]"
+                : "border border-[var(--SGECoralAqua)]/30"
+            }`}
+          >
             {/* Editorial Telemetry Labels */}
             <div className="absolute top-2 left-2.5 font-mono text-[8px] uppercase tracking-wider text-[var(--SGECoralAqua)]/80 select-none">
               OPTICAL // 01
@@ -238,14 +302,38 @@ export const ScannerHUD: React.FC<ScannerHUDProps> = ({
               768×1086
             </div>
 
-            {/* Corner Precision Alignment Markers */}
-            <span className="absolute -left-1 -top-1 size-6 border-l-2 border-t-2 border-[var(--SGECoralAqua)]" />
-            <span className="absolute -right-1 -top-1 size-6 border-r-2 border-t-2 border-[var(--SGECoralAqua)]" />
-            <span className="absolute -bottom-1 -left-1 size-6 border-b-2 border-l-2 border-[var(--SGECoralAqua)]" />
-            <span className="absolute -bottom-1 -right-1 size-6 border-b-2 border-r-2 border-[var(--SGECoralAqua)]" />
+            {/* Corner Precision Alignment Markers (menjepit saat lock-on) */}
+            <span
+              className={`absolute size-6 border-l-2 border-t-2 transition-all duration-300 ${
+                isLocked
+                  ? "border-[var(--SGEMustardGold)] -left-0.5 -top-0.5 size-7 shadow-[0_0_10px_#F2B705]"
+                  : "border-[var(--SGECoralAqua)] -left-1 -top-1"
+              }`}
+            />
+            <span
+              className={`absolute size-6 border-r-2 border-t-2 transition-all duration-300 ${
+                isLocked
+                  ? "border-[var(--SGEMustardGold)] -right-0.5 -top-0.5 size-7 shadow-[0_0_10px_#F2B705]"
+                  : "border-[var(--SGECoralAqua)] -right-1 -top-1"
+              }`}
+            />
+            <span
+              className={`absolute size-6 border-b-2 border-l-2 transition-all duration-300 ${
+                isLocked
+                  ? "border-[var(--SGEMustardGold)] -bottom-0.5 -left-0.5 size-7 shadow-[0_0_10px_#F2B705]"
+                  : "border-[var(--SGECoralAqua)] -bottom-1 -left-1"
+              }`}
+            />
+            <span
+              className={`absolute size-6 border-b-2 border-r-2 transition-all duration-300 ${
+                isLocked
+                  ? "border-[var(--SGEMustardGold)] -bottom-0.5 -right-0.5 size-7 shadow-[0_0_10px_#F2B705]"
+                  : "border-[var(--SGECoralAqua)] -bottom-1 -right-1"
+              }`}
+            />
 
             {/* Subtle Optical Scan Line */}
-            <span className="scan-line absolute left-0 h-[2px] w-full opacity-70" />
+            {!isLocked && <span className="scan-line absolute left-0 h-[2px] w-full opacity-70" />}
 
             {/* Center Precision Crosshair */}
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 size-8 flex items-center justify-center opacity-40">
@@ -254,16 +342,30 @@ export const ScannerHUD: React.FC<ScannerHUDProps> = ({
             </div>
           </div>
 
+          {/* Lock-on Flash Overlay (WCAG 2.3.1: durasi <= 120ms, opacity <= 0.5) */}
+          {isLocked && (
+            <div
+              className="pointer-events-none absolute inset-0 bg-white/40 transition-opacity duration-150 animate-out fade-out fill-mode-forwards"
+              aria-hidden="true"
+            />
+          )}
+
           {/* Live Scanner Telemetry Badge */}
           <div className="absolute left-4 top-4 flex items-center gap-2 rounded-lg bg-[#081113]/90 px-3 py-1.5 text-[10px] font-mono font-bold tracking-[0.16em] text-[var(--SGECoralAqua)] border border-white/10 backdrop-blur-md">
-            <span className="size-2 rounded-full bg-[var(--SGECoralAqua)] animate-pulse" />
-            <span>LIVE SCAN</span>
+            <span
+              className={`size-2 rounded-full ${isLocked ? "bg-[var(--SGEMustardGold)]" : "bg-[var(--SGECoralAqua)] animate-pulse"}`}
+            />
+            <span>{isLocked ? "LOCKED" : "LIVE SCAN"}</span>
           </div>
 
           {/* Real-time Status Readout Bar */}
           <div className="absolute inset-x-4 bottom-4 text-center px-4 py-2.5 rounded-xl bg-[#081113]/90 border border-white/10 backdrop-blur-md shadow-lg">
             <p className="text-xs font-medium text-white flex items-center justify-center gap-2">
-              <Sparkles size={13} className="text-[var(--SGEMustardGold)]" />
+              {isLocked ? (
+                <CheckCircle2 size={14} className="text-[var(--SGEMustardGold)] animate-bounce" />
+              ) : (
+                <Sparkles size={13} className="text-[var(--SGEMustardGold)]" />
+              )}
               <span>{scanStatus}</span>
             </p>
           </div>
@@ -284,29 +386,36 @@ export const ScannerHUD: React.FC<ScannerHUDProps> = ({
 
             <div className="mt-4 flex justify-between text-xs">
               <span className="text-[var(--muted-foreground)]">Keyakinan Visual</span>
-              <span className="font-mono font-bold text-[var(--SGECoralAqua)]">
+              <span
+                ref={confidenceTextRef}
+                className="font-mono font-bold text-[var(--SGECoralAqua)]"
+              >
                 {Math.round(prediction.confidence * 100)}%
               </span>
             </div>
 
             <div className="mt-2 h-2 overflow-hidden rounded-full bg-[#081113] border border-white/5">
               <div
-                className="h-full rounded-full bg-[var(--SGECoralAqua)] transition-all duration-200"
+                ref={confidenceBarRef}
+                className="h-full rounded-full bg-[var(--SGECoralAqua)] transition-all duration-150"
                 style={{ width: `${Math.round(prediction.confidence * 100)}%` }}
               />
             </div>
 
-            {/* Hold progress when locked */}
-            {holdProgress > 0 && (
+            {/* Hold progress when locking */}
+            {isHolding && (
               <div className="mt-4 pt-3 border-t border-white/10">
                 <div className="flex justify-between text-[11px] text-[var(--SGEMustardGold)] font-bold mb-1">
                   <span>Mengunci Deteksi</span>
-                  <span className="font-mono">{holdProgress}%</span>
+                  <span ref={holdProgressTextRef} className="font-mono">
+                    0%
+                  </span>
                 </div>
                 <div className="h-1.5 overflow-hidden rounded-full bg-[#081113]">
                   <div
+                    ref={holdProgressBarRef}
                     className="h-full rounded-full bg-[var(--SGEMustardGold)] transition-all duration-100"
-                    style={{ width: `${holdProgress}%` }}
+                    style={{ width: "0%" }}
                   />
                 </div>
               </div>
@@ -327,7 +436,7 @@ export const ScannerHUD: React.FC<ScannerHUDProps> = ({
               variant="outline"
               className="h-11 w-full justify-between border-white/10 text-white hover:border-[var(--SGECoralAqua)] hover:bg-[#122225] cursor-pointer"
               onClick={() => {
-                playAudioTone("click", soundEnabled);
+                playAudioTone("click", soundRef.current);
                 setManualOpen(!manualOpen);
               }}
             >
@@ -362,7 +471,7 @@ export const ScannerHUD: React.FC<ScannerHUDProps> = ({
                       variant="ghost"
                       className="h-12 w-full justify-start gap-3 border border-white/10 hover:border-[var(--SGECoralAqua)] hover:bg-[#152B2F] text-left cursor-pointer"
                       onClick={() => {
-                        playAudioTone("click", soundEnabled);
+                        playAudioTone("click", soundRef.current);
                         onDetectCard(key);
                       }}
                     >

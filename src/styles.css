@@ -119,6 +119,7 @@
   --panel-bg: rgba(15, 30, 33, 0.85);
   --glow-primary: rgba(87, 212, 221, 0.15);
   --glow-gold: rgba(242, 183, 5, 0.2);
+  --stage-accent: #57d4dd;
 }
 
 @layer base {
