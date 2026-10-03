@@ -5,35 +5,46 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Design system definition.
- *
- * The @theme inline block maps CSS custom properties to Tailwind utility
- * classes (e.g. --color-primary -> bg-primary, text-primary).
- *
- * The :root and .dark blocks define the actual color values using oklch.
- * All colors MUST use oklch format.
- *
- * To add a new semantic color:
- * 1. Add the variable to :root (light value) and .dark (dark value)
- * 2. Register it in @theme inline as --color-<name>: var(--<name>)
+ * SGE 2026 Design System (FILKOM UB)
+ * Synchronized with /Users/noxval/_PROJECT_/websge2026
  */
 
 @theme inline {
-  --font-sans: "Plus Jakarta Sans", sans-serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-display: "Space Grotesk", sans-serif;
-  --color-ivory: var(--ivory);
-  --color-soft: var(--soft);
-  --color-cyan: var(--cyan);
-  --color-violet: var(--violet);
-  --color-gold: var(--gold);
-  --color-panel: var(--panel);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
-  --radius-4xl: calc(var(--radius) + 16px);
+  --font-mono: "Courier Prime", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* SGE Official Brand Tokens */
+  --color-sge-teal: var(--SGESteadyTeal);
+  --color-sge-ocean: var(--SGEPacificOcean);
+  --color-sge-aqua: var(--SGECoralAqua);
+  --color-sge-gold: var(--SGEMustardGold);
+  --color-sge-papaya: var(--SGEPapayaWhip);
+  --color-sge-warm: var(--SGEBackground);
+  --color-sge-charcoal: var(--SGECharcoal);
+  --color-sge-white: var(--SGEPutee);
+
+  /* Direct Color Tokens in @theme inline */
+  --SGESteadyTeal: #1F6F78;
+  --SGEPacificOcean: #3A8C9A;
+  --SGECoralAqua: #57D4DD;
+  --SGEMustardGold: #F2B705;
+  --SGEBackground: #FFFAF0;
+  --SGECharcoal: #393D3F;
+  --SGEPapayaWhip: #FFEFD3;
+  --SGEPutee: #FDFDFF;
+
+  /* Lowercase aliases for theme consistency */
+  --sge-steady-teal: #1F6F78;
+  --sge-pacific-ocean: #3A8C9A;
+  --sge-coral-aqua: #57D4DD;
+  --sge-mustard-gold: #F2B705;
+  --sge-background: #FFFAF0;
+  --sge-charcoal: #393D3F;
+  --sge-papaya-whip: #FFEFD3;
+  --sge-putee: #FDFDFF;
+
+  /* Semantic UI Tokens */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -53,122 +64,312 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-ring-offset-background: var(--background);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 14px);
 }
 
 :root {
-  --radius: 0.5rem;
-  --background: oklch(0.14 0.03 263);
-  --foreground: oklch(0.96 0.015 88);
-  --card: oklch(0.19 0.038 258);
-  --card-foreground: oklch(0.96 0.015 88);
-  --popover: oklch(0.19 0.038 258);
-  --popover-foreground: oklch(0.96 0.015 88);
-  --primary: oklch(0.78 0.125 219);
-  --primary-foreground: oklch(0.13 0.025 263);
-  --secondary: oklch(0.25 0.05 260);
-  --secondary-foreground: oklch(0.96 0.015 88);
-  --muted: oklch(0.22 0.035 259);
-  --muted-foreground: oklch(0.7 0.022 255);
-  --accent: oklch(0.29 0.065 257);
-  --accent-foreground: oklch(0.96 0.015 88);
-  --destructive: oklch(0.67 0.2 25);
-  --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.88 0.025 230 / 16%);
-  --input: oklch(0.88 0.025 230 / 22%);
-  --ring: oklch(0.78 0.125 219);
-  --ivory: oklch(0.98 0.015 91);
-  --soft: oklch(0.7 0.025 248);
-  --cyan: oklch(0.78 0.125 219);
-  --violet: oklch(0.72 0.12 283);
-  --gold: oklch(0.9 0.055 86);
-  --panel: oklch(0.19 0.038 258 / 78%);
-  --glow-primary: oklch(0.72 0.14 220 / 22%);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
-}
+  /* Official SGE 2026 Brand Tokens (websge2026/app/globals.css) */
+  --SGESteadyTeal: #1F6F78;
+  --SGEPacificOcean: #3A8C9A;
+  --SGECoralAqua: #57D4DD;
+  --SGEMustardGold: #F2B705;
+  --SGEBackground: #FFFAF0;
+  --SGECharcoal: #393D3F;
+  --SGEPapayaWhip: #FFEFD3;
+  --SGEPutee: #FDFDFF;
 
-.dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
+  /* Lowercase aliases to prevent CSS variable lookup bugs (e.g. var(--sge-mustard-gold)) */
+  --sge-steady-teal: #1F6F78;
+  --sge-pacific-ocean: #3A8C9A;
+  --sge-coral-aqua: #57D4DD;
+  --sge-mustard-gold: #F2B705;
+  --sge-background: #FFFAF0;
+  --sge-charcoal: #393D3F;
+  --sge-papaya-whip: #FFEFD3;
+  --sge-putee: #FDFDFF;
+
+  /* Refined Neo-Editorial Theme (Optimized for Booth Card Projection & Camera) */
+  --radius: 0.75rem;
+  --background: #081113;
+  --foreground: #fffaf0;
+  --card: #0f1e21;
+  --card-foreground: #fffaf0;
+  --popover: #0f1e21;
+  --popover-foreground: #fffaf0;
+  --primary: #57d4dd;
+  --primary-foreground: #081113;
+  --secondary: #1f6f78;
+  --secondary-foreground: #fffaf0;
+  --muted: #132427;
+  --muted-foreground: #8fa6a9;
+  --accent: #f2b705;
+  --accent-foreground: #081113;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: rgba(255, 255, 255, 0.1);
+  --input: rgba(87, 212, 221, 0.22);
+  --ring: #57d4dd;
+
+  --panel-bg: rgba(15, 30, 33, 0.85);
+  --glow-primary: rgba(87, 212, 221, 0.15);
+  --glow-gold: rgba(242, 183, 5, 0.2);
 }
 
 @layer base {
   * {
-    border-color: var(--color-border);
+    border-color: var(--border);
   }
 
   body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
+    background-color: var(--background);
+    color: var(--foreground);
     font-family: var(--font-sans);
+    overflow-x: hidden;
   }
 }
 
-@utility font-display { font-family: var(--font-display); }
+@utility font-display {
+  font-family: var(--font-display);
+}
 
-.app-canvas { min-height: 100vh; overflow: hidden; background: radial-gradient(ellipse 48% 38% at 52% 48%, oklch(0.31 0.09 230 / 23%), transparent 78%), radial-gradient(ellipse 38% 34% at 85% 18%, oklch(0.29 0.1 281 / 14%), transparent 80%), var(--background); }
-.ambient-grid { background-image: linear-gradient(to right, oklch(0.8 0.07 220 / 4%) 1px, transparent 1px), linear-gradient(to bottom, oklch(0.8 0.07 220 / 4%) 1px, transparent 1px); background-size: 64px 64px; mask-image: linear-gradient(to bottom, transparent, black 25%, black 70%, transparent); }
-.glass-surface { background: var(--panel); border: 1px solid var(--border); backdrop-filter: blur(24px); }
-.glass-edge { box-shadow: inset 0 1px 0 oklch(0.96 0.02 220 / 22%), 0 24px 80px oklch(0.07 0.03 260 / 45%), 0 0 48px oklch(0.78 0.12 220 / 8%); }
-.deck-card { position: absolute; width: min(39vw, 260px); aspect-ratio: 768 / 1086; border-radius: 15px; padding: 5px; background: linear-gradient(145deg, oklch(0.84 0.1 220 / 65%), oklch(0.67 0.11 282 / 32%), oklch(0.84 0.1 220 / 65%)); box-shadow: 0 22px 75px oklch(0.06 0.03 260 / 55%); overflow: hidden; }
-.deck-card img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
-.scan-line { background: linear-gradient(90deg, transparent, var(--cyan), transparent); box-shadow: 0 0 28px var(--cyan); animation: scan 3s ease-in-out infinite alternate; }
-@keyframes scan { from { top: 13%; } to { top: 85%; } }
-.shine-text { background: linear-gradient(110deg, var(--ivory), var(--cyan) 56%, var(--ivory)); color: transparent; background-clip: text; }
-.photo-card { background: radial-gradient(circle at 50% 35%, oklch(0.35 0.1 221 / 35%), transparent 60%), linear-gradient(155deg, oklch(0.22 0.057 251), oklch(0.13 0.033 264)); }
-@media (prefers-reduced-motion: reduce) { .scan-line { animation: none; top: 50%; } *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+@utility font-mono {
+  font-family: var(--font-mono);
+}
+
+/* ── SGE App Canvas & Ambient Lighting ─────────────────────── */
+.app-canvas {
+  min-height: 100vh;
+  position: relative;
+  background:
+    radial-gradient(ellipse 60% 45% at 50% 15%, rgba(31, 111, 120, 0.22), transparent 75%),
+    radial-gradient(ellipse 55% 45% at 85% 75%, rgba(58, 140, 154, 0.15), transparent 70%),
+    radial-gradient(ellipse 45% 40% at 15% 85%, rgba(242, 183, 5, 0.08), transparent 70%),
+    var(--background);
+}
+
+.ambient-grid {
+  background-image:
+    linear-gradient(to right, rgba(87, 212, 221, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(87, 212, 221, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 65% at 50% 45%, black 40%, transparent 90%);
+}
+
+/* ── Glassmorphism & SGE Surfaces ──────────────────────────── */
+.glass-surface {
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.glass-edge {
+  box-shadow:
+    inset 0 1px 0 rgba(253, 253, 255, 0.12),
+    0 20px 50px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-edge-gold {
+  box-shadow:
+    inset 0 1px 0 rgba(242, 183, 5, 0.25),
+    0 20px 50px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(242, 183, 5, 0.2);
+}
+
+/* ── Refined Neo-Editorial Bento Styling ────────────────────── */
+.neo-bento-card {
+  position: relative;
+  background-color: #0F1E21;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-2xl, 1.25rem);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  overflow: hidden;
+  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.neo-bento-card:hover {
+  border-color: rgba(87, 212, 221, 0.25);
+  box-shadow: 0 20px 56px rgba(0, 0, 0, 0.55);
+}
+
+/* ── SGE Circuit Trace Texture ────────────────────────────── */
+.circuit-pattern-bg {
+  position: relative;
+  background-color: var(--card, #0f1e21);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(31, 111, 120, 0.25), transparent 75%),
+    url("data:image/svg+xml,%3Csvg width='240' height='240' viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%233A8C9A' stroke-width='1.2' stroke-opacity='0.16'%3E%3Cpath d='M20 0v50l30 30h80l20 20v60l-30 30h-70'/%3E%3Cpath d='M220 0v30l-40 40h-40l-20 20v80l20 20h60'/%3E%3Cpath d='M0 120h40l30-30v-40'/%3E%3Cpath d='M180 240v-40l30-30h30'/%3E%3Ccircle cx='50' cy='80' r='3' fill='%2357D4DD' fill-opacity='0.25'/%3E%3Ccircle cx='150' cy='100' r='3' fill='%23F2B705' fill-opacity='0.25'/%3E%3Ccircle cx='120' cy='90' r='2' fill='%233A8C9A' fill-opacity='0.3'/%3E%3Ccircle cx='90' cy='190' r='2.5' fill='%2357D4DD' fill-opacity='0.25'/%3E%3Ccircle cx='180' cy='170' r='3' fill='%231F6F78' fill-opacity='0.3'/%3E%3Ccircle cx='70' cy='50' r='2' fill='%23F2B705' fill-opacity='0.2'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: cover, 240px 240px;
+  background-repeat: no-repeat, repeat;
+}
+
+/* ── Postage-Stamp Perforated Edging ───────────────────────── */
+.stamp-border {
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-2xl, 1.25rem);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.stamp-border::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1.5px dashed rgba(87, 212, 221, 0.32);
+  border-radius: calc(var(--radius-2xl, 1.25rem) - 5px);
+  pointer-events: none;
+  z-index: 15;
+  transition: border-color 0.25s ease;
+}
+
+.stamp-border:hover::after {
+  border-color: rgba(242, 183, 5, 0.55);
+}
+
+/* ── Notched Ticket Style from websge2026 ───────────────────── */
+.notched-box {
+  position: relative;
+  border-radius: 14px;
+}
+
+/* ── 3D Card Hover Physics & Holographic Specular Sheen ────── */
+.perspective-container {
+  perspective: 1200px;
+}
+
+.tarot-card-3d {
+  transform-style: preserve-3d;
+  transition:
+    transform 0.15s ease-out,
+    box-shadow 0.25s ease-out;
+  will-change: transform;
+}
+
+.hologram-foil {
+  background: linear-gradient(
+    135deg,
+    transparent 20%,
+    rgba(255, 239, 211, 0.16) 35%,
+    rgba(87, 212, 221, 0.12) 50%,
+    rgba(242, 183, 5, 0.14) 65%,
+    transparent 80%
+  );
+  mix-blend-mode: normal;
+  pointer-events: none;
+}
+
+/* ── Deck Stack Visuals ─────────────────────────────────────── */
+.deck-card {
+  position: absolute;
+  width: min(42vw, 270px);
+  aspect-ratio: 768 / 1086;
+  border-radius: 16px;
+  padding: 5px;
+  background-color: #0F1E21;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.deck-card:hover {
+  border-color: rgba(242, 183, 5, 0.4);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.7);
+}
+
+.deck-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 11px;
+}
+
+/* ── HUD Scanner Reticle & Lines ───────────────────────────── */
+.scan-line {
+  background: linear-gradient(90deg, transparent, rgba(87, 212, 221, 0.7), transparent);
+  box-shadow: 0 0 12px rgba(87, 212, 221, 0.35);
+  animation: scan 2.6s ease-in-out infinite alternate;
+}
+
+@keyframes scan {
+  from {
+    top: 12%;
+  }
+  to {
+    top: 88%;
+  }
+}
+
+.shine-text {
+  background: linear-gradient(
+    110deg,
+    var(--SGEPapayaWhip),
+    var(--SGECoralAqua) 50%,
+    var(--SGEMustardGold) 90%
+  );
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+.gold-gradient-text {
+  background: linear-gradient(120deg, #ffffff, var(--SGEMustardGold) 70%, #d49b00);
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+/* ── Keepsake Photo Card ────────────────────────────────────── */
+.photo-card {
+  background:
+    radial-gradient(circle at 50% 25%, rgba(58, 140, 154, 0.35), transparent 60%),
+    linear-gradient(160deg, #102124 0%, #071012 100%);
+}
+
+/* ── Global Scrollbar from websge2026 ───────────────────────── */
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--SGESteadyTeal) var(--SGEPapayaWhip);
+  }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a1416;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--SGESteadyTeal);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--SGECoralAqua);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scan-line {
+    animation: none;
+    top: 50%;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
