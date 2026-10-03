@@ -5,6 +5,7 @@ import {
   ArrowRight,
   Camera,
   Check,
+  FastForward,
   RotateCcw,
   ScanLine,
   Settings2,
@@ -62,6 +63,7 @@ function Game() {
   const [sound, setSound] = useState(true);
   const [selected, setSelected] = useState<PersonaKey>("career");
   const [currentQuote, setCurrentQuote] = useState("");
+  const [isRevealSkipped, setIsRevealSkipped] = useState(false);
 
   const soundRef = useRef(sound);
   soundRef.current = sound;
@@ -79,6 +81,7 @@ function Game() {
   // Persona card selected handler
   const handleSelectPersona = useCallback((key: PersonaKey) => {
     setSelected(key);
+    setIsRevealSkipped(false);
     const quote = getRandomQuote(key);
     setCurrentQuote(quote);
     playAudioTone("reveal", soundRef.current);
@@ -96,6 +99,7 @@ function Game() {
 
   const handleReset = () => {
     playAudioTone("click", sound);
+    setIsRevealSkipped(false);
     setScreen("home");
   };
 
@@ -256,12 +260,33 @@ function Game() {
             {screen === "reveal" && (
               <motion.section
                 key="reveal"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.4 }}
-                className="mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center py-8 sm:py-12"
+                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                className="relative mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center py-8 sm:py-12"
               >
+                {/* Skip button for quick animation pass */}
+                <div className="flex justify-end mb-2 sm:mb-0 sm:absolute sm:top-2 sm:right-0 z-20">
+                  <AnimatePresence>
+                    {!isRevealSkipped && (
+                      <motion.button
+                        type="button"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        transition={{ duration: 0.2 }}
+                        onClick={() => setIsRevealSkipped(true)}
+                        className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-[#122225]/90 px-3.5 py-1.5 text-[11px] font-semibold tracking-wider text-white/75 hover:text-white hover:border-[var(--SGEMustardGold)]/50 backdrop-blur-md transition-all cursor-pointer shadow-sm"
+                        aria-label="Lewati animasi"
+                      >
+                        <FastForward className="size-3 text-[var(--SGEMustardGold)]" />
+                        <span>Lewati Animasi</span>
+                      </motion.button>
+                    )}
+                  </AnimatePresence>
+                </div>
+
                 <div className="mb-6 sm:mb-8 text-center">
                   <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.25em] text-[var(--SGECoralAqua)]">
                     Refleksi Persona Takdir
@@ -282,14 +307,24 @@ function Game() {
                     interactiveTilt={true}
                     delay={0.2}
                     duration={0.7}
+                    isSkipped={isRevealSkipped}
                   />
 
                   {/* Right: Narrative Quote, Kinetic Sentence Reveal & Actions */}
                   <div className="text-center lg:text-left">
                     <motion.div
-                      initial={{ opacity: 0, y: -8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.35, delay: 0.8 }}
+                      initial={isRevealSkipped ? "visible" : "hidden"}
+                      animate="visible"
+                      variants={{
+                        hidden: { opacity: 0, y: -8 },
+                        visible: {
+                          opacity: 1,
+                          y: 0,
+                          transition: isRevealSkipped
+                            ? { duration: 0 }
+                            : { duration: 0.35, delay: 0.8 },
+                        },
+                      }}
                       className="inline-flex items-center gap-2 rounded-full border border-[var(--SGEMustardGold)]/40 bg-[var(--SGEMustardGold)]/10 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--SGEMustardGold)]"
                     >
                       <span>{persona.icon}</span>
@@ -304,12 +339,13 @@ function Game() {
                         punctuation="."
                         delay={0.85}
                         stagger={0.03}
+                        isSkipped={isRevealSkipped}
                       />
                     </h2>
 
                     {/* Tagline, Narasi, Momen Mahasiswa Baru & Pesan Penutup */}
                     <div className="mt-6">
-                      <RevealNarrative persona={persona} delay={1.4} />
+                      <RevealNarrative persona={persona} delay={1.4} isSkipped={isRevealSkipped} />
                     </div>
 
                     {/* Kinetic Sentence Reveal with Word-by-Word Blur-to-Focus, Golden Sweep & Reroll Button */}
@@ -322,7 +358,20 @@ function Game() {
                     </div>
 
                     {/* Tags with Spring Hover Micro-Interactions */}
-                    <div className="mt-6 flex flex-wrap justify-center gap-2 lg:justify-start">
+                    <motion.div
+                      initial={isRevealSkipped ? "visible" : "hidden"}
+                      animate="visible"
+                      variants={{
+                        hidden: { opacity: 0 },
+                        visible: {
+                          opacity: 1,
+                          transition: isRevealSkipped
+                            ? { duration: 0 }
+                            : { delay: 2.7, duration: 0.4 },
+                        },
+                      }}
+                      className="mt-6 flex flex-wrap justify-center gap-2 lg:justify-start"
+                    >
                       {persona.tags.map((tag) => (
                         <motion.span
                           key={tag}
@@ -333,10 +382,24 @@ function Game() {
                           {tag}
                         </motion.span>
                       ))}
-                    </div>
+                    </motion.div>
 
                     {/* Action Buttons */}
-                    <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                    <motion.div
+                      initial={isRevealSkipped ? "visible" : "hidden"}
+                      animate="visible"
+                      variants={{
+                        hidden: { opacity: 0, y: 12 },
+                        visible: {
+                          opacity: 1,
+                          y: 0,
+                          transition: isRevealSkipped
+                            ? { duration: 0 }
+                            : { duration: 0.45, delay: 2.9, ease: [0.16, 1, 0.3, 1] },
+                        },
+                      }}
+                      className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3"
+                    >
                       <motion.div
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
@@ -370,7 +433,7 @@ function Game() {
                           <RotateCcw className="mr-1.5 size-4" /> Main Lagi
                         </Button>
                       </motion.div>
-                    </div>
+                    </motion.div>
                   </div>
                 </div>
               </motion.section>
